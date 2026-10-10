@@ -1,0 +1,16 @@
+[Unit]
+Description=IN/OUT X RTSP Camera AI & Object Detection Service
+After=network.target network-online.target inoutx.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=iqac2
+WorkingDirectory=/home/iqac2/Documents/INOUTX
+ExecStart=/home/iqac2/Documents/INOUTX/venv313/bin/python3 /home/iqac2/Documents/INOUTX/camera.py
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
