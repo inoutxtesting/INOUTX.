@@ -1,0 +1,20 @@
+# ============================================================
+# Pyrefly Configuration — IN/OUT X Project
+# ============================================================
+
+python-version = "3.13"
+python-interpreter-path = "venv313/Scripts/python.exe"
+
+site-package-path = [
+    "venv313/Lib/site-packages"
+]
+
+search-path = [
+    ".",
+    "Frontend"
+]
+
+project-includes = [
+    "*.py",
+    "Frontend/**/*.py"
+]
