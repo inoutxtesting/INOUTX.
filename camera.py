@@ -1282,19 +1282,739 @@ async def camera_websocket_handler(websocket, path: str | None = None):
         print(f"WebSocket error ({target_id}):", e)
 
 
+try:
+    from websockets.http11 import Response as WsHttpResponse
+    from websockets.datastructures import Headers as WsHttpHeaders
+except Exception:
+    WsHttpResponse = None
+    WsHttpHeaders = None
+
+
+CAMERA_PAGE_HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IN/OUT X - Live Camera Monitor</title>
+    <link rel="icon" type="image/png" href="https://inoutx.zynix.us/assets/images/logo.PNG">
+    <style>
+        :root {
+            --bg-main: #0a0e17;
+            --bg-card: #111827;
+            --bg-card-hover: #1e293b;
+            --border-color: #1f2937;
+            --border-glow: rgba(16, 185, 129, 0.3);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --accent-green-bg: rgba(16, 185, 129, 0.15);
+            --accent-blue: #06b6d4;
+            --accent-blue-bg: rgba(6, 182, 212, 0.15);
+            --accent-indigo: #6366f1;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(90deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            color: var(--accent-green);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .tabs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.25) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-link {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        main {
+            flex: 1;
+            padding: 24px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .camera-grid {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .camera-grid.dual-view {
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+        }
+
+        .camera-grid.single-view {
+            grid-template-columns: 1fr;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .camera-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .camera-card:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .card-header {
+            padding: 14px 18px;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cam-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cam-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        .cam-college {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-green-bg);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--accent-green);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px var(--accent-green); }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .video-container {
+            position: relative;
+            background: #000000;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .stream-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .overlay-status {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .overlay-fps {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: monospace;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overlay-controls {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .connecting-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            z-index: 5;
+            transition: opacity 0.3s ease;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(16, 185, 129, 0.2);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .card-footer {
+            padding: 10px 18px;
+            background: rgba(15, 23, 42, 0.4);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .endpoint-pill {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #cbd5e1;
+            font-size: 11px;
+        }
+
+        @media (max-width: 768px) {
+            .camera-grid.dual-view {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 10px 14px;
+            }
+            main {
+                padding: 14px;
+            }
+            .tab-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body data-view="__INITIAL_VIEW__">
+    <header>
+        <a href="https://inoutx.zynix.us" class="brand">
+            <div class="brand-badge">X</div>
+            <div>
+                <div class="brand-title">IN/OUT X</div>
+                <div class="brand-sub">Dual-Camera AI Engine</div>
+            </div>
+        </a>
+
+        <div class="tabs">
+            <button class="tab-btn" id="tab-cam1" onclick="switchView('camera1')">
+                <span>KRCT Gate 01</span>
+            </button>
+            <button class="tab-btn" id="tab-cam2" onclick="switchView('camera2')">
+                <span>KRCE Gate 01</span>
+            </button>
+            <button class="tab-btn" id="tab-dual" onclick="switchView('dual')">
+                <span>Dual Split-View</span>
+            </button>
+        </div>
+
+        <div class="actions">
+            <a href="https://inoutx.zynix.us" class="btn-link">
+                <span>← Dashboard</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div id="camera-grid" class="camera-grid dual-view">
+            <!-- Camera 1 Card -->
+            <div class="camera-card" id="card-cam1">
+                <div class="card-header">
+                    <div class="cam-meta">
+                        <div>
+                            <div class="cam-name">KRCT Gate 01</div>
+                            <div class="cam-college">K. Ramakrishnan College of Technology</div>
+                        </div>
+                    </div>
+                    <div class="badge-live" id="status-badge-1">
+                        <span class="pulse-dot"></span>
+                        <span id="status-text-1">CONNECTING</span>
+                    </div>
+                </div>
+                <div class="video-container" id="container-cam1">
+                    <img class="stream-img" id="stream-img-1" alt="KRCT Camera Live Stream">
+                    <div class="overlay-status">
+                        <span class="overlay-fps" id="fps-1">0 FPS</span>
+                    </div>
+                    <div class="overlay-controls">
+                        <button class="icon-btn" title="Fullscreen" onclick="toggleFullscreen('container-cam1')">⛶</button>
+                    </div>
+                    <div class="connecting-overlay" id="loading-1">
+                        <div class="spinner"></div>
+                        <div>Connecting to KRCT Camera Stream...</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span>Endpoint: <span class="endpoint-pill">/ws/camera1</span></span>
+                    <span id="frames-count-1">0 frames</span>
+                </div>
+            </div>
+
+            <!-- Camera 2 Card -->
+            <div class="camera-card" id="card-cam2">
+                <div class="card-header">
+                    <div class="cam-meta">
+                        <div>
+                            <div class="cam-name">KRCE Gate 01</div>
+                            <div class="cam-college">K. Ramakrishnan College of Engineering</div>
+                        </div>
+                    </div>
+                    <div class="badge-live" id="status-badge-2">
+                        <span class="pulse-dot"></span>
+                        <span id="status-text-2">CONNECTING</span>
+                    </div>
+                </div>
+                <div class="video-container" id="container-cam2">
+                    <img class="stream-img" id="stream-img-2" alt="KRCE Camera Live Stream">
+                    <div class="overlay-status">
+                        <span class="overlay-fps" id="fps-2">0 FPS</span>
+                    </div>
+                    <div class="overlay-controls">
+                        <button class="icon-btn" title="Fullscreen" onclick="toggleFullscreen('container-cam2')">⛶</button>
+                    </div>
+                    <div class="connecting-overlay" id="loading-2">
+                        <div class="spinner"></div>
+                        <div>Connecting to KRCE Camera Stream...</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span>Endpoint: <span class="endpoint-pill">/ws/camera2</span></span>
+                    <span id="frames-count-2">0 frames</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const initialView = document.body.dataset.view || "dual";
+        let currentView = initialView;
+        let socket1 = null;
+        let socket2 = null;
+        let fpsCounter1 = 0, fpsCounter2 = 0;
+        let totalFrames1 = 0, totalFrames2 = 0;
+
+        function getWsUrl(cameraPath) {
+            const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
+            return `${proto}//${window.location.host}${cameraPath}`;
+        }
+
+        setInterval(() => {
+            const el1 = document.getElementById("fps-1");
+            const el2 = document.getElementById("fps-2");
+            if (el1) el1.textContent = `${fpsCounter1} FPS`;
+            if (el2) el2.textContent = `${fpsCounter2} FPS`;
+            fpsCounter1 = 0;
+            fpsCounter2 = 0;
+        }, 1000);
+
+        function connectCam1() {
+            if (socket1 && (socket1.readyState === WebSocket.OPEN || socket1.readyState === WebSocket.CONNECTING)) {
+                return;
+            }
+            const img = document.getElementById("stream-img-1");
+            const statusText = document.getElementById("status-text-1");
+            const statusBadge = document.getElementById("status-badge-1");
+            const loading = document.getElementById("loading-1");
+            const framesCount = document.getElementById("frames-count-1");
+            const url = getWsUrl("/ws/camera1");
+
+            try {
+                socket1 = new WebSocket(url);
+                socket1.binaryType = "blob";
+            } catch (e) {
+                if (statusText) statusText.textContent = "FAILED";
+                setTimeout(connectCam1, 3000);
+                return;
+            }
+
+            socket1.onopen = () => {
+                if (statusText) statusText.textContent = "LIVE";
+                if (statusBadge) statusBadge.style.display = "inline-flex";
+                if (loading) loading.style.display = "none";
+            };
+
+            socket1.onmessage = (event) => {
+                if (event.data instanceof Blob && img) {
+                    const blobUrl = URL.createObjectURL(event.data);
+                    const old = img.dataset.url;
+                    img.src = blobUrl;
+                    img.dataset.url = blobUrl;
+                    if (old) URL.revokeObjectURL(old);
+                    fpsCounter1++;
+                    totalFrames1++;
+                    if (framesCount) framesCount.textContent = `${totalFrames1} frames`;
+                    if (loading && loading.style.display !== "none") loading.style.display = "none";
+                }
+            };
+
+            socket1.onerror = () => {
+                if (statusText) statusText.textContent = "ERROR";
+            };
+
+            socket1.onclose = () => {
+                if (statusText) statusText.textContent = "RECONNECTING";
+                if (loading) loading.style.display = "flex";
+                setTimeout(connectCam1, 2000);
+            };
+        }
+
+        function connectCam2() {
+            if (socket2 && (socket2.readyState === WebSocket.OPEN || socket2.readyState === WebSocket.CONNECTING)) {
+                return;
+            }
+            const img = document.getElementById("stream-img-2");
+            const statusText = document.getElementById("status-text-2");
+            const statusBadge = document.getElementById("status-badge-2");
+            const loading = document.getElementById("loading-2");
+            const framesCount = document.getElementById("frames-count-2");
+            const url = getWsUrl("/ws/camera2");
+
+            try {
+                socket2 = new WebSocket(url);
+                socket2.binaryType = "blob";
+            } catch (e) {
+                if (statusText) statusText.textContent = "FAILED";
+                setTimeout(connectCam2, 3000);
+                return;
+            }
+
+            socket2.onopen = () => {
+                if (statusText) statusText.textContent = "LIVE";
+                if (statusBadge) statusBadge.style.display = "inline-flex";
+                if (loading) loading.style.display = "none";
+            };
+
+            socket2.onmessage = (event) => {
+                if (event.data instanceof Blob && img) {
+                    const blobUrl = URL.createObjectURL(event.data);
+                    const old = img.dataset.url;
+                    img.src = blobUrl;
+                    img.dataset.url = blobUrl;
+                    if (old) URL.revokeObjectURL(old);
+                    fpsCounter2++;
+                    totalFrames2++;
+                    if (framesCount) framesCount.textContent = `${totalFrames2} frames`;
+                    if (loading && loading.style.display !== "none") loading.style.display = "none";
+                }
+            };
+
+            socket2.onerror = () => {
+                if (statusText) statusText.textContent = "ERROR";
+            };
+
+            socket2.onclose = () => {
+                if (statusText) statusText.textContent = "RECONNECTING";
+                if (loading) loading.style.display = "flex";
+                setTimeout(connectCam2, 2000);
+            };
+        }
+
+        function switchView(view) {
+            currentView = view;
+            const grid = document.getElementById("camera-grid");
+            const card1 = document.getElementById("card-cam1");
+            const card2 = document.getElementById("card-cam2");
+            const tab1 = document.getElementById("tab-cam1");
+            const tab2 = document.getElementById("tab-cam2");
+            const tabDual = document.getElementById("tab-dual");
+
+            tab1.classList.toggle("active", view === "camera1");
+            tab2.classList.toggle("active", view === "camera2");
+            tabDual.classList.toggle("active", view === "dual");
+
+            if (view === "camera1") {
+                grid.className = "camera-grid single-view";
+                card1.style.display = "flex";
+                card2.style.display = "none";
+                connectCam1();
+            } else if (view === "camera2") {
+                grid.className = "camera-grid single-view";
+                card1.style.display = "none";
+                card2.style.display = "flex";
+                connectCam2();
+            } else {
+                grid.className = "camera-grid dual-view";
+                card1.style.display = "flex";
+                card2.style.display = "flex";
+                connectCam1();
+                connectCam2();
+            }
+        }
+
+        function toggleFullscreen(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (!document.fullscreenElement) {
+                if (el.requestFullscreen) el.requestFullscreen();
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        switchView(initialView);
+    </script>
+</body>
+</html>"""
+
+
+def camera_http_handler(connection, request):
+    """
+    Handles standard browser HTTP GET requests to the camera server.
+    If the client requests a WebSocket upgrade, returns None to allow the handshake.
+    Otherwise, serves an interactive HTML live video player for KRCT / KRCE.
+    """
+    try:
+        upgrade = (request.headers.get("upgrade") or "").lower()
+        if upgrade == "websocket":
+            return None
+
+        if WsHttpResponse is None or WsHttpHeaders is None:
+            return None
+
+        path = (request.path or "").rstrip("/")
+        if path in ("/ws/camera2", "/camera2"):
+            initial_view = "camera2"
+        elif path in ("/ws/camera1", "/camera1"):
+            initial_view = "camera1"
+        else:
+            initial_view = "dual"
+
+        html = CAMERA_PAGE_HTML_TEMPLATE.replace("__INITIAL_VIEW__", initial_view).encode("utf-8")
+        headers = WsHttpHeaders([
+            ("Content-Type", "text/html; charset=utf-8"),
+            ("Content-Length", str(len(html))),
+            ("Cache-Control", "no-cache, no-store, must-revalidate"),
+            ("Connection", "close"),
+        ])
+        return WsHttpResponse(200, "OK", headers, html)
+    except Exception as e:
+        print("[HTTP REQUEST ERROR]", e)
+        return None
+
+
 def run_websocket_server():
     async def start_server():
-        server = await websockets.serve(
-            camera_websocket_handler,  # type: ignore[arg-type]
-            WEBSOCKET_HOST,
-            WEBSOCKET_PORT,
-        )
-        print(f"[WEBSOCKET] Dual-Camera WebSocket server running on ws://localhost:{WEBSOCKET_PORT}")
-        print(f"  - Camera 1 (KRCT): ws://localhost:{WEBSOCKET_PORT}/ws/camera1")
-        print(f"  - Camera 2 (KRCE): ws://localhost:{WEBSOCKET_PORT}/ws/camera2")
-        await server.wait_closed()
+        try:
+            server = await websockets.serve(
+                camera_websocket_handler,  # type: ignore[arg-type]
+                WEBSOCKET_HOST,
+                WEBSOCKET_PORT,
+                process_request=camera_http_handler,
+            )
+            print(f"[WEBSOCKET] Dual-Camera WebSocket server running on ws://localhost:{WEBSOCKET_PORT}")
+            print(f"  - Camera 1 (KRCT): ws://localhost:{WEBSOCKET_PORT}/ws/camera1")
+            print(f"  - Camera 2 (KRCE): ws://localhost:{WEBSOCKET_PORT}/ws/camera2")
+            print(f"  - Web UI Monitor : http://localhost:{WEBSOCKET_PORT}/")
+            await server.wait_closed()
+        except OSError as err:
+            print(f"[WEBSOCKET ERROR] Could not bind to ws://{WEBSOCKET_HOST}:{WEBSOCKET_PORT}: {err}")
+        except Exception as err:
+            print(f"[WEBSOCKET ERROR] Server encountered an error: {err}")
 
-    asyncio.run(start_server())
+    try:
+        asyncio.run(start_server())
+    except Exception as e:
+        print(f"[WEBSOCKET] Server thread terminated: {e}")
 
 
 # ============================================================
@@ -1906,29 +2626,46 @@ def start_camera():
     )
     ws_thread.start()
 
-    # 5. Desktop Multi-view & Mouse Calibration Window
-    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(WINDOW_NAME, 1280, 620)
-    cv2.setMouseCallback(WINDOW_NAME, calib_mouse_callback)
+    # 5. Desktop Multi-view & Mouse Calibration Window (or Headless Server Mode)
+    has_display = bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
+    gui_enabled = False
 
-    print("\n[KEYBOARD & MOUSE CALIBRATION INSTRUCTIONS]")
-    print("  1. Press 'R' on keyboard or click [R] button to toggle Line Calibration.")
-    print("  2. Select the line to calibrate using keyboard keys 1, 2, 3, 4:")
-    print("     [1] Camera 1 / KRCT Entry Line")
-    print("     [2] Camera 1 / KRCT Exit Line")
-    print("     [3] Camera 2 / KRCE Entry Line")
-    print("     [4] Camera 2 / KRCE Exit Line")
-    print("  3. Click Left Mouse Button on video to set START point (Point 1).")
-    print("  4. Click Left Mouse Button on video to set END point (Point 2).")
-    print("  5. Line updates immediately. Press 'S' to Save lines to lines_config.json.")
-    print("  6. Press 'Esc' to cancel edits without saving.")
-    print("  7. Press 'R' to return to normal Detection mode.")
-    print("  8. Press 'Q' to quit.\n")
+    if has_display:
+        try:
+            cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(WINDOW_NAME, 1280, 620)
+            cv2.setMouseCallback(WINDOW_NAME, calib_mouse_callback)
+            gui_enabled = True
+            print("\n[GUI MONITOR INITIALIZED]")
+            print("[KEYBOARD & MOUSE CALIBRATION INSTRUCTIONS]")
+            print("  1. Press 'R' on keyboard or click [R] button to toggle Line Calibration.")
+            print("  2. Select the line to calibrate using keyboard keys 1, 2, 3, 4:")
+            print("     [1] Camera 1 / KRCT Entry Line")
+            print("     [2] Camera 1 / KRCT Exit Line")
+            print("     [3] Camera 2 / KRCE Entry Line")
+            print("     [4] Camera 2 / KRCE Exit Line")
+            print("  3. Click Left Mouse Button on video to set START point (Point 1).")
+            print("  4. Click Left Mouse Button on video to set END point (Point 2).")
+            print("  5. Line updates immediately. Press 'S' to Save lines to lines_config.json.")
+            print("  6. Press 'Esc' to cancel edits without saving.")
+            print("  7. Press 'R' to return to normal Detection mode.")
+            print("  8. Press 'Q' to quit.\n")
+        except Exception as e:
+            print(f"[GUI WARNING] Could not initialize OpenCV GUI window ({e}). Running in Headless Mode.")
+            gui_enabled = False
+    else:
+        print("\n[HEADLESS MODE] No display detected (DISPLAY/WAYLAND_DISPLAY not set).")
+        print("[HEADLESS MODE] Running AI Detection and WebSocket Server in background.")
+        print("[HEADLESS MODE] To enable GUI monitor window, run: export DISPLAY=:0 before starting.\n")
 
     first_frame_shown = False
 
     try:
         while True:
+            if not gui_enabled:
+                time.sleep(1.0)
+                continue
+
             proc1 = get_processor(CAMERA_1_ID)
             proc2 = get_processor(CAMERA_2_ID)
 
@@ -2063,12 +2800,15 @@ def start_camera():
                 print("[MODE] Calibration mode active.")
                 hud_status_time = time.time()
 
+    except KeyboardInterrupt:
+        print("\n[SYSTEM] Interrupted by user (Ctrl+C).")
     finally:
         # Graceful cleanup
         for proc in camera_processors.values():
             proc.stop()
         stop_ocr_worker()
-        cv2.destroyAllWindows()
+        if gui_enabled:
+            cv2.destroyAllWindows()
         print("[SYSTEM] Dual-camera engine stopped cleanly.")
 
 

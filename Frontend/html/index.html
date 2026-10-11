@@ -2056,16 +2056,39 @@
     ====================================================== -->
 
     <script>
+        function getCameraWsUrl(cameraPath) {
+            const isHttps = window.location.protocol === "https:";
+            const hostname = window.location.hostname || "localhost";
+
+            // When hosted on inoutx.zynix.us (or any zynix.us domain) via Cloudflare tunnel,
+            // the camera WebSocket stream is routed through camera.zynix.us over secure WSS
+            if (hostname === "inoutx.zynix.us" || hostname.endsWith(".zynix.us")) {
+                return "wss://camera.zynix.us" + cameraPath;
+            }
+
+            // Other HTTPS deployments
+            if (isHttps) {
+                return "wss://" + hostname + (window.location.port ? ":" + window.location.port : "") + cameraPath;
+            }
+
+            // Local network / Localhost HTTP connection
+            return "ws://" + hostname + ":8000" + cameraPath;
+        }
+
         // Camera 1 (KRCT)
         const camera1Image = document.getElementById("camera-stream");
         const camera1Status = document.getElementById("camera-status");
-        const WS_URL_1 = "ws://" + (window.location.hostname || "localhost") + ":8000/ws/camera1";
         let camera1Socket = null;
 
         function connectCamera1() {
-            console.log("Connecting to KRCT Camera 1:", WS_URL_1);
+            const wsUrl1 = getCameraWsUrl("/ws/camera1");
+            console.log("Connecting to KRCT Camera 1:", wsUrl1);
+            if (camera1Socket) {
+                try { camera1Socket.close(); } catch (_) {}
+                camera1Socket = null;
+            }
             try {
-                camera1Socket = new WebSocket(WS_URL_1);
+                camera1Socket = new WebSocket(wsUrl1);
                 camera1Socket.binaryType = "blob";
             } catch (error) {
                 console.error("KRCT WebSocket creation error:", error);
@@ -2114,13 +2137,17 @@
         // Camera 2 (KRCE)
         const camera2Image = document.getElementById("camera-stream-2");
         const camera2Status = document.getElementById("camera-status-2");
-        const WS_URL_2 = "ws://" + (window.location.hostname || "localhost") + ":8000/ws/camera2";
         let camera2Socket = null;
 
         function connectCamera2() {
-            console.log("Connecting to KRCE Camera 2:", WS_URL_2);
+            const wsUrl2 = getCameraWsUrl("/ws/camera2");
+            console.log("Connecting to KRCE Camera 2:", wsUrl2);
+            if (camera2Socket) {
+                try { camera2Socket.close(); } catch (_) {}
+                camera2Socket = null;
+            }
             try {
-                camera2Socket = new WebSocket(WS_URL_2);
+                camera2Socket = new WebSocket(wsUrl2);
                 camera2Socket.binaryType = "blob";
             } catch (error) {
                 console.error("KRCE WebSocket creation error:", error);
