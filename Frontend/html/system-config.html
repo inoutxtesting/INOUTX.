@@ -5,41 +5,33 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="INOUTX System Configuration">
-
-    <title>System Configuration | INOUTX</title>
+    <title>Admin Settings | INOUTX</title>
 
 
     <!-- =========================================================
          BOOTSTRAP
     ========================================================== -->
 
-    <link rel="stylesheet"
-          href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 
 
     <!-- =========================================================
          BOOTSTRAP ICONS
     ========================================================== -->
 
-    <link rel="stylesheet"
-          href="/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="/assets/vendors/bootstrap-icons/bootstrap-icons.css">
 
 
     <!-- =========================================================
          MAIN INOUTX CSS
     ========================================================== -->
 
-    <link rel="stylesheet"
-          href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 
 
     <style>
-
         /* =========================================================
            SYSTEM CONFIGURATION
         ========================================================= */
@@ -1098,7 +1090,7 @@
             color: #6b7280;
         }
 
-    
+
         /* =========================================================
            APPROVED USERS + LOGIN ACTIVITY
         ========================================================== */
@@ -1203,643 +1195,390 @@
             color: #9ca3af;
             font-size: 12px;
         }
-
-</style>
+    </style>
 
 </head>
 
 
 <body>
 
-<div class="admin-shell">
+    <div class="admin-shell">
 
 
-    <!-- =====================================================
+        <!-- =====================================================
          SIDEBAR BACKDROP
     ====================================================== -->
 
-    <div class="sidebar-backdrop"></div>
+        <div class="sidebar-backdrop"></div>
 
 
-    <!-- =====================================================
+        <!-- =====================================================
          SIDEBAR
     ====================================================== -->
 
-    <aside class="admin-sidebar"
-           id="adminSidebar">
+        <aside class="admin-sidebar" id="adminSidebar">
 
-        <div class="sidebar-header">
+            <div class="sidebar-header">
 
-            <div class="brand-mark">
+                <div class="brand-mark">
 
-                <div class="brand-icon">
+                    <div class="brand-icon">
 
-                    <i class="bi bi-bus-front-fill"></i>
+                        <i class="bi bi-bus-front-fill"></i>
 
-                </div>
-
-                <div class="brand-copy">
-
-                    <div class="brand-title">
-                        INOUTX
                     </div>
 
-                    <div class="brand-subtitle">
-                        Smart Campus Vehicle Management
+                    <div class="brand-copy">
+
+                        <div class="brand-title">
+                            INOUTX
+                        </div>
+
+                        <div class="brand-subtitle">
+                            Smart Campus Vehicle Management
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-        </div>
 
-
-        <!-- =================================================
+            <!-- =================================================
              SIDEBAR NAVIGATION
         ================================================== -->
 
-        <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
 
-            <a class="nav-link"
-               href="index.html">
+                <a class="nav-link" href="index.html">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-grid-1x2-fill"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    Dashboard
-                </span>
+                    <span class="nav-text">
+                        Dashboard
+                    </span>
 
-            </a>
+                </a>
 
 
-            <a class="nav-link"
-               href="vehicle.html">
+                <a class="nav-link" href="vehicle.html">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-arrow-left-right"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-arrow-left-right" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    Vehicle Entry / Exit
-                </span>
+                    <span class="nav-text">
+                        Vehicle Entry / Exit
+                    </span>
 
-            </a>
+                </a>
 
 
-            <a class="nav-link"
-               href="staff-vehicles.html">
+                <a class="nav-link" href="staff-vehicles.html">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-person-badge"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-person-badge" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    Faculty / Staff Vehicles
-                </span>
+                    <span class="nav-text">
+                        Faculty / Staff Vehicles
+                    </span>
 
-            </a>
+                </a>
 
 
-            <a class="nav-link"
-               href="unknown-vehicles.html">
+                <a class="nav-link" href="unknown-vehicles.html">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-person-walking"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-person-walking" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    Visitors
-                </span>
+                    <span class="nav-text">
+                        Visitors
+                    </span>
 
-            </a>
+                </a>
 
 
-            <a class="nav-link"
-               href="download.html">
+                <a class="nav-link" href="download.html">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-file-earmark-arrow-down"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    Reports & Downloads
-                </span>
+                    <span class="nav-text">
+                        Reports & Downloads
+                    </span>
 
-            </a>
+                </a>
 
 
-            <a class="nav-link"
-               href="profile.html">
+                <a class="nav-link" href="profile.html">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-person-circle"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-person-circle" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    Profile
-                </span>
+                    <span class="nav-text">
+                        Profile
+                    </span>
 
-            </a>
+                </a>
 
 
-            <!-- =================================================
+                <!-- =================================================
                  SYSTEM CONFIGURATION
             ================================================== -->
 
-            <a class="nav-link active"
-               href="system-config.html"
-               id="system-config-nav">
+                <a class="nav-link active" href="system-config.html" id="system-config-nav">
 
-                <span class="nav-icon">
+                    <span class="nav-icon">
 
-                    <i class="bi bi-gear"
-                       aria-hidden="true"></i>
+                        <i class="bi bi-gear" aria-hidden="true"></i>
 
-                </span>
+                    </span>
 
-                <span class="nav-text">
-                    System Configuration
-                </span>
+                    <span class="nav-text">
+                        System Configuration
+                    </span>
 
-            </a>
+                </a>
 
-        </nav>
+            </nav>
 
-    </aside>
+        </aside>
 
 
 
-    <!-- =====================================================
+        <!-- =====================================================
          MAIN
     ====================================================== -->
 
-    <main class="admin-main">
-
-
-        <!-- =================================================
-             NAVBAR
-        ================================================== -->
-
-        <nav class="navbar admin-navbar">
-
-            <div class="navbar-page-heading">
-
-
-                <!-- SIDEBAR TOGGLE -->
-
-                <button
-                    type="button"
-                    class="sidebar-toggle"
-                    id="sidebarToggle"
-                    aria-label="Open navigation"
-                    aria-controls="adminSidebar"
-                    aria-expanded="false">
-
-                    <i class="bi bi-list"></i>
-
-                </button>
-
-
-                <div class="page-heading-copy">
-
-                    <h1>
-                        System Configuration
-                    </h1>
-
-                </div>
-
-            </div>
+        <main class="admin-main">
 
 
             <!-- =================================================
+             NAVBAR
+        ================================================== -->
+
+            <nav class="navbar admin-navbar">
+
+                <div class="navbar-page-heading">
+
+
+                    <!-- SIDEBAR TOGGLE -->
+
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open navigation"
+                        aria-controls="adminSidebar" aria-expanded="false">
+
+                        <i class="bi bi-list"></i>
+
+                    </button>
+
+
+                    <div class="page-heading-copy">
+
+                        <h1>
+                            System Configuration
+                        </h1>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
                  NAVBAR ACTIONS
             ================================================== -->
 
-            <div class="navbar-actions">
+                <div class="navbar-actions">
 
 
-                <!-- LIVE TIME -->
+                    <!-- LIVE TIME -->
 
-                <div class="live-time"
-                     id="live-time">
+                    <div class="live-time" id="live-time">
 
-                    --:--:--
+                        --:--:--
 
-                </div>
+                    </div>
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      NOTIFICATIONS
                 ================================================== -->
 
-                <div class="dropdown">
+                    <div class="dropdown">
 
-                    <button
-                        class="btn btn-link text-decoration-none"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        aria-label="Notifications">
+                        <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" aria-label="Notifications">
 
-                        <i class="bi bi-bell"></i>
+                            <i class="bi bi-bell"></i>
 
-                    </button>
+                        </button>
 
 
-                    <div
-                        class="dropdown-menu dropdown-menu-end notification-dropdown">
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown">
 
-                        <div class="px-3 py-2">
+                            <div class="px-3 py-2">
 
-                            <strong>
-                                Notifications
-                            </strong>
+                                <strong>
+                                    Notifications
+                                </strong>
 
-                        </div>
+                            </div>
 
 
-                        <div
-                            id="notification-list"
-                            class="px-3 pb-3">
+                            <div id="notification-list" class="px-3 pb-3">
 
-                            <div class="text-muted small">
-                                No new notifications.
+                                <div class="text-muted small">
+                                    No new notifications.
+                                </div>
+
                             </div>
 
                         </div>
 
                     </div>
 
-                </div>
 
 
-
-                <!-- =================================================
+                    <!-- =================================================
                      PROFILE
                 ================================================== -->
 
-                <div class="dropdown">
+                    <div class="dropdown">
 
-                    <button
-                        class="btn btn-link text-decoration-none"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                        <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
 
-                        <i class="bi bi-person-circle"></i>
+                            <i class="bi bi-person-circle"></i>
 
-                    </button>
+                        </button>
 
 
-                    <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end">
 
-                        <li>
+                            <li>
 
-                            <a
-                                class="dropdown-item"
-                                href="profile.html">
+                                <a class="dropdown-item" href="profile.html">
 
-                                <i class="bi bi-person me-2"></i>
+                                    <i class="bi bi-person me-2"></i>
 
-                                Profile
+                                    Profile
 
-                            </a>
+                                </a>
 
-                        </li>
+                            </li>
 
 
-                        <li>
+                            <li>
 
-                            <hr class="dropdown-divider">
+                                <hr class="dropdown-divider">
 
-                        </li>
+                            </li>
 
 
-                        <li>
+                            <li>
 
-                            <a
-                                class="dropdown-item"
-                                href="login.html">
+                                <a class="dropdown-item" href="login.html">
 
-                                <i class="bi bi-box-arrow-right me-2"></i>
+                                    <i class="bi bi-box-arrow-right me-2"></i>
 
-                                Logout
+                                    Logout
 
-                            </a>
+                                </a>
 
-                        </li>
+                            </li>
 
-                    </ul>
+                        </ul>
+
+                    </div>
 
                 </div>
 
-            </div>
-
-        </nav>
+            </nav>
 
 
 
-        <!-- =================================================
+            <!-- =================================================
              CONFIGURATION CONTENT
         ================================================== -->
 
-        <section class="dashboard-content">
+            <section class="dashboard-content">
 
-            <div class="config-page">
+                <div class="config-page">
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      PAGE HEADER
                 ================================================== -->
 
-                <div class="config-page-header">
+                    <div class="config-page-header">
 
-                    <h1>
-                        System Configuration
-                    </h1>
+                        <h1>
+                            System Configuration
+                        </h1>
 
-                    <p>
-                        Configure camera sources, gate settings,
-                        and database connection parameters.
-                    </p>
+                        <p>
+                            Configure camera sources, gate settings,
+                            and database connection parameters.
+                        </p>
 
-                </div>
+                    </div>
 
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      MESSAGE
                 ================================================== -->
 
-                <div
-                    id="config-message"
-                    class="config-message">
-                </div>
+                    <div id="config-message" class="config-message">
+                    </div>
 
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      CAMERA SOURCES
                 ================================================== -->
 
-                <section class="config-panel">
+                    <section class="config-panel">
 
-                    <div class="config-panel-header">
+                        <div class="config-panel-header">
 
-                        <div class="config-panel-title">
+                            <div class="config-panel-title">
 
-                            <div class="config-panel-title-icon">
+                                <div class="config-panel-title-icon">
 
-                                <i class="bi bi-camera-video"></i>
-
-                            </div>
-
-
-                            <div class="config-panel-title-text">
-
-                                <h2>
-                                    Camera Sources
-                                </h2>
-
-                                <p>
-                                    Configure camera input sources
-                                    for each gate.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="config-panel-body">
-
-                        <div class="camera-config-grid">
-
-
-                            <!-- GATE 1 -->
-
-                            <div class="camera-card">
-
-                                <div class="camera-card-header">
-
-                                    <div class="camera-card-title">
-
-                                        <i class="bi bi-camera"></i>
-
-                                        <h3>
-                                            Gate 1 — Camera 1
-                                        </h3>
-
-                                    </div>
-
-
-                                    <span class="camera-status-badge">
-                                        Configurable
-                                    </span>
+                                    <i class="bi bi-camera-video"></i>
 
                                 </div>
 
 
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Camera Name
-
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        id="camera1-name"
-                                        class="config-input"
-                                        value="Gate 1 — Camera 1">
-
-                                </div>
-
-
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Source Type
-
-                                    </label>
-
-
-                                    <select
-                                        id="camera1-type"
-                                        class="config-select">
-
-                                        <option value="USB">
-                                            USB Camera
-                                        </option>
-
-                                        <option value="DroidCam">
-                                            DroidCam
-                                        </option>
-
-                                        <option value="WiFi-IP">
-                                            Wi-Fi / IP Camera
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Camera Source
-
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        id="camera1-source"
-                                        class="config-input"
-                                        placeholder="Example: 0 or IP URL">
-
-
-                                    <span class="config-help">
-
-                                        USB cameras normally use
-                                        device index 0, 1, 2...
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- GATE 2 -->
-
-                            <div class="camera-card">
-
-                                <div class="camera-card-header">
-
-                                    <div class="camera-card-title">
-
-                                        <i class="bi bi-camera-video"></i>
-
-                                        <h3>
-                                            Gate 2 — Camera 2
-                                        </h3>
-
-                                    </div>
-
-
-                                    <span class="camera-status-badge">
-                                        Configurable
-                                    </span>
-
-                                </div>
-
-
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Camera Name
-
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        id="camera2-name"
-                                        class="config-input"
-                                        value="Gate 2 — Camera 2">
-
-                                </div>
-
-
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Source Type
-
-                                    </label>
-
-
-                                    <select
-                                        id="camera2-type"
-                                        class="config-select">
-
-                                        <option value="USB">
-                                            USB Camera
-                                        </option>
-
-                                        <option value="DroidCam">
-                                            DroidCam
-                                        </option>
-
-                                        <option value="WiFi-IP">
-                                            Wi-Fi / IP Camera
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Camera Source
-
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        id="camera2-source"
-                                        class="config-input"
-                                        placeholder="Example: 1 or IP URL">
-
-
-                                    <span class="config-help">
-
-                                        Enter the camera device index
-                                        or IP stream URL.
-
-                                    </span>
+                                <div class="config-panel-title-text">
+
+                                    <h2>
+                                        Camera Sources
+                                    </h2>
+
+                                    <p>
+                                        Configure camera input sources
+                                        for each gate.
+                                    </p>
 
                                 </div>
 
@@ -1847,148 +1586,454 @@
 
                         </div>
 
-                    </div>
 
-                </section>
+                        <div class="config-panel-body">
+
+                            <div class="camera-config-grid">
+
+
+                                <!-- GATE 1 -->
+
+                                <div class="camera-card">
+
+                                    <div class="camera-card-header">
+
+                                        <div class="camera-card-title">
+
+                                            <i class="bi bi-camera"></i>
+
+                                            <h3>
+                                                Gate 1 — Camera 1
+                                            </h3>
+
+                                        </div>
+
+
+                                        <span class="camera-status-badge">
+                                            Configurable
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Camera Name
+
+                                        </label>
+
+
+                                        <input type="text" id="camera1-name" class="config-input"
+                                            value="Gate 1 — Camera 1">
+
+                                    </div>
+
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Source Type
+
+                                        </label>
+
+
+                                        <select id="camera1-type" class="config-select">
+
+                                            <option value="USB">
+                                                USB Camera
+                                            </option>
+
+                                            <option value="DroidCam">
+                                                DroidCam
+                                            </option>
+
+                                            <option value="WiFi-IP">
+                                                Wi-Fi / IP Camera
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Camera Source
+
+                                        </label>
+
+
+                                        <input type="text" id="camera1-source" class="config-input"
+                                            placeholder="Example: 0 or IP URL">
+
+
+                                        <span class="config-help">
+
+                                            USB cameras normally use
+                                            device index 0, 1, 2...
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
 
 
 
-                <!-- =================================================
+                                <!-- GATE 2 -->
+
+                                <div class="camera-card">
+
+                                    <div class="camera-card-header">
+
+                                        <div class="camera-card-title">
+
+                                            <i class="bi bi-camera-video"></i>
+
+                                            <h3>
+                                                Gate 2 — Camera 2
+                                            </h3>
+
+                                        </div>
+
+
+                                        <span class="camera-status-badge">
+                                            Configurable
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Camera Name
+
+                                        </label>
+
+
+                                        <input type="text" id="camera2-name" class="config-input"
+                                            value="Gate 2 — Camera 2">
+
+                                    </div>
+
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Source Type
+
+                                        </label>
+
+
+                                        <select id="camera2-type" class="config-select">
+
+                                            <option value="USB">
+                                                USB Camera
+                                            </option>
+
+                                            <option value="DroidCam">
+                                                DroidCam
+                                            </option>
+
+                                            <option value="WiFi-IP">
+                                                Wi-Fi / IP Camera
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Camera Source
+
+                                        </label>
+
+
+                                        <input type="text" id="camera2-source" class="config-input"
+                                            placeholder="Example: 1 or IP URL">
+
+
+                                        <span class="config-help">
+
+                                            Enter the camera device index
+                                            or IP stream URL.
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =================================================
                      GATE CONFIGURATION
                 ================================================== -->
 
-                <section class="config-panel">
+                    <section class="config-panel">
 
-                    <div class="config-panel-header">
+                        <div class="config-panel-header">
 
-                        <div class="config-panel-title">
+                            <div class="config-panel-title">
 
-                            <div class="config-panel-title-icon">
+                                <div class="config-panel-title-icon">
 
-                                <i class="bi bi-signpost-2"></i>
+                                    <i class="bi bi-signpost-2"></i>
 
-                            </div>
+                                </div>
 
 
-                            <div class="config-panel-title-text">
+                                <div class="config-panel-title-text">
 
-                                <h2>
-                                    Gate Configuration
-                                </h2>
+                                    <h2>
+                                        Gate Configuration
+                                    </h2>
 
-                                <p>
-                                    Configure gate identification
-                                    and first vehicle movement direction.
-                                </p>
+                                    <p>
+                                        Configure gate identification
+                                        and first vehicle movement direction.
+                                    </p>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+
+                        <div class="config-panel-body">
+
+                            <div class="gate-config-grid">
 
 
-                    <div class="config-panel-body">
+                                <!-- GATE -->
 
-                        <div class="gate-config-grid">
+                                <div class="gate-field">
 
+                                    <div class="config-form-group">
 
-                            <!-- GATE -->
+                                        <label class="config-label">
 
-                            <div class="gate-field">
+                                            Gate
 
-                                <div class="config-form-group">
-
-                                    <label
-                                        class="config-label">
-
-                                        Gate
-
-                                    </label>
+                                        </label>
 
 
-                                    <select
-                                        id="gate1"
-                                        class="config-select">
+                                        <select id="gate1" class="config-select">
 
-                                        <option value="Gate 1">
-                                            Gate 1
-                                        </option>
+                                            <option value="Gate 1">
+                                                Gate 1
+                                            </option>
 
-                                        <option value="Gate 2">
-                                            Gate 2
-                                        </option>
+                                            <option value="Gate 2">
+                                                Gate 2
+                                            </option>
 
-                                    </select>
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- CAMERA -->
+
+                                <div class="gate-field">
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            Camera
+
+                                        </label>
+
+
+                                        <input type="text" id="gate-camera" class="config-input" value="Camera 1"
+                                            readonly>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- FIRST DIRECTION -->
+
+                                <div class="gate-field">
+
+                                    <div class="config-form-group">
+
+                                        <label class="config-label">
+
+                                            First Direction
+
+                                        </label>
+
+
+                                        <select id="gate-direction" class="config-select">
+
+                                            <option value="ENTRY">
+                                                ENTRY
+                                            </option>
+
+                                            <option value="EXIT">
+                                                EXIT
+                                            </option>
+
+                                        </select>
+
+
+                                        <span class="config-help">
+
+                                            Defines the first direction
+                                            recorded for this gate.
+
+                                        </span>
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
+                        </div>
+
+                    </section>
 
 
-                            <!-- CAMERA -->
 
-                            <div class="gate-field">
+                    <!-- =================================================
+                     MONGODB ATLAS
+                ================================================== -->
 
-                                <div class="config-form-group">
+                    <section class="config-panel">
 
-                                    <label
-                                        class="config-label">
+                        <div class="config-panel-header">
 
-                                        Camera
+                            <div class="config-panel-title">
 
-                                    </label>
+                                <div class="config-panel-title-icon">
+
+                                    <i class="bi bi-database"></i>
+
+                                </div>
 
 
-                                    <input
-                                        type="text"
-                                        id="gate-camera"
-                                        class="config-input"
-                                        value="Camera 1"
-                                        readonly>
+                                <div class="config-panel-title-text">
+
+                                    <h2>
+                                        MongoDB Atlas
+                                    </h2>
+
+                                    <p>
+                                        Configure database connection
+                                        parameters.
+                                    </p>
 
                                 </div>
 
                             </div>
 
+                        </div>
 
 
-                            <!-- FIRST DIRECTION -->
+                        <div class="config-panel-body">
 
-                            <div class="gate-field">
+                            <div class="mongodb-grid">
 
-                                <div class="config-form-group">
 
-                                    <label
-                                        class="config-label">
+                                <!-- URI -->
 
-                                        First Direction
+                                <div class="config-form-group full-width">
+
+                                    <label class="config-label">
+
+                                        MongoDB URI
+
+                                        <span class="required">
+                                            *
+                                        </span>
 
                                     </label>
 
 
-                                    <select
-                                        id="gate-direction"
-                                        class="config-select">
+                                    <div class="input-with-action">
 
-                                        <option value="ENTRY">
-                                            ENTRY
-                                        </option>
+                                        <input type="password" id="mongodb-uri" class="config-input"
+                                            placeholder="mongodb+srv://username:password@cluster.mongodb.net/">
 
-                                        <option value="EXIT">
-                                            EXIT
-                                        </option>
 
-                                    </select>
+                                        <button type="button" class="input-action-btn" id="toggle-mongodb-uri"
+                                            aria-label="Show MongoDB URI">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </button>
+
+                                    </div>
 
 
                                     <span class="config-help">
 
-                                        Defines the first direction
-                                        recorded for this gate.
+                                        Your MongoDB Atlas connection
+                                        string.
 
                                     </span>
+
+                                </div>
+
+
+
+                                <!-- DATABASE -->
+
+                                <div class="config-form-group">
+
+                                    <label class="config-label">
+
+                                        Database Name
+
+                                    </label>
+
+
+                                    <input type="text" id="mongodb-database" class="config-input" value="IN_OUTX">
+
+                                </div>
+
+
+
+                                <!-- COLLECTION -->
+
+                                <div class="config-form-group">
+
+                                    <label class="config-label">
+
+                                        Collection
+
+                                    </label>
+
+
+                                    <input type="text" id="mongodb-collection" class="config-input"
+                                        value="bus_movements">
 
                                 </div>
 
@@ -1996,1518 +2041,1396 @@
 
                         </div>
 
-                    </div>
+                    </section>
 
-                </section>
 
 
-
-                <!-- =================================================
-                     MONGODB ATLAS
-                ================================================== -->
-
-                <section class="config-panel">
-
-                    <div class="config-panel-header">
-
-                        <div class="config-panel-title">
-
-                            <div class="config-panel-title-icon">
-
-                                <i class="bi bi-database"></i>
-
-                            </div>
-
-
-                            <div class="config-panel-title-text">
-
-                                <h2>
-                                    MongoDB Atlas
-                                </h2>
-
-                                <p>
-                                    Configure database connection
-                                    parameters.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="config-panel-body">
-
-                        <div class="mongodb-grid">
-
-
-                            <!-- URI -->
-
-                            <div class="config-form-group full-width">
-
-                                <label
-                                    class="config-label">
-
-                                    MongoDB URI
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
-                                </label>
-
-
-                                <div class="input-with-action">
-
-                                    <input
-                                        type="password"
-                                        id="mongodb-uri"
-                                        class="config-input"
-                                        placeholder="mongodb+srv://username:password@cluster.mongodb.net/">
-
-
-                                    <button
-                                        type="button"
-                                        class="input-action-btn"
-                                        id="toggle-mongodb-uri"
-                                        aria-label="Show MongoDB URI">
-
-                                        <i class="bi bi-eye"></i>
-
-                                    </button>
-
-                                </div>
-
-
-                                <span class="config-help">
-
-                                    Your MongoDB Atlas connection
-                                    string.
-
-                                </span>
-
-                            </div>
-
-
-
-                            <!-- DATABASE -->
-
-                            <div class="config-form-group">
-
-                                <label
-                                    class="config-label">
-
-                                    Database Name
-
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    id="mongodb-database"
-                                    class="config-input"
-                                    value="IN_OUTX">
-
-                            </div>
-
-
-
-                            <!-- COLLECTION -->
-
-                            <div class="config-form-group">
-
-                                <label
-                                    class="config-label">
-
-                                    Collection
-
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    id="mongodb-collection"
-                                    class="config-input"
-                                    value="bus_movements">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-
-                <!-- =================================================
+                    <!-- =================================================
                      USER APPROVALS
                 ================================================== -->
 
-                <section class="config-panel" id="user-approvals-panel">
+                    <section class="config-panel" id="user-approvals-panel">
 
-                    <div class="config-panel-header">
+                        <div class="config-panel-header">
 
-                        <div class="config-panel-title">
+                            <div class="config-panel-title">
 
-                            <div class="config-panel-title-icon">
-                                <i class="bi bi-person-check"></i>
+                                <div class="config-panel-title-icon">
+                                    <i class="bi bi-person-check"></i>
+                                </div>
+
+                                <div class="config-panel-title-text">
+                                    <h2>User Approvals</h2>
+                                    <p>
+                                        Review new account requests. Approve or reject each registration
+                                        manually. Only KRCT/KRCE college email addresses are accepted.
+                                    </p>
+                                </div>
+
                             </div>
 
-                            <div class="config-panel-title-text">
-                                <h2>User Approvals</h2>
-                                <p>
-                                    Review new account requests. Approve or reject each registration
-                                    manually. Only KRCT/KRCE college email addresses are accepted.
-                                </p>
+                            <div class="approval-summary">
+                                <span id="pending-users-count" class="approval-count">
+                                    0
+                                </span>
                             </div>
 
                         </div>
 
-                        <div class="approval-summary">
-                            <span
-                                id="pending-users-count"
-                                class="approval-count">
-                                0
-                            </span>
-                        </div>
+                        <div class="config-panel-body">
 
-                    </div>
+                            <div id="approval-message" class="config-message" style="margin-bottom: 14px;">
+                            </div>
 
-                    <div class="config-panel-body">
+                            <div class="approval-table-wrap">
 
-                        <div
-                            id="approval-message"
-                            class="config-message"
-                            style="margin-bottom: 14px;">
-                        </div>
+                                <table class="approval-table">
 
-                        <div class="approval-table-wrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th style="text-align:right;">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
 
-                            <table class="approval-table">
+                                    <tbody id="pending-users-body">
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="approval-empty">
+                                                    <i class="bi bi-hourglass-split"></i>
+                                                    Loading pending registrations...
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
 
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th style="text-align:right;">
-                                            Actions
-                                        </th>
-                                    </tr>
-                                </thead>
+                                </table>
 
-                                <tbody id="pending-users-body">
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="approval-empty">
-                                                <i class="bi bi-hourglass-split"></i>
-                                                Loading pending registrations...
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-
-                            </table>
+                            </div>
 
                         </div>
 
-                    </div>
-
-                </section>
+                    </section>
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      APPROVED USERS
                 ================================================== -->
 
-                <section class="config-panel" id="approved-users-panel">
+                    <section class="config-panel" id="approved-users-panel">
 
-                    <div class="config-panel-header">
-                        <div class="config-panel-title">
-                            <div class="config-panel-title-icon">
-                                <i class="bi bi-people"></i>
+                        <div class="config-panel-header">
+                            <div class="config-panel-title">
+                                <div class="config-panel-title-icon">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="config-panel-title-text">
+                                    <h2>Approved Users</h2>
+                                    <p>
+                                        All users approved by the INOUTX configuration administrator,
+                                        including who is currently using the system.
+                                    </p>
+                                </div>
                             </div>
-                            <div class="config-panel-title-text">
-                                <h2>Approved Users</h2>
-                                <p>
-                                    All users approved by the INOUTX configuration administrator,
-                                    including who is currently using the system.
-                                </p>
+
+                            <div class="user-monitor-summary">
+                                <span id="approved-users-count" class="monitor-count">
+                                    <i class="bi bi-people"></i> 0 approved
+                                </span>
+                                <span id="online-users-count" class="monitor-count online">
+                                    <i class="bi bi-circle-fill"></i> 0 online
+                                </span>
                             </div>
                         </div>
 
-                        <div class="user-monitor-summary">
-                            <span id="approved-users-count" class="monitor-count">
-                                <i class="bi bi-people"></i> 0 approved
-                            </span>
-                            <span id="online-users-count" class="monitor-count online">
-                                <i class="bi bi-circle-fill"></i> 0 online
-                            </span>
+                        <div class="config-panel-body">
+
+                            <div class="monitor-table-wrap">
+                                <table class="monitor-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Last Login</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="approved-users-body">
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="monitor-empty">
+                                                    Loading approved users...
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
-                    </div>
-
-                    <div class="config-panel-body">
-
-                        <div class="monitor-table-wrap">
-                            <table class="monitor-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th>Last Login</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="approved-users-body">
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="monitor-empty">
-                                                Loading approved users...
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </section>
+                    </section>
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      LOGIN ACTIVITY
                 ================================================== -->
 
-                <section class="config-panel" id="login-activity-panel">
+                    <section class="config-panel" id="login-activity-panel">
 
-                    <div class="config-panel-header">
-                        <div class="config-panel-title">
-                            <div class="config-panel-title-icon">
-                                <i class="bi bi-clock-history"></i>
-                            </div>
-                            <div class="config-panel-title-text">
-                                <h2>Login Activity</h2>
-                                <p>
-                                    Recent login and logout records for approved system users.
-                                </p>
+                        <div class="config-panel-header">
+                            <div class="config-panel-title">
+                                <div class="config-panel-title-icon">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
+                                <div class="config-panel-title-text">
+                                    <h2>Login Activity</h2>
+                                    <p>
+                                        Recent login and logout records for approved system users.
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="config-panel-body">
+                        <div class="config-panel-body">
 
-                        <div class="monitor-table-wrap">
-                            <table class="monitor-table">
-                                <thead>
-                                    <tr>
-                                        <th>User</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Activity</th>
-                                        <th>Time</th>
-                                        <th>IP Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="login-activity-body">
-                                    <tr>
-                                        <td colspan="6">
-                                            <div class="monitor-empty">
-                                                Loading login activity...
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="monitor-table-wrap">
+                                <table class="monitor-table">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Activity</th>
+                                            <th>Time</th>
+                                            <th>IP Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="login-activity-body">
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="monitor-empty">
+                                                    Loading login activity...
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
-
-                    </div>
-                </section>
+                    </section>
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      CONFIGURATION PREVIEW
                 ================================================== -->
 
-                <section class="config-panel">
+                    <section class="config-panel">
 
-                    <div class="config-panel-header">
+                        <div class="config-panel-header">
 
-                        <div class="config-panel-title">
+                            <div class="config-panel-title">
 
-                            <div class="config-panel-title-icon">
+                                <div class="config-panel-title-icon">
 
-                                <i class="bi bi-eye"></i>
+                                    <i class="bi bi-eye"></i>
 
-                            </div>
+                                </div>
 
 
-                            <div class="config-panel-title-text">
+                                <div class="config-panel-title-text">
 
-                                <h2>
-                                    Configuration Preview
-                                </h2>
+                                    <h2>
+                                        Configuration Preview
+                                    </h2>
 
-                                <p>
-                                    Review the currently selected
-                                    environment values.
-                                </p>
+                                    <p>
+                                        Review the currently selected
+                                        environment values.
+                                    </p>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+
+                        <div class="config-panel-body">
+
+                            <div class="environment-preview">
 
 
-                    <div class="config-panel-body">
+                                <div class="environment-item">
 
-                        <div class="environment-preview">
-
-
-                            <div class="environment-item">
-
-                                <span class="environment-key">
-                                    Gate 1
-                                </span>
+                                    <span class="environment-key">
+                                        Gate 1
+                                    </span>
 
 
-                                <span
-                                    class="environment-value"
-                                    id="preview-gate1">
+                                    <span class="environment-value" id="preview-gate1">
 
-                                    Gate 1 — Camera 1
+                                        Gate 1 — Camera 1
 
-                                </span>
+                                    </span>
 
-                            </div>
+                                </div>
 
 
 
-                            <div class="environment-item">
+                                <div class="environment-item">
 
-                                <span class="environment-key">
-                                    Gate 2
-                                </span>
+                                    <span class="environment-key">
+                                        Gate 2
+                                    </span>
 
 
-                                <span
-                                    class="environment-value"
-                                    id="preview-gate2">
+                                    <span class="environment-value" id="preview-gate2">
 
-                                    Gate 2 — Camera 2
+                                        Gate 2 — Camera 2
 
-                                </span>
+                                    </span>
 
-                            </div>
+                                </div>
 
 
 
-                            <div class="environment-item">
+                                <div class="environment-item">
 
-                                <span class="environment-key">
-                                    Gate Direction
-                                </span>
+                                    <span class="environment-key">
+                                        Gate Direction
+                                    </span>
 
 
-                                <span
-                                    class="environment-value"
-                                    id="preview-direction">
+                                    <span class="environment-value" id="preview-direction">
 
-                                    ENTRY
+                                        ENTRY
 
-                                </span>
+                                    </span>
 
-                            </div>
+                                </div>
 
 
 
-                            <div class="environment-item">
+                                <div class="environment-item">
 
-                                <span class="environment-key">
-                                    Database
-                                </span>
+                                    <span class="environment-key">
+                                        Database
+                                    </span>
 
 
-                                <span
-                                    class="environment-value"
-                                    id="preview-database">
+                                    <span class="environment-value" id="preview-database">
 
-                                    IN_OUTX
+                                        IN_OUTX
 
-                                </span>
+                                    </span>
 
-                            </div>
+                                </div>
 
 
 
-                            <div class="environment-item">
+                                <div class="environment-item">
 
-                                <span class="environment-key">
-                                    Collection
-                                </span>
+                                    <span class="environment-key">
+                                        Collection
+                                    </span>
 
 
-                                <span
-                                    class="environment-value"
-                                    id="preview-collection">
+                                    <span class="environment-value" id="preview-collection">
 
-                                    bus_movements
+                                        bus_movements
 
-                                </span>
+                                    </span>
 
-                            </div>
+                                </div>
 
 
 
-                            <div class="environment-item">
+                                <div class="environment-item">
 
-                                <span class="environment-key">
-                                    MongoDB
-                                </span>
+                                    <span class="environment-key">
+                                        MongoDB
+                                    </span>
 
 
-                                <span
-                                    class="environment-value"
-                                    id="preview-mongodb">
+                                    <span class="environment-value" id="preview-mongodb">
 
-                                    Configured
+                                        Configured
 
-                                </span>
+                                    </span>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
-
-                </section>
+                    </section>
 
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      ACTIONS
                 ================================================== -->
 
-                <div class="config-actions">
+                    <div class="config-actions">
 
 
-                    <button
-                        type="button"
-                        class="config-btn config-btn-secondary"
-                        id="load-config-btn">
+                        <button type="button" class="config-btn config-btn-secondary" id="load-config-btn">
 
-                        <i class="bi bi-arrow-clockwise"></i>
+                            <i class="bi bi-arrow-clockwise"></i>
 
-                        Load Saved
+                            Load Saved
 
-                    </button>
+                        </button>
 
 
-                    <button
-                        type="button"
-                        class="config-btn config-btn-danger"
-                        id="reset-config-btn">
+                        <button type="button" class="config-btn config-btn-danger" id="reset-config-btn">
 
-                        <i class="bi bi-arrow-counterclockwise"></i>
+                            <i class="bi bi-arrow-counterclockwise"></i>
 
-                        Reset
+                            Reset
 
-                    </button>
+                        </button>
 
 
-                    <button
-                        type="button"
-                        class="config-btn config-btn-primary"
-                        id="save-config-btn">
+                        <button type="button" class="config-btn config-btn-primary" id="save-config-btn">
 
-                        <i class="bi bi-check-lg"></i>
+                            <i class="bi bi-check-lg"></i>
 
-                        Save Configuration
+                            Save Configuration
 
-                    </button>
+                        </button>
 
-                </div>
+                    </div>
 
 
 
-                <!-- =================================================
+                    <!-- =================================================
                      FOOTER
                 ================================================== -->
 
-                <footer class="config-footer">
+                    <footer class="config-footer">
 
-                    2026 Designed by
+                        2026 Designed by
 
-                    <strong>
-                        Department Of CSE - KRCT
-                    </strong>.
+                        <strong>
+                            Department Of CSE - KRCT
+                        </strong>.
 
-                    All rights reserved.
+                        All rights reserved.
 
-                </footer>
+                    </footer>
 
-            </div>
+                </div>
 
-        </section>
+            </section>
 
-    </main>
+        </main>
 
-</div>
+    </div>
 
 
 
-<!-- =========================================================
+    <!-- =========================================================
      BOOTSTRAP JS
 ========================================================= -->
 
-<script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
 
 
 
-<!-- =========================================================
+    <!-- =========================================================
      SYSTEM CONFIGURATION JS
 ========================================================= -->
 
-<script>
+    <script>
 
-(function () {
+        (function () {
 
-    "use strict";
-
-
-    /* =====================================================
-       STORAGE KEY
-    ====================================================== */
-
-    const STORAGE_KEY =
-        "INOUTX_SYSTEM_CONFIGURATION";
+            "use strict";
 
 
-    /* =====================================================
-       DEFAULT CONFIGURATION
-    ====================================================== */
+            /* =====================================================
+               STORAGE KEY
+            ====================================================== */
 
-    const DEFAULT_CONFIG = {
-
-        camera1: {
-            name: "Gate 1 — Camera 1",
-            type: "USB",
-            source: ""
-        },
-
-        camera2: {
-            name: "Gate 2 — Camera 2",
-            type: "USB",
-            source: ""
-        },
-
-        gate: {
-            name: "Gate 1",
-            camera: "Camera 1",
-            direction: "ENTRY"
-        },
-
-        mongodb: {
-            uri: "",
-            database: "IN_OUTX",
-            collection: "bus_movements"
-        }
-
-    };
+            const STORAGE_KEY =
+                "INOUTX_SYSTEM_CONFIGURATION";
 
 
-    /* =====================================================
-       ELEMENT HELPER
-    ====================================================== */
+            /* =====================================================
+               DEFAULT CONFIGURATION
+            ====================================================== */
 
-    function getElement(id) {
+            const DEFAULT_CONFIG = {
 
-        return document.getElementById(id);
-
-    }
-
-
-    /* =====================================================
-       MESSAGE
-    ====================================================== */
-
-    function showMessage(
-        message,
-        type = "success"
-    ) {
-
-        const element =
-            getElement("config-message");
-
-
-        if (!element) {
-            return;
-        }
-
-
-        element.textContent =
-            message;
-
-
-        element.className =
-            "config-message show " +
-            type;
-
-
-        window.clearTimeout(
-            showMessage.timeout
-        );
-
-
-        showMessage.timeout =
-            window.setTimeout(
-                function () {
-
-                    element.classList.remove(
-                        "show"
-                    );
-
+                camera1: {
+                    name: "Gate 1 — Camera 1",
+                    type: "USB",
+                    source: ""
                 },
-                4000
-            );
 
-    }
+                camera2: {
+                    name: "Gate 2 — Camera 2",
+                    type: "USB",
+                    source: ""
+                },
 
+                gate: {
+                    name: "Gate 1",
+                    camera: "Camera 1",
+                    direction: "ENTRY"
+                },
 
-    /* =====================================================
-       READ FORM
-    ====================================================== */
+                mongodb: {
+                    uri: "",
+                    database: "IN_OUTX",
+                    collection: "bus_movements"
+                }
 
-    function getConfigurationFromForm() {
-
-        return {
-
-            camera1: {
-
-                name:
-                    getElement(
-                        "camera1-name"
-                    )?.value || "",
-
-                type:
-                    getElement(
-                        "camera1-type"
-                    )?.value || "USB",
-
-                source:
-                    getElement(
-                        "camera1-source"
-                    )?.value || ""
-
-            },
+            };
 
 
-            camera2: {
+            /* =====================================================
+               ELEMENT HELPER
+            ====================================================== */
 
-                name:
-                    getElement(
-                        "camera2-name"
-                    )?.value || "",
+            function getElement(id) {
 
-                type:
-                    getElement(
-                        "camera2-type"
-                    )?.value || "USB",
-
-                source:
-                    getElement(
-                        "camera2-source"
-                    )?.value || ""
-
-            },
-
-
-            gate: {
-
-                name:
-                    getElement(
-                        "gate1"
-                    )?.value || "Gate 1",
-
-                camera:
-                    getElement(
-                        "gate-camera"
-                    )?.value || "Camera 1",
-
-                direction:
-                    getElement(
-                        "gate-direction"
-                    )?.value || "ENTRY"
-
-            },
-
-
-            mongodb: {
-
-                uri:
-                    getElement(
-                        "mongodb-uri"
-                    )?.value || "",
-
-                database:
-                    getElement(
-                        "mongodb-database"
-                    )?.value ||
-                    "IN_OUTX",
-
-                collection:
-                    getElement(
-                        "mongodb-collection"
-                    )?.value ||
-                    "bus_movements"
+                return document.getElementById(id);
 
             }
 
-        };
 
-    }
+            /* =====================================================
+               MESSAGE
+            ====================================================== */
 
+            function showMessage(
+                message,
+                type = "success"
+            ) {
 
-    /* =====================================================
-       APPLY CONFIGURATION
-    ====================================================== */
+                const element =
+                    getElement("config-message");
 
-    function applyConfiguration(config) {
 
-        config =
-            config || DEFAULT_CONFIG;
+                if (!element) {
+                    return;
+                }
 
 
-        /* CAMERA 1 */
+                element.textContent =
+                    message;
 
-        const camera1 =
-            config.camera1 ||
-            DEFAULT_CONFIG.camera1;
 
+                element.className =
+                    "config-message show " +
+                    type;
 
-        const camera1Name =
-            getElement("camera1-name");
 
-        const camera1Type =
-            getElement("camera1-type");
-
-        const camera1Source =
-            getElement("camera1-source");
-
-
-        if (camera1Name) {
-
-            camera1Name.value =
-                camera1.name || "";
-
-        }
-
-
-        if (camera1Type) {
-
-            camera1Type.value =
-                camera1.type || "USB";
-
-        }
-
-
-        if (camera1Source) {
-
-            camera1Source.value =
-                camera1.source || "";
-
-        }
-
-
-
-        /* CAMERA 2 */
-
-        const camera2 =
-            config.camera2 ||
-            DEFAULT_CONFIG.camera2;
-
-
-        const camera2Name =
-            getElement("camera2-name");
-
-        const camera2Type =
-            getElement("camera2-type");
-
-        const camera2Source =
-            getElement("camera2-source");
-
-
-        if (camera2Name) {
-
-            camera2Name.value =
-                camera2.name || "";
-
-        }
-
-
-        if (camera2Type) {
-
-            camera2Type.value =
-                camera2.type || "USB";
-
-        }
-
-
-        if (camera2Source) {
-
-            camera2Source.value =
-                camera2.source || "";
-
-        }
-
-
-
-        /* GATE */
-
-        const gate =
-            config.gate ||
-            DEFAULT_CONFIG.gate;
-
-
-        const gateName =
-            getElement("gate1");
-
-        const gateCamera =
-            getElement("gate-camera");
-
-        const gateDirection =
-            getElement("gate-direction");
-
-
-        if (gateName) {
-
-            gateName.value =
-                gate.name || "Gate 1";
-
-        }
-
-
-        if (gateCamera) {
-
-            gateCamera.value =
-                gate.camera || "Camera 1";
-
-        }
-
-
-        if (gateDirection) {
-
-            gateDirection.value =
-                gate.direction || "ENTRY";
-
-        }
-
-
-
-        /* MONGODB */
-
-        const mongodb =
-            config.mongodb ||
-            DEFAULT_CONFIG.mongodb;
-
-
-        const mongodbUri =
-            getElement("mongodb-uri");
-
-        const mongodbDatabase =
-            getElement("mongodb-database");
-
-        const mongodbCollection =
-            getElement("mongodb-collection");
-
-
-        if (mongodbUri) {
-
-            mongodbUri.value =
-                mongodb.uri || "";
-
-        }
-
-
-        if (mongodbDatabase) {
-
-            mongodbDatabase.value =
-                mongodb.database ||
-                "IN_OUTX";
-
-        }
-
-
-        if (mongodbCollection) {
-
-            mongodbCollection.value =
-                mongodb.collection ||
-                "bus_movements";
-
-        }
-
-
-        updatePreview();
-
-    }
-
-
-    /* =====================================================
-       SAVE CONFIGURATION
-    ====================================================== */
-
-    function saveConfiguration() {
-
-        try {
-
-            const configuration =
-                getConfigurationFromForm();
-
-
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(
-                    configuration
-                )
-            );
-
-
-            updatePreview();
-
-
-            showMessage(
-                "System configuration saved successfully.",
-                "success"
-            );
-
-        }
-        catch (error) {
-
-            console.error(
-                "Save configuration error:",
-                error
-            );
-
-
-            showMessage(
-                "Unable to save system configuration.",
-                "error"
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       LOAD CONFIGURATION
-    ====================================================== */
-
-    function loadConfiguration(
-        showNotification = true
-    ) {
-
-        try {
-
-            const saved =
-                localStorage.getItem(
-                    STORAGE_KEY
+                window.clearTimeout(
+                    showMessage.timeout
                 );
 
 
-            if (!saved) {
+                showMessage.timeout =
+                    window.setTimeout(
+                        function () {
+
+                            element.classList.remove(
+                                "show"
+                            );
+
+                        },
+                        4000
+                    );
+
+            }
+
+
+            /* =====================================================
+               READ FORM
+            ====================================================== */
+
+            function getConfigurationFromForm() {
+
+                return {
+
+                    camera1: {
+
+                        name:
+                            getElement(
+                                "camera1-name"
+                            )?.value || "",
+
+                        type:
+                            getElement(
+                                "camera1-type"
+                            )?.value || "USB",
+
+                        source:
+                            getElement(
+                                "camera1-source"
+                            )?.value || ""
+
+                    },
+
+
+                    camera2: {
+
+                        name:
+                            getElement(
+                                "camera2-name"
+                            )?.value || "",
+
+                        type:
+                            getElement(
+                                "camera2-type"
+                            )?.value || "USB",
+
+                        source:
+                            getElement(
+                                "camera2-source"
+                            )?.value || ""
+
+                    },
+
+
+                    gate: {
+
+                        name:
+                            getElement(
+                                "gate1"
+                            )?.value || "Gate 1",
+
+                        camera:
+                            getElement(
+                                "gate-camera"
+                            )?.value || "Camera 1",
+
+                        direction:
+                            getElement(
+                                "gate-direction"
+                            )?.value || "ENTRY"
+
+                    },
+
+
+                    mongodb: {
+
+                        uri:
+                            getElement(
+                                "mongodb-uri"
+                            )?.value || "",
+
+                        database:
+                            getElement(
+                                "mongodb-database"
+                            )?.value ||
+                            "IN_OUTX",
+
+                        collection:
+                            getElement(
+                                "mongodb-collection"
+                            )?.value ||
+                            "bus_movements"
+
+                    }
+
+                };
+
+            }
+
+
+            /* =====================================================
+               APPLY CONFIGURATION
+            ====================================================== */
+
+            function applyConfiguration(config) {
+
+                config =
+                    config || DEFAULT_CONFIG;
+
+
+                /* CAMERA 1 */
+
+                const camera1 =
+                    config.camera1 ||
+                    DEFAULT_CONFIG.camera1;
+
+
+                const camera1Name =
+                    getElement("camera1-name");
+
+                const camera1Type =
+                    getElement("camera1-type");
+
+                const camera1Source =
+                    getElement("camera1-source");
+
+
+                if (camera1Name) {
+
+                    camera1Name.value =
+                        camera1.name || "";
+
+                }
+
+
+                if (camera1Type) {
+
+                    camera1Type.value =
+                        camera1.type || "USB";
+
+                }
+
+
+                if (camera1Source) {
+
+                    camera1Source.value =
+                        camera1.source || "";
+
+                }
+
+
+
+                /* CAMERA 2 */
+
+                const camera2 =
+                    config.camera2 ||
+                    DEFAULT_CONFIG.camera2;
+
+
+                const camera2Name =
+                    getElement("camera2-name");
+
+                const camera2Type =
+                    getElement("camera2-type");
+
+                const camera2Source =
+                    getElement("camera2-source");
+
+
+                if (camera2Name) {
+
+                    camera2Name.value =
+                        camera2.name || "";
+
+                }
+
+
+                if (camera2Type) {
+
+                    camera2Type.value =
+                        camera2.type || "USB";
+
+                }
+
+
+                if (camera2Source) {
+
+                    camera2Source.value =
+                        camera2.source || "";
+
+                }
+
+
+
+                /* GATE */
+
+                const gate =
+                    config.gate ||
+                    DEFAULT_CONFIG.gate;
+
+
+                const gateName =
+                    getElement("gate1");
+
+                const gateCamera =
+                    getElement("gate-camera");
+
+                const gateDirection =
+                    getElement("gate-direction");
+
+
+                if (gateName) {
+
+                    gateName.value =
+                        gate.name || "Gate 1";
+
+                }
+
+
+                if (gateCamera) {
+
+                    gateCamera.value =
+                        gate.camera || "Camera 1";
+
+                }
+
+
+                if (gateDirection) {
+
+                    gateDirection.value =
+                        gate.direction || "ENTRY";
+
+                }
+
+
+
+                /* MONGODB */
+
+                const mongodb =
+                    config.mongodb ||
+                    DEFAULT_CONFIG.mongodb;
+
+
+                const mongodbUri =
+                    getElement("mongodb-uri");
+
+                const mongodbDatabase =
+                    getElement("mongodb-database");
+
+                const mongodbCollection =
+                    getElement("mongodb-collection");
+
+
+                if (mongodbUri) {
+
+                    mongodbUri.value =
+                        mongodb.uri || "";
+
+                }
+
+
+                if (mongodbDatabase) {
+
+                    mongodbDatabase.value =
+                        mongodb.database ||
+                        "IN_OUTX";
+
+                }
+
+
+                if (mongodbCollection) {
+
+                    mongodbCollection.value =
+                        mongodb.collection ||
+                        "bus_movements";
+
+                }
+
+
+                updatePreview();
+
+            }
+
+
+            /* =====================================================
+               SAVE CONFIGURATION
+            ====================================================== */
+
+            function saveConfiguration() {
+
+                try {
+
+                    const configuration =
+                        getConfigurationFromForm();
+
+
+                    localStorage.setItem(
+                        STORAGE_KEY,
+                        JSON.stringify(
+                            configuration
+                        )
+                    );
+
+
+                    updatePreview();
+
+
+                    showMessage(
+                        "System configuration saved successfully.",
+                        "success"
+                    );
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Save configuration error:",
+                        error
+                    );
+
+
+                    showMessage(
+                        "Unable to save system configuration.",
+                        "error"
+                    );
+
+                }
+
+            }
+
+
+            /* =====================================================
+               LOAD CONFIGURATION
+            ====================================================== */
+
+            function loadConfiguration(
+                showNotification = true
+            ) {
+
+                try {
+
+                    const saved =
+                        localStorage.getItem(
+                            STORAGE_KEY
+                        );
+
+
+                    if (!saved) {
+
+                        applyConfiguration(
+                            DEFAULT_CONFIG
+                        );
+
+
+                        if (showNotification) {
+
+                            showMessage(
+                                "No saved configuration found. Default configuration loaded.",
+                                "warning"
+                            );
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    const configuration =
+                        JSON.parse(saved);
+
+
+                    applyConfiguration(
+                        configuration
+                    );
+
+
+                    if (showNotification) {
+
+                        showMessage(
+                            "Saved configuration loaded successfully.",
+                            "success"
+                        );
+
+                    }
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Load configuration error:",
+                        error
+                    );
+
+
+                    applyConfiguration(
+                        DEFAULT_CONFIG
+                    );
+
+
+                    showMessage(
+                        "Saved configuration could not be loaded. Default configuration restored.",
+                        "error"
+                    );
+
+                }
+
+            }
+
+
+            /* =====================================================
+               RESET CONFIGURATION
+            ====================================================== */
+
+            function resetConfiguration() {
+
+                const confirmed =
+                    window.confirm(
+                        "Reset System Configuration to default values?"
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                localStorage.removeItem(
+                    STORAGE_KEY
+                );
+
 
                 applyConfiguration(
                     DEFAULT_CONFIG
                 );
 
 
-                if (showNotification) {
-
-                    showMessage(
-                        "No saved configuration found. Default configuration loaded.",
-                        "warning"
-                    );
-
-                }
-
-                return;
-
-            }
-
-
-            const configuration =
-                JSON.parse(saved);
-
-
-            applyConfiguration(
-                configuration
-            );
-
-
-            if (showNotification) {
-
                 showMessage(
-                    "Saved configuration loaded successfully.",
+                    "System configuration has been reset.",
                     "success"
                 );
 
             }
 
-        }
-        catch (error) {
 
-            console.error(
-                "Load configuration error:",
-                error
-            );
+            /* =====================================================
+               UPDATE PREVIEW
+            ====================================================== */
 
+            function updatePreview() {
 
-            applyConfiguration(
-                DEFAULT_CONFIG
-            );
+                const configuration =
+                    getConfigurationFromForm();
 
 
-            showMessage(
-                "Saved configuration could not be loaded. Default configuration restored.",
-                "error"
-            );
+                const previewGate1 =
+                    getElement(
+                        "preview-gate1"
+                    );
 
-        }
+                const previewGate2 =
+                    getElement(
+                        "preview-gate2"
+                    );
 
-    }
+                const previewDirection =
+                    getElement(
+                        "preview-direction"
+                    );
 
+                const previewDatabase =
+                    getElement(
+                        "preview-database"
+                    );
 
-    /* =====================================================
-       RESET CONFIGURATION
-    ====================================================== */
+                const previewCollection =
+                    getElement(
+                        "preview-collection"
+                    );
 
-    function resetConfiguration() {
-
-        const confirmed =
-            window.confirm(
-                "Reset System Configuration to default values?"
-            );
-
-
-        if (!confirmed) {
-            return;
-        }
-
-
-        localStorage.removeItem(
-            STORAGE_KEY
-        );
-
-
-        applyConfiguration(
-            DEFAULT_CONFIG
-        );
-
-
-        showMessage(
-            "System configuration has been reset.",
-            "success"
-        );
-
-    }
-
-
-    /* =====================================================
-       UPDATE PREVIEW
-    ====================================================== */
-
-    function updatePreview() {
-
-        const configuration =
-            getConfigurationFromForm();
-
-
-        const previewGate1 =
-            getElement(
-                "preview-gate1"
-            );
-
-        const previewGate2 =
-            getElement(
-                "preview-gate2"
-            );
-
-        const previewDirection =
-            getElement(
-                "preview-direction"
-            );
-
-        const previewDatabase =
-            getElement(
-                "preview-database"
-            );
-
-        const previewCollection =
-            getElement(
-                "preview-collection"
-            );
-
-        const previewMongo =
-            getElement(
-                "preview-mongodb"
-            );
-
-
-        if (previewGate1) {
-
-            previewGate1.textContent =
-                configuration.camera1.name ||
-                "Gate 1 — Camera 1";
-
-        }
-
-
-        if (previewGate2) {
-
-            previewGate2.textContent =
-                configuration.camera2.name ||
-                "Gate 2 — Camera 2";
-
-        }
-
-
-        if (previewDirection) {
-
-            previewDirection.textContent =
-                configuration.gate.direction ||
-                "ENTRY";
-
-        }
-
-
-        if (previewDatabase) {
-
-            previewDatabase.textContent =
-                configuration.mongodb.database ||
-                "IN_OUTX";
-
-        }
-
-
-        if (previewCollection) {
-
-            previewCollection.textContent =
-                configuration.mongodb.collection ||
-                "bus_movements";
-
-        }
-
-
-        if (previewMongo) {
-
-            previewMongo.textContent =
-                configuration.mongodb.uri
-                    ? "Configured"
-                    : "Not configured";
-
-        }
-
-    }
-
-
-    /* =====================================================
-       MONGODB URI VISIBILITY
-    ====================================================== */
-
-    function setupMongoVisibility() {
-
-        const button =
-            getElement(
-                "toggle-mongodb-uri"
-            );
-
-        const input =
-            getElement(
-                "mongodb-uri"
-            );
-
-
-        if (!button || !input) {
-            return;
-        }
-
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                const icon =
-                    button.querySelector("i");
-
-
-                if (
-                    input.type ===
-                    "password"
-                ) {
-
-                    input.type =
-                        "text";
-
-
-                    button.setAttribute(
-                        "aria-label",
-                        "Hide MongoDB URI"
+                const previewMongo =
+                    getElement(
+                        "preview-mongodb"
                     );
 
 
-                    if (icon) {
+                if (previewGate1) {
 
-                        icon.className =
-                            "bi bi-eye-slash";
-
-                    }
+                    previewGate1.textContent =
+                        configuration.camera1.name ||
+                        "Gate 1 — Camera 1";
 
                 }
-                else {
-
-                    input.type =
-                        "password";
 
 
-                    button.setAttribute(
-                        "aria-label",
-                        "Show MongoDB URI"
+                if (previewGate2) {
+
+                    previewGate2.textContent =
+                        configuration.camera2.name ||
+                        "Gate 2 — Camera 2";
+
+                }
+
+
+                if (previewDirection) {
+
+                    previewDirection.textContent =
+                        configuration.gate.direction ||
+                        "ENTRY";
+
+                }
+
+
+                if (previewDatabase) {
+
+                    previewDatabase.textContent =
+                        configuration.mongodb.database ||
+                        "IN_OUTX";
+
+                }
+
+
+                if (previewCollection) {
+
+                    previewCollection.textContent =
+                        configuration.mongodb.collection ||
+                        "bus_movements";
+
+                }
+
+
+                if (previewMongo) {
+
+                    previewMongo.textContent =
+                        configuration.mongodb.uri
+                            ? "Configured"
+                            : "Not configured";
+
+                }
+
+            }
+
+
+            /* =====================================================
+               MONGODB URI VISIBILITY
+            ====================================================== */
+
+            function setupMongoVisibility() {
+
+                const button =
+                    getElement(
+                        "toggle-mongodb-uri"
+                    );
+
+                const input =
+                    getElement(
+                        "mongodb-uri"
                     );
 
 
-                    if (icon) {
-
-                        icon.className =
-                            "bi bi-eye";
-
-                    }
-
+                if (!button || !input) {
+                    return;
                 }
 
-            }
-        );
 
-    }
-
-
-    /* =====================================================
-       GATE CAMERA MAPPING
-    ====================================================== */
-
-    function updateGateCamera() {
-
-        const gate =
-            getElement("gate1");
-
-        const camera =
-            getElement("gate-camera");
-
-
-        if (!gate || !camera) {
-            return;
-        }
-
-
-        if (
-            gate.value ===
-            "Gate 2"
-        ) {
-
-            camera.value =
-                "Camera 2";
-
-        }
-        else {
-
-            camera.value =
-                "Camera 1";
-
-        }
-
-
-        updatePreview();
-
-    }
-
-
-    /* =====================================================
-       SIDEBAR
-       MOBILE + TABLET
-    ====================================================== */
-
-    function setupSidebar() {
-
-        const toggle =
-            getElement(
-                "sidebarToggle"
-            );
-
-
-        const sidebar =
-            getElement(
-                "adminSidebar"
-            );
-
-
-        const backdrop =
-            document.querySelector(
-                ".sidebar-backdrop"
-            );
-
-
-        if (!toggle || !sidebar) {
-
-            console.error(
-                "INOUTX sidebar elements not found."
-            );
-
-            return;
-
-        }
-
-
-        /* ================================================
-           OPEN SIDEBAR
-        ================================================= */
-
-        function openSidebar() {
-
-            sidebar.classList.add(
-                "show"
-            );
-
-
-            if (backdrop) {
-
-                backdrop.classList.add(
-                    "show"
-                );
-
-            }
-
-
-            toggle.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
-
-            toggle.setAttribute(
-                "aria-label",
-                "Close navigation"
-            );
-
-        }
-
-
-        /* ================================================
-           CLOSE SIDEBAR
-        ================================================= */
-
-        function closeSidebar() {
-
-            sidebar.classList.remove(
-                "show"
-            );
-
-
-            if (backdrop) {
-
-                backdrop.classList.remove(
-                    "show"
-                );
-
-            }
-
-
-            toggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-
-            toggle.setAttribute(
-                "aria-label",
-                "Open navigation"
-            );
-
-        }
-
-
-        /* ================================================
-           TOGGLE
-        ================================================= */
-
-        toggle.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                if (
-                    sidebar.classList.contains(
-                        "show"
-                    )
-                ) {
-
-                    closeSidebar();
-
-                }
-                else {
-
-                    openSidebar();
-
-                }
-
-            }
-        );
-
-
-        /* ================================================
-           BACKDROP
-        ================================================= */
-
-        if (backdrop) {
-
-            backdrop.addEventListener(
-                "click",
-                function () {
-
-                    closeSidebar();
-
-                }
-            );
-
-        }
-
-
-        /* ================================================
-           NAVIGATION LINKS
-        ================================================= */
-
-        const navLinks =
-            sidebar.querySelectorAll(
-                ".nav-link"
-            );
-
-
-        navLinks.forEach(
-            function (link) {
-
-                link.addEventListener(
+                button.addEventListener(
                     "click",
                     function () {
 
+                        const icon =
+                            button.querySelector("i");
+
+
                         if (
-                            window.innerWidth <=
+                            input.type ===
+                            "password"
+                        ) {
+
+                            input.type =
+                                "text";
+
+
+                            button.setAttribute(
+                                "aria-label",
+                                "Hide MongoDB URI"
+                            );
+
+
+                            if (icon) {
+
+                                icon.className =
+                                    "bi bi-eye-slash";
+
+                            }
+
+                        }
+                        else {
+
+                            input.type =
+                                "password";
+
+
+                            button.setAttribute(
+                                "aria-label",
+                                "Show MongoDB URI"
+                            );
+
+
+                            if (icon) {
+
+                                icon.className =
+                                    "bi bi-eye";
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            /* =====================================================
+               GATE CAMERA MAPPING
+            ====================================================== */
+
+            function updateGateCamera() {
+
+                const gate =
+                    getElement("gate1");
+
+                const camera =
+                    getElement("gate-camera");
+
+
+                if (!gate || !camera) {
+                    return;
+                }
+
+
+                if (
+                    gate.value ===
+                    "Gate 2"
+                ) {
+
+                    camera.value =
+                        "Camera 2";
+
+                }
+                else {
+
+                    camera.value =
+                        "Camera 1";
+
+                }
+
+
+                updatePreview();
+
+            }
+
+
+            /* =====================================================
+               SIDEBAR
+               MOBILE + TABLET
+            ====================================================== */
+
+            function setupSidebar() {
+
+                const toggle =
+                    getElement(
+                        "sidebarToggle"
+                    );
+
+
+                const sidebar =
+                    getElement(
+                        "adminSidebar"
+                    );
+
+
+                const backdrop =
+                    document.querySelector(
+                        ".sidebar-backdrop"
+                    );
+
+
+                if (!toggle || !sidebar) {
+
+                    console.error(
+                        "INOUTX sidebar elements not found."
+                    );
+
+                    return;
+
+                }
+
+
+                /* ================================================
+                   OPEN SIDEBAR
+                ================================================= */
+
+                function openSidebar() {
+
+                    sidebar.classList.add(
+                        "show"
+                    );
+
+
+                    if (backdrop) {
+
+                        backdrop.classList.add(
+                            "show"
+                        );
+
+                    }
+
+
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        "true"
+                    );
+
+
+                    toggle.setAttribute(
+                        "aria-label",
+                        "Close navigation"
+                    );
+
+                }
+
+
+                /* ================================================
+                   CLOSE SIDEBAR
+                ================================================= */
+
+                function closeSidebar() {
+
+                    sidebar.classList.remove(
+                        "show"
+                    );
+
+
+                    if (backdrop) {
+
+                        backdrop.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    toggle.setAttribute(
+                        "aria-label",
+                        "Open navigation"
+                    );
+
+                }
+
+
+                /* ================================================
+                   TOGGLE
+                ================================================= */
+
+                toggle.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        if (
+                            sidebar.classList.contains(
+                                "show"
+                            )
+                        ) {
+
+                            closeSidebar();
+
+                        }
+                        else {
+
+                            openSidebar();
+
+                        }
+
+                    }
+                );
+
+
+                /* ================================================
+                   BACKDROP
+                ================================================= */
+
+                if (backdrop) {
+
+                    backdrop.addEventListener(
+                        "click",
+                        function () {
+
+                            closeSidebar();
+
+                        }
+                    );
+
+                }
+
+
+                /* ================================================
+                   NAVIGATION LINKS
+                ================================================= */
+
+                const navLinks =
+                    sidebar.querySelectorAll(
+                        ".nav-link"
+                    );
+
+
+                navLinks.forEach(
+                    function (link) {
+
+                        link.addEventListener(
+                            "click",
+                            function () {
+
+                                if (
+                                    window.innerWidth <=
+                                    992
+                                ) {
+
+                                    closeSidebar();
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /* ================================================
+                   ESC KEY
+                ================================================= */
+
+                document.addEventListener(
+                    "keydown",
+                    function (event) {
+
+                        if (
+                            event.key ===
+                            "Escape"
+                        ) {
+
+                            closeSidebar();
+
+                        }
+
+                    }
+                );
+
+
+                /* ================================================
+                   RESIZE
+                ================================================= */
+
+                window.addEventListener(
+                    "resize",
+                    function () {
+
+                        if (
+                            window.innerWidth >
                             992
                         ) {
 
@@ -3519,296 +3442,251 @@
                 );
 
             }
-        );
 
 
-        /* ================================================
-           ESC KEY
-        ================================================= */
+            /* =====================================================
+               LIVE CLOCK
+            ====================================================== */
 
-        document.addEventListener(
-            "keydown",
-            function (event) {
+            function updateClock() {
 
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
+                const element =
+                    getElement(
+                        "live-time"
+                    );
 
-                    closeSidebar();
 
+                if (!element) {
+                    return;
                 }
+
+
+                const now =
+                    new Date();
+
+
+                element.textContent =
+                    now.toLocaleTimeString(
+                        "en-IN",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: true
+                        }
+                    );
 
             }
-        );
 
 
-        /* ================================================
-           RESIZE
-        ================================================= */
+            /* =====================================================
+               NOTIFICATIONS
+            ====================================================== */
 
-        window.addEventListener(
-            "resize",
-            function () {
+            async function loadNotifications() {
 
-                if (
-                    window.innerWidth >
-                    992
-                ) {
+                const list =
+                    getElement(
+                        "notification-list"
+                    );
 
-                    closeSidebar();
 
+                if (!list) {
+                    return;
                 }
 
-            }
-        );
 
-    }
+                try {
 
-
-    /* =====================================================
-       LIVE CLOCK
-    ====================================================== */
-
-    function updateClock() {
-
-        const element =
-            getElement(
-                "live-time"
-            );
+                    const response =
+                        await fetch(
+                            "/api/notifications",
+                            {
+                                method: "GET",
+                                credentials: "include",
+                                cache: "no-store"
+                            }
+                        );
 
 
-        if (!element) {
-            return;
-        }
-
-
-        const now =
-            new Date();
-
-
-        element.textContent =
-            now.toLocaleTimeString(
-                "en-IN",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: true
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       NOTIFICATIONS
-    ====================================================== */
-
-    async function loadNotifications() {
-
-        const list =
-            getElement(
-                "notification-list"
-            );
-
-
-        if (!list) {
-            return;
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/notifications",
-                    {
-                        method: "GET",
-                        credentials: "include",
-                        cache: "no-store"
+                    if (!response.ok) {
+                        return;
                     }
+
+
+                    const result =
+                        await response.json();
+
+
+                    const notifications =
+                        Array.isArray(
+                            result.notifications
+                        )
+                            ? result.notifications
+                            : [];
+
+
+                    if (
+                        notifications.length ===
+                        0
+                    ) {
+
+                        list.innerHTML =
+                            '<div class="text-muted small">' +
+                            'No new notifications.' +
+                            '</div>';
+
+                        return;
+
+                    }
+
+
+                    list.innerHTML =
+                        notifications
+                            .map(
+                                function (item) {
+
+                                    const message =
+                                        item.message ||
+                                        item.text ||
+                                        "Notification";
+
+
+                                    return (
+                                        '<div class="small mb-2">' +
+                                        escapeHtml(
+                                            message
+                                        ) +
+                                        '</div>'
+                                    );
+
+                                }
+                            )
+                            .join("");
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Notification load error:",
+                        error
+                    );
+
+                }
+
+            }
+
+
+            /* =====================================================
+               HTML ESCAPE
+            ====================================================== */
+
+            function escapeHtml(value) {
+
+                return String(value)
+
+                    .replace(
+                        /&/g,
+                        "&amp;"
+                    )
+
+                    .replace(
+                        /</g,
+                        "&lt;"
+                    )
+
+                    .replace(
+                        />/g,
+                        "&gt;"
+                    )
+
+                    .replace(
+                        /"/g,
+                        "&quot;"
+                    )
+
+                    .replace(
+                        /'/g,
+                        "&#039;"
+                    );
+
+            }
+
+
+            /* =====================================================
+               USER APPROVALS
+            ====================================================== */
+
+            function showApprovalMessage(message, type = "success") {
+
+                const element =
+                    getElement("approval-message");
+
+                if (!element) {
+                    return;
+                }
+
+                element.textContent = message;
+
+                element.className =
+                    "config-message show " + type;
+
+                window.clearTimeout(
+                    showApprovalMessage.timeout
                 );
 
-
-            if (!response.ok) {
-                return;
+                showApprovalMessage.timeout =
+                    window.setTimeout(
+                        function () {
+                            element.classList.remove("show");
+                        },
+                        4000
+                    );
             }
 
 
-            const result =
-                await response.json();
+            function formatApprovalRole(role) {
 
+                const value =
+                    String(role || "").trim();
 
-            const notifications =
-                Array.isArray(
-                    result.notifications
-                )
-                    ? result.notifications
-                    : [];
+                if (!value) {
+                    return "User";
+                }
 
-
-            if (
-                notifications.length ===
-                0
-            ) {
-
-                list.innerHTML =
-                    '<div class="text-muted small">' +
-                    'No new notifications.' +
-                    '</div>';
-
-                return;
-
+                return value
+                    .replace(/_/g, " ")
+                    .replace(/\b\w/g, function (letter) {
+                        return letter.toUpperCase();
+                    });
             }
 
 
-            list.innerHTML =
-                notifications
-                    .map(
-                        function (item) {
+            function renderPendingUsers(users) {
 
-                            const message =
-                                item.message ||
-                                item.text ||
-                                "Notification";
+                const body =
+                    getElement("pending-users-body");
 
+                const count =
+                    getElement("pending-users-count");
 
-                            return (
-                                '<div class="small mb-2">' +
-                                escapeHtml(
-                                    message
-                                ) +
-                                '</div>'
-                            );
+                if (!body) {
+                    return;
+                }
 
-                        }
-                    )
-                    .join("");
+                const pendingUsers =
+                    Array.isArray(users)
+                        ? users
+                        : [];
 
-        }
-        catch (error) {
+                if (count) {
+                    count.textContent =
+                        String(pendingUsers.length);
+                }
 
-            console.error(
-                "Notification load error:",
-                error
-            );
+                if (pendingUsers.length === 0) {
 
-        }
-
-    }
-
-
-    /* =====================================================
-       HTML ESCAPE
-    ====================================================== */
-
-    function escapeHtml(value) {
-
-        return String(value)
-
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-
-            .replace(
-                /</g,
-                "&lt;"
-            )
-
-            .replace(
-                />/g,
-                "&gt;"
-            )
-
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-    }
-
-
-    /* =====================================================
-       USER APPROVALS
-    ====================================================== */
-
-    function showApprovalMessage(message, type = "success") {
-
-        const element =
-            getElement("approval-message");
-
-        if (!element) {
-            return;
-        }
-
-        element.textContent = message;
-
-        element.className =
-            "config-message show " + type;
-
-        window.clearTimeout(
-            showApprovalMessage.timeout
-        );
-
-        showApprovalMessage.timeout =
-            window.setTimeout(
-                function () {
-                    element.classList.remove("show");
-                },
-                4000
-            );
-    }
-
-
-    function formatApprovalRole(role) {
-
-        const value =
-            String(role || "").trim();
-
-        if (!value) {
-            return "User";
-        }
-
-        return value
-            .replace(/_/g, " ")
-            .replace(/\b\w/g, function (letter) {
-                return letter.toUpperCase();
-            });
-    }
-
-
-    function renderPendingUsers(users) {
-
-        const body =
-            getElement("pending-users-body");
-
-        const count =
-            getElement("pending-users-count");
-
-        if (!body) {
-            return;
-        }
-
-        const pendingUsers =
-            Array.isArray(users)
-                ? users
-                : [];
-
-        if (count) {
-            count.textContent =
-                String(pendingUsers.length);
-        }
-
-        if (pendingUsers.length === 0) {
-
-            body.innerHTML = `
+                    body.innerHTML = `
                 <tr>
                     <td colspan="5">
                         <div class="approval-empty">
@@ -3819,30 +3697,30 @@
                 </tr>
             `;
 
-            return;
-        }
+                    return;
+                }
 
-        body.innerHTML =
-            pendingUsers.map(function (user) {
+                body.innerHTML =
+                    pendingUsers.map(function (user) {
 
-                const id =
-                    escapeHtml(user.id || "");
+                        const id =
+                            escapeHtml(user.id || "");
 
-                const name =
-                    escapeHtml(user.name || "Unnamed user");
+                        const name =
+                            escapeHtml(user.name || "Unnamed user");
 
-                const email =
-                    escapeHtml(user.email || "");
+                        const email =
+                            escapeHtml(user.email || "");
 
-                const role =
-                    escapeHtml(
-                        formatApprovalRole(user.role)
-                    );
+                        const role =
+                            escapeHtml(
+                                formatApprovalRole(user.role)
+                            );
 
-                const statusHtml =
-                    `<span class="approval-status approval-status-verified"><i class="bi bi-hourglass-split"></i> Awaiting administrator approval</span>`;
+                        const statusHtml =
+                            `<span class="approval-status approval-status-verified"><i class="bi bi-hourglass-split"></i> Awaiting administrator approval</span>`;
 
-                return `
+                        return `
                     <tr>
                         <td>
                             <span class="approval-user-name">
@@ -3893,17 +3771,17 @@
                     </tr>
                 `;
 
-            }).join("");
-    }
+                    }).join("");
+            }
 
 
-    async function loadPendingUsers(showLoading = false) {
+            async function loadPendingUsers(showLoading = false) {
 
-        const body =
-            getElement("pending-users-body");
+                const body =
+                    getElement("pending-users-body");
 
-        if (showLoading && body) {
-            body.innerHTML = `
+                if (showLoading && body) {
+                    body.innerHTML = `
                 <tr>
                     <td colspan="5">
                         <div class="approval-empty">
@@ -3913,59 +3791,59 @@
                     </td>
                 </tr>
             `;
-        }
+                }
 
-        try {
+                try {
 
-            const response =
-                await fetch(
-                    "/api/user-approvals",
-                    {
-                        method: "GET",
-                        credentials: "include",
-                        cache: "no-store"
+                    const response =
+                        await fetch(
+                            "/api/user-approvals",
+                            {
+                                method: "GET",
+                                credentials: "include",
+                                cache: "no-store"
+                            }
+                        );
+
+                    const result =
+                        await response.json();
+
+                    if (
+                        !response.ok ||
+                        result.success !== true
+                    ) {
+
+                        if (response.status === 401 ||
+                            response.status === 403) {
+
+                            showApprovalMessage(
+                                result.error ||
+                                "You are not authorized to manage user approvals.",
+                                "error"
+                            );
+
+                        }
+
+                        throw new Error(
+                            result.error ||
+                            "Unable to load pending registrations."
+                        );
                     }
-                );
 
-            const result =
-                await response.json();
-
-            if (
-                !response.ok ||
-                result.success !== true
-            ) {
-
-                if (response.status === 401 ||
-                    response.status === 403) {
-
-                    showApprovalMessage(
-                        result.error ||
-                        "You are not authorized to manage user approvals.",
-                        "error"
+                    renderPendingUsers(
+                        result.users || []
                     );
 
                 }
+                catch (error) {
 
-                throw new Error(
-                    result.error ||
-                    "Unable to load pending registrations."
-                );
-            }
+                    console.error(
+                        "Pending user load error:",
+                        error
+                    );
 
-            renderPendingUsers(
-                result.users || []
-            );
-
-        }
-        catch (error) {
-
-            console.error(
-                "Pending user load error:",
-                error
-            );
-
-            if (body) {
-                body.innerHTML = `
+                    if (body) {
+                        body.innerHTML = `
                     <tr>
                         <td colspan="5">
                             <div class="approval-empty">
@@ -3975,149 +3853,149 @@
                         </td>
                     </tr>
                 `;
-            }
-
-        }
-    }
-
-
-    async function handleUserApproval(userId, action) {
-
-        if (!userId || !["approve", "reject"].includes(action)) {
-            return;
-        }
-
-        const actionText =
-            action === "approve"
-                ? "approve"
-                : "reject";
-
-        const confirmation =
-            window.confirm(
-                "Are you sure you want to " +
-                actionText +
-                " this user registration?"
-            );
-
-        if (!confirmation) {
-            return;
-        }
-
-        const buttons =
-            document.querySelectorAll(
-                `[data-user-id="${CSS.escape(userId)}"]`
-            );
-
-        buttons.forEach(function (button) {
-            button.disabled = true;
-        });
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/user-approvals/" +
-                    encodeURIComponent(userId) +
-                    "/" +
-                    action,
-                    {
-                        method: "POST",
-                        credentials: "include",
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-                        body: JSON.stringify({})
                     }
-                );
 
-            const result =
-                await response.json();
-
-            if (
-                !response.ok ||
-                result.success !== true
-            ) {
-
-                throw new Error(
-                    result.error ||
-                    "Unable to update the registration."
-                );
+                }
             }
 
-            showApprovalMessage(
-                result.message ||
-                (
+
+            async function handleUserApproval(userId, action) {
+
+                if (!userId || !["approve", "reject"].includes(action)) {
+                    return;
+                }
+
+                const actionText =
                     action === "approve"
-                        ? "User approved successfully."
-                        : "User registration rejected."
-                ),
-                "success"
-            );
+                        ? "approve"
+                        : "reject";
 
-            await loadPendingUsers(false);
+                const confirmation =
+                    window.confirm(
+                        "Are you sure you want to " +
+                        actionText +
+                        " this user registration?"
+                    );
 
-        }
-        catch (error) {
+                if (!confirmation) {
+                    return;
+                }
 
-            console.error(
-                "User approval action error:",
-                error
-            );
+                const buttons =
+                    document.querySelectorAll(
+                        `[data-user-id="${CSS.escape(userId)}"]`
+                    );
 
-            showApprovalMessage(
-                error.message ||
-                "Unable to update the registration.",
-                "error"
-            );
+                buttons.forEach(function (button) {
+                    button.disabled = true;
+                });
 
-            await loadPendingUsers(false);
-        }
-    }
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/user-approvals/" +
+                            encodeURIComponent(userId) +
+                            "/" +
+                            action,
+                            {
+                                method: "POST",
+                                credentials: "include",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+                                body: JSON.stringify({})
+                            }
+                        );
+
+                    const result =
+                        await response.json();
+
+                    if (
+                        !response.ok ||
+                        result.success !== true
+                    ) {
+
+                        throw new Error(
+                            result.error ||
+                            "Unable to update the registration."
+                        );
+                    }
+
+                    showApprovalMessage(
+                        result.message ||
+                        (
+                            action === "approve"
+                                ? "User approved successfully."
+                                : "User registration rejected."
+                        ),
+                        "success"
+                    );
+
+                    await loadPendingUsers(false);
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "User approval action error:",
+                        error
+                    );
+
+                    showApprovalMessage(
+                        error.message ||
+                        "Unable to update the registration.",
+                        "error"
+                    );
+
+                    await loadPendingUsers(false);
+                }
+            }
 
 
 
-    function formatActivityTime(value) {
-        if (!value) return "—";
-        const date = new Date(value);
-        if (Number.isNaN(date.getTime())) return "—";
-        return date.toLocaleString([], {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-    }
+            function formatActivityTime(value) {
+                if (!value) return "—";
+                const date = new Date(value);
+                if (Number.isNaN(date.getTime())) return "—";
+                return date.toLocaleString([], {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                });
+            }
 
-    function formatMonitorRole(role) {
-        return String(role || "")
-            .replace(/_/g, " ")
-            .replace(/\b\w/g, char => char.toUpperCase()) || "User";
-    }
+            function formatMonitorRole(role) {
+                return String(role || "")
+                    .replace(/_/g, " ")
+                    .replace(/\b\w/g, char => char.toUpperCase()) || "User";
+            }
 
-    function renderApprovedUsers(users) {
-        const body = getElement("approved-users-body");
-        const approvedCount = getElement("approved-users-count");
-        const onlineCount = getElement("online-users-count");
+            function renderApprovedUsers(users) {
+                const body = getElement("approved-users-body");
+                const approvedCount = getElement("approved-users-count");
+                const onlineCount = getElement("online-users-count");
 
-        const rows = Array.isArray(users) ? users : [];
-        const online = rows.filter(user => user.online === true).length;
+                const rows = Array.isArray(users) ? users : [];
+                const online = rows.filter(user => user.online === true).length;
 
-        if (approvedCount) {
-            approvedCount.innerHTML =
-                `<i class="bi bi-people"></i> ${rows.length} approved`;
-        }
+                if (approvedCount) {
+                    approvedCount.innerHTML =
+                        `<i class="bi bi-people"></i> ${rows.length} approved`;
+                }
 
-        if (onlineCount) {
-            onlineCount.innerHTML =
-                `<i class="bi bi-circle-fill"></i> ${online} online`;
-        }
+                if (onlineCount) {
+                    onlineCount.innerHTML =
+                        `<i class="bi bi-circle-fill"></i> ${online} online`;
+                }
 
-        if (!body) return;
+                if (!body) return;
 
-        if (!rows.length) {
-            body.innerHTML = `
+                if (!rows.length) {
+                    body.innerHTML = `
                 <tr>
                     <td colspan="5">
                         <div class="monitor-empty">
@@ -4127,17 +4005,17 @@
                     </td>
                 </tr>
             `;
-            return;
-        }
+                    return;
+                }
 
-        body.innerHTML = rows.map(user => {
-            const name = escapeHtml(user.name || "—");
-            const email = escapeHtml(user.email || "—");
-            const role = escapeHtml(formatMonitorRole(user.role));
-            const lastLogin = escapeHtml(formatActivityTime(user.last_login_at));
-            const online = user.online === true;
+                body.innerHTML = rows.map(user => {
+                    const name = escapeHtml(user.name || "—");
+                    const email = escapeHtml(user.email || "—");
+                    const role = escapeHtml(formatMonitorRole(user.role));
+                    const lastLogin = escapeHtml(formatActivityTime(user.last_login_at));
+                    const online = user.online === true;
 
-            return `
+                    return `
                 <tr>
                     <td><strong>${name}</strong></td>
                     <td>${email}</td>
@@ -4151,30 +4029,30 @@
                     <td>${lastLogin}</td>
                 </tr>
             `;
-        }).join("");
-    }
-
-    async function loadApprovedUsers() {
-        try {
-            const response = await fetch("/api/approved-users", {
-                method: "GET",
-                credentials: "include",
-                cache: "no-store"
-            });
-
-            const result = await response.json();
-
-            if (!response.ok || result.success !== true) {
-                throw new Error(result.error || "Unable to load approved users.");
+                }).join("");
             }
 
-            renderApprovedUsers(result.users || []);
-        } catch (error) {
-            console.error("Approved users load error:", error);
+            async function loadApprovedUsers() {
+                try {
+                    const response = await fetch("/api/approved-users", {
+                        method: "GET",
+                        credentials: "include",
+                        cache: "no-store"
+                    });
 
-            const body = getElement("approved-users-body");
-            if (body) {
-                body.innerHTML = `
+                    const result = await response.json();
+
+                    if (!response.ok || result.success !== true) {
+                        throw new Error(result.error || "Unable to load approved users.");
+                    }
+
+                    renderApprovedUsers(result.users || []);
+                } catch (error) {
+                    console.error("Approved users load error:", error);
+
+                    const body = getElement("approved-users-body");
+                    if (body) {
+                        body.innerHTML = `
                     <tr>
                         <td colspan="5">
                             <div class="monitor-empty">
@@ -4183,18 +4061,18 @@
                         </td>
                     </tr>
                 `;
+                    }
+                }
             }
-        }
-    }
 
-    function renderLoginActivity(logs) {
-        const body = getElement("login-activity-body");
-        const rows = Array.isArray(logs) ? logs : [];
+            function renderLoginActivity(logs) {
+                const body = getElement("login-activity-body");
+                const rows = Array.isArray(logs) ? logs : [];
 
-        if (!body) return;
+                if (!body) return;
 
-        if (!rows.length) {
-            body.innerHTML = `
+                if (!rows.length) {
+                    body.innerHTML = `
                 <tr>
                     <td colspan="6">
                         <div class="monitor-empty">
@@ -4203,20 +4081,20 @@
                     </td>
                 </tr>
             `;
-            return;
-        }
+                    return;
+                }
 
-        body.innerHTML = rows.map(log => {
-            const name = escapeHtml(log.name || "—");
-            const email = escapeHtml(log.email || "—");
-            const role = escapeHtml(formatMonitorRole(log.role));
-            const activity = String(log.status || "").toUpperCase() === "LOGIN";
-            const time = escapeHtml(
-                formatActivityTime(log.login_at || log.logout_at)
-            );
-            const ip = escapeHtml(log.ip_address || "—");
+                body.innerHTML = rows.map(log => {
+                    const name = escapeHtml(log.name || "—");
+                    const email = escapeHtml(log.email || "—");
+                    const role = escapeHtml(formatMonitorRole(log.role));
+                    const activity = String(log.status || "").toUpperCase() === "LOGIN";
+                    const time = escapeHtml(
+                        formatActivityTime(log.login_at || log.logout_at)
+                    );
+                    const ip = escapeHtml(log.ip_address || "—");
 
-            return `
+                    return `
                 <tr>
                     <td><strong>${name}</strong></td>
                     <td>${email}</td>
@@ -4229,30 +4107,30 @@
                     <td>${ip}</td>
                 </tr>
             `;
-        }).join("");
-    }
-
-    async function loadLoginActivity() {
-        try {
-            const response = await fetch("/api/login-activity", {
-                method: "GET",
-                credentials: "include",
-                cache: "no-store"
-            });
-
-            const result = await response.json();
-
-            if (!response.ok || result.success !== true) {
-                throw new Error(result.error || "Unable to load login activity.");
+                }).join("");
             }
 
-            renderLoginActivity(result.logs || []);
-        } catch (error) {
-            console.error("Login activity load error:", error);
+            async function loadLoginActivity() {
+                try {
+                    const response = await fetch("/api/login-activity", {
+                        method: "GET",
+                        credentials: "include",
+                        cache: "no-store"
+                    });
 
-            const body = getElement("login-activity-body");
-            if (body) {
-                body.innerHTML = `
+                    const result = await response.json();
+
+                    if (!response.ok || result.success !== true) {
+                        throw new Error(result.error || "Unable to load login activity.");
+                    }
+
+                    renderLoginActivity(result.logs || []);
+                } catch (error) {
+                    console.error("Login activity load error:", error);
+
+                    const body = getElement("login-activity-body");
+                    if (body) {
+                        body.innerHTML = `
                     <tr>
                         <td colspan="6">
                             <div class="monitor-empty">
@@ -4261,311 +4139,311 @@
                         </td>
                     </tr>
                 `;
+                    }
+                }
             }
-        }
-    }
 
-    function setupUserApprovals() {
+            function setupUserApprovals() {
 
-        const body =
-            getElement("pending-users-body");
+                const body =
+                    getElement("pending-users-body");
 
-        if (!body) {
-            return;
-        }
-
-        body.addEventListener(
-            "click",
-            function (event) {
-
-                const button =
-                    event.target.closest(
-                        "[data-approval-action]"
-                    );
-
-                if (!button) {
+                if (!body) {
                     return;
                 }
 
-                const userId =
-                    button.getAttribute(
-                        "data-user-id"
-                    );
+                body.addEventListener(
+                    "click",
+                    function (event) {
 
-                const action =
-                    button.getAttribute(
-                        "data-approval-action"
-                    );
+                        const button =
+                            event.target.closest(
+                                "[data-approval-action]"
+                            );
 
-                handleUserApproval(
-                    userId,
-                    action
-                );
-            }
-        );
-    }
+                        if (!button) {
+                            return;
+                        }
 
+                        const userId =
+                            button.getAttribute(
+                                "data-user-id"
+                            );
 
-    /* =====================================================
-       ACCESS CONTROL
-    ====================================================== */
+                        const action =
+                            button.getAttribute(
+                                "data-approval-action"
+                            );
 
-    async function checkConfigurationAccess() {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/config-access",
-                    {
-                        method: "GET",
-                        credentials: "include",
-                        cache: "no-store"
+                        handleUserApproval(
+                            userId,
+                            action
+                        );
                     }
                 );
+            }
 
 
-            const result =
-                await response.json();
+            /* =====================================================
+               ACCESS CONTROL
+            ====================================================== */
+
+            async function checkConfigurationAccess() {
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/config-access",
+                            {
+                                method: "GET",
+                                credentials: "include",
+                                cache: "no-store"
+                            }
+                        );
 
 
-            if (
-                !response.ok ||
-                result.success !== true ||
-                result.authorized !== true
-            ) {
-
-                alert(
-                    result.error ||
-                    "You are not authorized to access System Configuration."
-                );
+                    const result =
+                        await response.json();
 
 
-                window.location.href =
-                    "index.html";
+                    if (
+                        !response.ok ||
+                        result.success !== true ||
+                        result.authorized !== true
+                    ) {
+
+                        alert(
+                            result.error ||
+                            "You are not authorized to access System Configuration."
+                        );
 
 
-                return false;
+                        window.location.href =
+                            "index.html";
+
+
+                        return false;
+
+                    }
+
+
+                    console.log(
+                        "System Configuration access granted:",
+                        result.email
+                    );
+
+
+                    return true;
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Configuration access check failed:",
+                        error
+                    );
+
+
+                    alert(
+                        "Unable to verify configuration access."
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+
+
+                    return false;
+
+                }
 
             }
 
 
-            console.log(
-                "System Configuration access granted:",
-                result.email
-            );
+            /* =====================================================
+               EVENT LISTENERS
+            ====================================================== */
+
+            function setupEvents() {
+
+                const saveButton =
+                    getElement(
+                        "save-config-btn"
+                    );
 
 
-            return true;
-
-        }
-        catch (error) {
-
-            console.error(
-                "Configuration access check failed:",
-                error
-            );
+                const loadButton =
+                    getElement(
+                        "load-config-btn"
+                    );
 
 
-            alert(
-                "Unable to verify configuration access."
-            );
+                const resetButton =
+                    getElement(
+                        "reset-config-btn"
+                    );
 
 
-            window.location.href =
-                "index.html";
+                const gate =
+                    getElement(
+                        "gate1"
+                    );
 
 
-            return false;
+                if (saveButton) {
 
-        }
-
-    }
-
-
-    /* =====================================================
-       EVENT LISTENERS
-    ====================================================== */
-
-    function setupEvents() {
-
-        const saveButton =
-            getElement(
-                "save-config-btn"
-            );
-
-
-        const loadButton =
-            getElement(
-                "load-config-btn"
-            );
-
-
-        const resetButton =
-            getElement(
-                "reset-config-btn"
-            );
-
-
-        const gate =
-            getElement(
-                "gate1"
-            );
-
-
-        if (saveButton) {
-
-            saveButton.addEventListener(
-                "click",
-                saveConfiguration
-            );
-
-        }
-
-
-        if (loadButton) {
-
-            loadButton.addEventListener(
-                "click",
-                function () {
-
-                    loadConfiguration(
-                        true
+                    saveButton.addEventListener(
+                        "click",
+                        saveConfiguration
                     );
 
                 }
-            );
-
-        }
 
 
-        if (resetButton) {
+                if (loadButton) {
 
-            resetButton.addEventListener(
-                "click",
-                resetConfiguration
-            );
+                    loadButton.addEventListener(
+                        "click",
+                        function () {
 
-        }
+                            loadConfiguration(
+                                true
+                            );
 
+                        }
+                    );
 
-        if (gate) {
-
-            gate.addEventListener(
-                "change",
-                updateGateCamera
-            );
-
-        }
+                }
 
 
-        setupUserApprovals();
+                if (resetButton) {
+
+                    resetButton.addEventListener(
+                        "click",
+                        resetConfiguration
+                    );
+
+                }
 
 
-        const formInputs =
-            document.querySelectorAll(
-                ".config-input, .config-select"
-            );
+                if (gate) {
+
+                    gate.addEventListener(
+                        "change",
+                        updateGateCamera
+                    );
+
+                }
 
 
-        formInputs.forEach(
-            function (input) {
-
-                input.addEventListener(
-                    "input",
-                    updatePreview
-                );
+                setupUserApprovals();
 
 
-                input.addEventListener(
-                    "change",
-                    updatePreview
+                const formInputs =
+                    document.querySelectorAll(
+                        ".config-input, .config-select"
+                    );
+
+
+                formInputs.forEach(
+                    function (input) {
+
+                        input.addEventListener(
+                            "input",
+                            updatePreview
+                        );
+
+
+                        input.addEventListener(
+                            "change",
+                            updatePreview
+                        );
+
+                    }
                 );
 
             }
-        );
-
-    }
 
 
-    /* =====================================================
-       INITIALIZE
-    ====================================================== */
+            /* =====================================================
+               INITIALIZE
+            ====================================================== */
 
-    async function initialize() {
+            async function initialize() {
 
-        const authorized =
-            await checkConfigurationAccess();
-
-
-        if (!authorized) {
-            return;
-        }
+                const authorized =
+                    await checkConfigurationAccess();
 
 
-        setupSidebar();
-
-        setupMongoVisibility();
-
-        setupEvents();
-
-        updateGateCamera();
-
-        loadConfiguration(
-            false
-        );
-
-        updateClock();
+                if (!authorized) {
+                    return;
+                }
 
 
-        window.setInterval(
-            updateClock,
-            1000
-        );
+                setupSidebar();
+
+                setupMongoVisibility();
+
+                setupEvents();
+
+                updateGateCamera();
+
+                loadConfiguration(
+                    false
+                );
+
+                updateClock();
 
 
-        loadNotifications();
+                window.setInterval(
+                    updateClock,
+                    1000
+                );
 
-        loadPendingUsers(true);
-        loadApprovedUsers();
-        loadLoginActivity();
 
-        window.setInterval(
-            function () {
-                loadPendingUsers(false);
+                loadNotifications();
+
+                loadPendingUsers(true);
                 loadApprovedUsers();
                 loadLoginActivity();
-            },
-            10000
-        );
 
-    }
+                window.setInterval(
+                    function () {
+                        loadPendingUsers(false);
+                        loadApprovedUsers();
+                        loadLoginActivity();
+                    },
+                    10000
+                );
+
+            }
 
 
-    /* =====================================================
-       START
-    ====================================================== */
+            /* =====================================================
+               START
+            ====================================================== */
 
-    if (
-        document.readyState ===
-        "loading"
-    ) {
+            if (
+                document.readyState ===
+                "loading"
+            ) {
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            initialize
-        );
+                document.addEventListener(
+                    "DOMContentLoaded",
+                    initialize
+                );
 
-    }
-    else {
+            }
+            else {
 
-        initialize();
+                initialize();
 
-    }
+            }
 
-})();
+        })();
 
-</script>
+    </script>
 
 
 </body>

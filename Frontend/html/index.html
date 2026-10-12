@@ -741,7 +741,7 @@
 
 
                     <span class="nav-text">
-                        System Configuration
+                        Admin Setting
                     </span>
 
 
@@ -2084,7 +2084,7 @@
             const wsUrl1 = getCameraWsUrl("/ws/camera1");
             console.log("Connecting to KRCT Camera 1:", wsUrl1);
             if (camera1Socket) {
-                try { camera1Socket.close(); } catch (_) {}
+                try { camera1Socket.close(); } catch (_) { }
                 camera1Socket = null;
             }
             try {
@@ -2143,7 +2143,7 @@
             const wsUrl2 = getCameraWsUrl("/ws/camera2");
             console.log("Connecting to KRCE Camera 2:", wsUrl2);
             if (camera2Socket) {
-                try { camera2Socket.close(); } catch (_) {}
+                try { camera2Socket.close(); } catch (_) { }
                 camera2Socket = null;
             }
             try {
