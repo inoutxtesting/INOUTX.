@@ -2401,6 +2401,92 @@
 
     }
 
+    /* IN/OUT X Team Credits Section */
+    .inoutx-team-section {
+      width: 100%;
+      max-width: 950px;
+      margin: 24px auto;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .inoutx-team-title {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #3b82f6;
+    }
+
+    .inoutx-team-subtitle {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: inherit;
+    }
+
+    .inoutx-team-department {
+      margin: 0 0 18px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .inoutx-team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .inoutx-team-card {
+      padding: 15px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      background: rgba(148, 163, 184, 0.06);
+      transition: border-color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .inoutx-team-card:hover {
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .inoutx-team-card h4 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      color: inherit;
+    }
+
+    .inoutx-team-card p {
+      margin: 0 0 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #3b82f6;
+    }
+
+    .inoutx-team-card span {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 650px) {
+      .inoutx-team-section {
+        padding: 16px 12px;
+        margin: 18px auto;
+      }
+
+      .inoutx-team-grid {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+    }
+
 
     /* =========================================================
    480px AND BELOW
@@ -3360,6 +3446,37 @@
   <!-- =====================================================
        FIXED FOOTER
        ===================================================== -->
+
+  <!-- IN/OUT X Team Credits Section -->
+  <section class="inoutx-team-section">
+    <h3 class="inoutx-team-title">Designed &amp; Developed By</h3>
+    <p class="inoutx-team-subtitle">
+      IN/OUT X — AI Based College Transport Management System
+    </p>
+    <p class="inoutx-team-department">
+      Department of Computer Science and Engineering
+    </p>
+
+    <div class="inoutx-team-grid">
+      <div class="inoutx-team-card">
+        <h4>ABDUL ASIM M</h4>
+        <p>CSE - A</p>
+        <span>Batch 2025–2029</span>
+      </div>
+
+      <div class="inoutx-team-card">
+        <h4>ABISHEK CHRISTOPHER R</h4>
+        <p>CSE - A</p>
+        <span>Batch 2025–2029</span>
+      </div>
+
+      <div class="inoutx-team-card">
+        <h4>AFRIDI MOHAMED J</h4>
+        <p>CSE - A</p>
+        <span>Batch 2025–2029</span>
+      </div>
+    </div>
+  </section>
 
   <footer class="auth-copyright">
     <span>2026 Designed by <strong>Department Of CSE - KRCT</strong>. All rights reserved.</span>

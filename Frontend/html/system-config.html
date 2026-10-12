@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
 
-        <style>
+    <style>
         /* =========================================================
            INOUTX ADMIN SETTINGS / SYSTEM CONFIGURATION STYLES
         ========================================================= */
@@ -361,9 +361,20 @@
         }
 
         @keyframes pulse-dot {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.85); }
-            100% { opacity: 1; transform: scale(1); }
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.85);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         /* =========================================================
@@ -1116,13 +1127,11 @@
 
                             <div class="config-page-title-wrap">
                                 <h1>Admin Setting</h1>
-                                <p>Review pending user registrations, view approved system operators, and track session activity logs.</p>
+                                <p>Review pending user registrations, view approved system operators, and track session
+                                    activity logs.</p>
                             </div>
 
-                            <div class="config-header-meta">
-                                <i class="bi bi-circle-fill"></i>
-                                INOUTX Enterprise System
-                            </div>
+
 
                         </div>
 
@@ -1299,7 +1308,8 @@
                                     <div class="config-panel-title-text">
                                         <h2>Login &amp; Session Activity</h2>
                                         <p>
-                                            Audit trail of authentication records, sessions, and origin IP addresses for security compliance.
+                                            Audit trail of authentication records, sessions, and origin IP addresses for
+                                            security compliance.
                                         </p>
                                     </div>
 
