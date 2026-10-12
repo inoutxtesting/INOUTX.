@@ -41,3 +41,6 @@ Thumbs.db
 *.log
 # ML cache files
 *.cacheFrontend/daily_reports/
+
+# Generated daily email reports
+/Frontend/daily_reports/
