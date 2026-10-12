@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
 
-    <style>
+        <style>
         /* =========================================================
            INOUTX ADMIN SETTINGS / SYSTEM CONFIGURATION STYLES
         ========================================================= */
@@ -361,20 +361,9 @@
         }
 
         @keyframes pulse-dot {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.4;
-                transform: scale(0.85);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         /* =========================================================
@@ -1127,11 +1116,13 @@
 
                             <div class="config-page-title-wrap">
                                 <h1>Admin Setting</h1>
-                                <p>Review pending user registrations, view approved system operators, and track session
-                                    activity logs.</p>
+                                <p>Review pending user registrations, view approved system operators, and track session activity logs.</p>
                             </div>
 
-
+                            <div class="config-header-meta">
+                                <i class="bi bi-circle-fill"></i>
+                                INOUTX Enterprise System
+                            </div>
 
                         </div>
 
@@ -1265,13 +1256,12 @@
                                                 <th>Role</th>
                                                 <th>Status</th>
                                                 <th>Last Login</th>
-                                                <th style="text-align: right;">Action</th>
                                             </tr>
                                         </thead>
 
                                         <tbody id="approved-users-body">
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="5">
                                                     <div class="monitor-empty">
                                                         <i class="bi bi-hourglass-split"></i>
                                                         Loading approved users...
@@ -1308,8 +1298,7 @@
                                     <div class="config-panel-title-text">
                                         <h2>Login &amp; Session Activity</h2>
                                         <p>
-                                            Audit trail of authentication records, sessions, and origin IP addresses for
-                                            security compliance.
+                                            Audit trail of authentication records, sessions, and origin IP addresses for security compliance.
                                         </p>
                                     </div>
 
@@ -2937,7 +2926,7 @@
                 if (!rows.length) {
                     body.innerHTML = `
                 <tr>
-                    <td colspan="6">
+                    <td colspan="5">
                         <div class="monitor-empty">
                             <i class="bi bi-people"></i>
                             No approved users found.
@@ -2949,7 +2938,6 @@
                 }
 
                 body.innerHTML = rows.map(user => {
-                    const id = escapeHtml(user.id || "");
                     const name = escapeHtml(user.name || "—");
                     const email = escapeHtml(user.email || "—");
                     const role = escapeHtml(formatMonitorRole(user.role));
@@ -2968,18 +2956,6 @@
                         </span>
                     </td>
                     <td>${lastLogin}</td>
-                    <td style="text-align: right;">
-                        <button
-                            type="button"
-                            class="approval-action approval-reject"
-                            data-remove-user-id="${id}"
-                            data-user-name="${name}"
-                            title="Remove approved user"
-                            style="padding: 5px 12px; font-size: 11px;">
-                            <i class="bi bi-trash3"></i>
-                            Remove
-                        </button>
-                    </td>
                 </tr>
             `;
                 }).join("");
@@ -3007,7 +2983,7 @@
                     if (body) {
                         body.innerHTML = `
                     <tr>
-                        <td colspan="6">
+                        <td colspan="5">
                             <div class="monitor-empty">
                                 Unable to load approved users.
                             </div>
@@ -3131,95 +3107,6 @@
                         handleUserApproval(
                             userId,
                             action
-                        );
-                    }
-                );
-            }
-
-
-            /* =====================================================
-               REMOVE APPROVED USER
-            ====================================================== */
-
-            async function handleRemoveApprovedUser(userId, userName) {
-                if (!userId) {
-                    return;
-                }
-
-                const confirmed = window.confirm(
-                    `Are you sure you want to remove the approved user "${userName || "this user"}"? This will revoke their access to the system.`
-                );
-
-                if (!confirmed) {
-                    return;
-                }
-
-                try {
-                    const response = await fetch(
-                        `/api/approved-users/${encodeURIComponent(userId)}/remove`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            credentials: "include",
-                            cache: "no-store"
-                        }
-                    );
-
-                    const result = await response.json();
-
-                    if (!response.ok || result.success !== true) {
-                        throw new Error(
-                            result.error || "Unable to remove approved user."
-                        );
-                    }
-
-                    showMessage(
-                        result.message || "User removed successfully.",
-                        "success"
-                    );
-
-                    loadApprovedUsers();
-                }
-                catch (error) {
-                    console.error("Remove approved user error:", error);
-                    showMessage(
-                        error.message || "Unable to remove approved user.",
-                        "error"
-                    );
-                }
-            }
-
-            function setupApprovedUsersRemoval() {
-                const body = getElement("approved-users-body");
-
-                if (!body) {
-                    return;
-                }
-
-                body.addEventListener(
-                    "click",
-                    function (event) {
-                        const button = event.target.closest(
-                            "[data-remove-user-id]"
-                        );
-
-                        if (!button) {
-                            return;
-                        }
-
-                        const userId = button.getAttribute(
-                            "data-remove-user-id"
-                        );
-
-                        const userName = button.getAttribute(
-                            "data-user-name"
-                        );
-
-                        handleRemoveApprovedUser(
-                            userId,
-                            userName
                         );
                     }
                 );
@@ -3380,7 +3267,6 @@
 
 
                 setupUserApprovals();
-                setupApprovedUsersRemoval();
 
 
                 const formInputs =

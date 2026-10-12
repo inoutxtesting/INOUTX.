@@ -1,0 +1,3942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="INOUTX Smart Campus Vehicle Management System Login">
+
+  <title>Login | INOUTX</title>
+
+
+  <!-- =====================================================
+       BOOTSTRAP
+       ===================================================== -->
+
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+
+
+  <!-- =====================================================
+       BOOTSTRAP ICONS
+       ===================================================== -->
+
+  <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+
+
+  <!-- =====================================================
+       MAIN CSS
+       ===================================================== -->
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+
+  <!-- =====================================================
+       FAVICON
+       ===================================================== -->
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.PNG">
+
+
+  <style>
+    /* =====================================================
+       ROOT
+       ===================================================== */
+
+    :root {
+
+      --inoutx-primary: #003377;
+      --inoutx-primary-dark: #002451;
+      --inoutx-secondary: #0055a4;
+
+      --inoutx-light: #f5f7fa;
+
+      --inoutx-border: #d9e1e8;
+
+      --inoutx-text: #17202a;
+      --inoutx-muted: #687582;
+
+      --inoutx-ring:
+        0 0 0 3px rgba(0, 85, 164, 0.12);
+
+    }
+
+
+    /* =====================================================
+       RESET
+       ===================================================== */
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+
+      width: 100%;
+
+      min-height: 100%;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+
+    body.auth-body {
+
+      width: 100%;
+
+      min-height: 100vh;
+
+      margin: 0;
+
+      padding: 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      font-family: Arial, sans-serif;
+
+      background:
+
+        radial-gradient(circle at 15% 20%,
+          rgba(0, 74, 159, 0.35),
+          transparent 35%),
+
+        radial-gradient(circle at 85% 80%,
+          rgba(0, 51, 119, 0.25),
+          transparent 35%),
+
+        linear-gradient(135deg,
+          var(--inoutx-primary-dark),
+          var(--inoutx-primary),
+          var(--inoutx-primary-dark));
+
+      color: var(--inoutx-text);
+
+      overflow-x: clip;
+
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .portal-header {
+
+      width: 100%;
+
+      min-height: 64px;
+
+      padding: 0 5%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      background: #ffffff;
+
+      border-bottom:
+        1px solid var(--inoutx-border);
+
+      box-shadow:
+        0 1px 0 rgba(219, 228, 239, 0.9);
+
+      position: relative;
+
+      z-index: 10;
+
+    }
+
+
+    .portal-brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      min-width: 0;
+
+      color: var(--inoutx-text);
+
+      text-decoration: none;
+
+    }
+
+
+    .portal-logo {
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+
+    .portal-logo-image {
+
+      width: 42px;
+
+      height: 42px;
+
+      object-fit: contain;
+
+      display: block;
+
+    }
+
+
+    .portal-brand-text {
+
+      min-width: 0;
+
+    }
+
+
+    .portal-brand-text strong {
+
+      display: block;
+
+      color: var(--inoutx-text);
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.4px;
+
+    }
+
+
+    .portal-brand-text span {
+
+      display: block;
+
+      margin-top: 1px;
+
+      color: var(--inoutx-muted);
+
+      font-size: 10px;
+
+      white-space: nowrap;
+
+    }
+
+
+    .portal-header-right {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      color: var(--inoutx-muted);
+
+      font-size: 12px;
+
+      flex-shrink: 0;
+
+    }
+
+
+    /* =====================================================
+       MAIN AUTH AREA
+       ===================================================== */
+
+    .auth-page {
+
+      width: 100%;
+
+      flex: 1 0 auto;
+
+      min-height: calc(100vh - 64px - 44px);
+
+      padding: 20px 15px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+
+    /* =====================================================
+       MAIN LOGIN CARD
+       ===================================================== */
+
+    .login-wrapper {
+
+      width: 100%;
+
+      max-width: 780px;
+
+      display: grid;
+
+      grid-template-columns:
+        0.85fr 1.15fr;
+
+      background: #ffffff;
+
+      border:
+        1px solid var(--inoutx-border);
+
+      border-radius: 12px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.14);
+
+    }
+
+
+    /* =====================================================
+       LEFT INFORMATION PANEL
+       ===================================================== */
+
+    .portal-information {
+
+      position: relative;
+
+      padding: 25px 28px;
+
+      background: #f5f7fa;
+
+      border-right:
+        1px solid var(--inoutx-border);
+
+      overflow: hidden;
+
+    }
+
+
+    .information-content {
+
+      position: relative;
+
+      z-index: 2;
+
+    }
+
+
+    /* =====================================================
+       COLLEGE LOGOS
+       ===================================================== */
+
+    .college-card {
+
+      width: 100%;
+
+      min-height: 75px;
+
+      margin-bottom: 14px;
+
+      padding: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: transparent;
+
+      border: none;
+
+    }
+
+
+    .college-card-logos {
+
+      width: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 16px;
+
+    }
+
+
+    .college-card-logo {
+
+      width: 120px;
+
+      height: 68px;
+
+      object-fit: contain;
+
+      display: block;
+
+    }
+
+
+    /* =====================================================
+       LEFT CONTENT
+       ===================================================== */
+
+    .college-label {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      margin-bottom: 12px;
+
+      color: var(--inoutx-primary-dark);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+    }
+
+
+    .college-label i {
+
+      font-size: 12px;
+
+    }
+
+
+    .information-content h1 {
+
+      margin: 0 0 9px 0;
+
+      color: var(--inoutx-text);
+
+      font-size: 27px;
+
+      line-height: 1.08;
+
+      font-weight: 800;
+
+    }
+
+
+    .information-content h1 span {
+
+      color: var(--inoutx-primary);
+
+    }
+
+
+    .information-subtitle {
+
+      max-width: 350px;
+
+      margin: 0 0 16px 0;
+
+      color: var(--inoutx-muted);
+
+      font-size: 11px;
+
+      line-height: 1.5;
+
+    }
+
+
+    /* =====================================================
+       FEATURE LIST
+       ===================================================== */
+
+    .feature-list {
+
+      display: grid;
+
+      gap: 0;
+
+      max-width: 350px;
+
+    }
+
+
+    .feature-item {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      padding: 7px 0;
+
+      border-bottom:
+        1px solid var(--inoutx-border);
+
+    }
+
+
+    .feature-item:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .feature-icon {
+
+      width: 27px;
+
+      height: 27px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 7px;
+
+      background: #eaf2fa;
+
+      color: var(--inoutx-primary);
+
+      font-size: 12px;
+
+    }
+
+
+    .feature-item span {
+
+      color: var(--inoutx-text);
+
+      font-size: 10px;
+
+      font-weight: 500;
+
+    }
+
+
+    /* =====================================================
+       RIGHT LOGIN PANEL
+       ===================================================== */
+
+    .login-panel {
+
+      padding: 28px 34px 25px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      background: #ffffff;
+
+      min-width: 0;
+
+    }
+
+
+    /* =====================================================
+       INOUTX LOGO
+       
+       IMPORTANT:
+       No fake bus icon.
+       No background box.
+       Bigger image logo.
+       ===================================================== */
+
+    .login-brand-wrap {
+
+      width: 100%;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      margin-bottom: 16px;
+
+    }
+
+
+    .login-brand {
+
+      width: 100%;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      background: transparent;
+
+      border: none;
+
+      box-shadow: none;
+
+      padding: 0;
+
+      margin: 0;
+
+    }
+
+
+    .login-brand-text {
+
+      width: 100%;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+    }
+
+
+    .login-brand-title {
+
+      width: 100%;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+    }
+
+
+    .login-brand-title img {
+
+      width: 230px;
+
+      max-width: 80%;
+
+      height: auto;
+
+      max-height: 100px;
+
+      object-fit: contain;
+
+      display: block;
+
+    }
+
+
+    /* =====================================================
+       LOGIN HEADING
+       ===================================================== */
+
+    .login-heading {
+
+      width: 100%;
+
+      margin-bottom: 18px;
+
+      text-align: left;
+
+    }
+
+
+    .login-heading .eyebrow {
+
+      margin: 0 0 5px 0;
+
+      color: var(--inoutx-secondary);
+
+      font-size: 9px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.2px;
+
+      text-transform: uppercase;
+
+    }
+
+
+    .login-heading h2 {
+
+      margin: 0 0 5px 0;
+
+      color: var(--inoutx-text);
+
+      font-size: 23px;
+
+      font-weight: 750;
+
+    }
+
+
+    .login-heading p {
+
+      margin: 0;
+
+      color: var(--inoutx-muted);
+
+      font-size: 11px;
+
+      line-height: 1.45;
+
+    }
+
+
+    /* =====================================================
+       FORM
+       ===================================================== */
+
+    #loginForm {
+
+      width: 100%;
+
+    }
+
+
+    .form-label {
+
+      margin-bottom: 6px;
+
+      color: #344054;
+
+      font-size: 11px;
+
+      font-weight: 650;
+
+    }
+
+
+    .input-group-custom {
+
+      position: relative;
+
+      width: 100%;
+
+    }
+
+
+    .input-group-custom>i {
+
+      position: absolute;
+
+      left: 13px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      z-index: 3;
+
+      color: #8b98a8;
+
+      font-size: 14px;
+
+      pointer-events: none;
+
+    }
+
+
+    .input-group-custom .form-control {
+
+      padding-left: 38px;
+
+      padding-right: 40px;
+
+    }
+
+
+    .form-control {
+
+      width: 100%;
+
+      min-height: 40px;
+
+      border:
+        1px solid var(--inoutx-border);
+
+      border-radius: 7px;
+
+      background: #ffffff;
+
+      color: var(--inoutx-text);
+
+      font-size: 11px;
+
+      box-shadow: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    }
+
+
+    .form-control:focus {
+
+      border-color:
+        var(--inoutx-secondary);
+
+      box-shadow:
+        var(--inoutx-ring);
+
+    }
+
+
+    .form-control::placeholder {
+
+      color: #a3acb9;
+
+    }
+
+
+    /* =====================================================
+       PASSWORD BUTTON
+       ===================================================== */
+
+    .password-toggle {
+
+      position: absolute;
+
+      right: 9px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      z-index: 4;
+
+      padding: 5px;
+
+      border: none;
+
+      background: transparent;
+
+      color: #8995a5;
+
+      cursor: pointer;
+
+      line-height: 1;
+
+    }
+
+
+    .password-toggle:hover {
+
+      color: var(--inoutx-primary);
+
+    }
+
+
+    /* =====================================================
+       FORGOT LINK
+       ===================================================== */
+
+    .forgot-link {
+
+      color:
+        var(--inoutx-secondary);
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      text-decoration: none;
+
+    }
+
+
+    .forgot-link:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =====================================================
+       CHECKBOX
+       ===================================================== */
+
+    .form-check-input {
+
+      cursor: pointer;
+
+    }
+
+
+    .form-check-input:checked {
+
+      background-color:
+        var(--inoutx-primary);
+
+      border-color:
+        var(--inoutx-primary);
+
+    }
+
+
+    .form-check-label {
+
+      color:
+        var(--inoutx-muted);
+
+      font-size: 10px;
+
+    }
+
+
+    /* =====================================================
+       ALERTS
+       ===================================================== */
+
+    #loginError,
+    #loginSuccess {
+
+      padding: 8px 10px;
+
+      margin-bottom: 12px;
+
+      border-radius: 6px;
+
+      font-size: 10px;
+
+      line-height: 1.35;
+
+    }
+
+
+    /* =====================================================
+       LOGIN BUTTON
+       ===================================================== */
+
+    #loginButton {
+
+      min-height: 40px;
+
+      border: none;
+
+      border-radius: 7px;
+
+      background:
+        var(--inoutx-primary);
+
+      color: #ffffff;
+
+      font-size: 11px;
+
+      font-weight: 650;
+
+      letter-spacing: 0.2px;
+
+      box-shadow: none;
+
+      transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+
+    }
+
+
+    #loginButton:hover:not(:disabled) {
+
+      background:
+        var(--inoutx-primary-dark);
+
+      transform:
+        translateY(-1px);
+
+    }
+
+
+    #loginButton:disabled {
+
+      opacity: 0.75;
+
+      cursor: not-allowed;
+
+    }
+
+
+    /* =====================================================
+       REGISTER
+       ===================================================== */
+
+    .auth-footer {
+
+      width: 100%;
+
+      margin-top: 15px;
+
+      padding-top: 12px;
+
+      border-top:
+        1px solid #edf0f4;
+
+      text-align: center;
+
+      color: #7a8492;
+
+      font-size: 10px;
+
+    }
+
+
+    .auth-footer a {
+
+      color:
+        var(--inoutx-secondary);
+
+      font-weight: 650;
+
+      text-decoration: none;
+
+    }
+
+
+    .auth-footer a:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =====================================================
+       SECURITY
+       ===================================================== */
+
+    .security-note {
+
+      width: 100%;
+
+      margin-top: 9px;
+
+      text-align: center;
+
+      color: #98a2b3;
+
+      font-size: 8px;
+
+      line-height: 1.35;
+
+    }
+
+
+    .security-note i {
+
+      margin-right: 3px;
+
+    }
+
+
+    /* =====================================================
+       COPYRIGHT FOOTER
+       ===================================================== */
+
+    .auth-copyright {
+
+      width: 100%;
+
+      min-height: 44px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 7px 12px;
+
+      background:
+        rgba(0, 36, 81, 0.94);
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.10);
+
+      color:
+        rgba(255, 255, 255, 0.60);
+
+      font-size: 8px;
+
+      line-height: 1.35;
+
+      letter-spacing: 0.15px;
+
+      flex: 0 0 auto;
+
+      text-align: center;
+
+    }
+
+
+    .auth-copyright strong {
+
+      margin-left: 3px;
+
+      color:
+        rgba(255, 255, 255, 0.82);
+
+      font-weight: 600;
+
+    }
+
+
+    /* =====================================================
+       LARGE LAPTOP
+       ===================================================== */
+
+    @media (min-width: 1200px) {
+
+      .login-wrapper {
+
+        max-width: 780px;
+
+      }
+
+      .login-brand-title img {
+
+        width: 205px;
+
+        max-height: 80px;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TABLET
+       ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .auth-page {
+
+        min-height: auto;
+
+        padding:
+          25px 18px 45px;
+
+        align-items: flex-start;
+
+      }
+
+
+      .login-wrapper {
+
+        max-width: 650px;
+
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+
+      }
+
+
+      .portal-information {
+
+        padding: 25px;
+
+        border-right: none;
+
+        border-bottom:
+          1px solid var(--inoutx-border);
+
+      }
+
+
+      .college-card {
+
+        min-height: 75px;
+
+      }
+
+
+      .college-card-logo {
+
+        width: 125px;
+
+        height: 68px;
+
+      }
+
+
+      .information-subtitle {
+
+        max-width: 100%;
+
+      }
+
+
+      .feature-list {
+
+        max-width: 100%;
+
+        grid-template-columns:
+          1fr 1fr;
+
+        column-gap: 20px;
+
+      }
+
+
+      .login-panel {
+
+        padding:
+          28px 32px 28px;
+
+      }
+
+
+      .login-brand-title img {
+
+        width: 180px;
+
+        max-height: 70px;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 600px) {
+
+      body.auth-body {
+
+        overflow-x: hidden;
+        padding-bottom: 0;
+
+      }
+
+
+      .portal-header {
+
+        min-height: 58px;
+        padding: 0 15px;
+
+      }
+
+
+      .portal-logo-image {
+
+        width: 36px;
+        height: 36px;
+
+      }
+
+
+      .portal-brand {
+
+        gap: 9px;
+
+      }
+
+
+      .portal-brand-text strong {
+
+        font-size: 14px;
+
+      }
+
+
+      .portal-brand-text span {
+
+        display: none;
+
+      }
+
+
+      .portal-header-right {
+
+        display: none;
+
+      }
+
+
+      .auth-page {
+
+        min-height: 0;
+        padding: 15px 10px 24px;
+        align-items: flex-start;
+
+      }
+
+
+      .login-wrapper {
+
+        width: min(100%, 420px);
+        max-width: 100%;
+        grid-template-columns: 1fr;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.13);
+
+      }
+
+
+      .portal-information {
+
+        padding: 18px 14px;
+        border-right: none;
+        border-bottom: 1px solid var(--inoutx-border);
+
+      }
+
+
+      .college-card {
+
+        min-height: 65px;
+        margin-bottom: 12px;
+
+      }
+
+
+      .college-card-logos {
+
+        gap: 10px;
+
+      }
+
+
+      .college-card-logo {
+
+        width: 100%;
+        max-width: 108px;
+        height: 58px;
+
+      }
+
+
+      .college-label {
+
+        margin-bottom: 10px;
+        font-size: 9px;
+
+      }
+
+
+      .information-content h1 {
+
+        font-size: clamp(18px, 4.8vw, 24px);
+        line-height: 1.1;
+        margin-bottom: 8px;
+
+      }
+
+
+      .information-subtitle {
+
+        margin-bottom: 0;
+        font-size: clamp(8px, 2vw, 11px);
+        line-height: 1.5;
+
+      }
+
+
+      .feature-list {
+
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 12px;
+        row-gap: 6px;
+        max-width: 100%;
+        margin-top: 12px;
+
+      }
+
+
+      .feature-item {
+
+        min-width: 0;
+        gap: 6px;
+        padding: 6px 0;
+
+      }
+
+
+      .feature-icon {
+
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+
+      }
+
+
+      .feature-item span {
+
+        min-width: 0;
+        font-size: 9px;
+        line-height: 1.25;
+        word-break: break-word;
+
+      }
+
+
+      .login-panel {
+
+        width: 100%;
+        padding: 22px 14px 20px;
+        align-items: stretch;
+
+      }
+
+
+      .login-brand-wrap {
+
+        margin-bottom: 12px;
+
+      }
+
+
+      .login-brand-title {
+
+        width: 100%;
+
+      }
+
+
+      .login-brand-title img {
+
+        width: 100%;
+        max-width: 170px;
+        max-height: 60px;
+        margin: 0 auto;
+
+      }
+
+
+      .login-heading {
+
+        margin-bottom: 17px;
+        width: 100%;
+
+      }
+
+
+      .login-heading h2 {
+
+        font-size: clamp(17px, 4.8vw, 22px);
+
+      }
+
+
+      .login-heading p {
+
+        font-size: clamp(8px, 2vw, 11px);
+
+      }
+
+
+      #loginForm {
+
+        width: 100%;
+
+      }
+
+
+      .d-flex.justify-content-between.align-items-center {
+
+        flex-wrap: wrap;
+        row-gap: 8px;
+
+      }
+
+
+      .forgot-link {
+
+        margin-left: auto;
+
+      }
+
+
+      .form-control {
+
+        width: 100%;
+        min-height: 44px;
+        font-size: 11px;
+
+      }
+
+
+      #loginButton {
+
+        width: 100%;
+        min-height: 44px;
+
+      }
+
+
+      .auth-footer {
+
+        margin-top: 12px;
+        padding-top: 11px;
+
+      }
+
+
+      .security-note {
+
+        margin-top: 9px;
+        font-size: 7px;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       SMALL MOBILE
+       ===================================================== */
+
+    @media (max-width: 400px) {
+
+      .portal-header {
+
+        padding: 0 12px;
+
+      }
+
+
+      .portal-brand-text strong {
+
+        font-size: 13px;
+
+      }
+
+
+      .auth-page {
+
+        padding: 12px 8px 35px;
+
+      }
+
+
+      .portal-information {
+
+        padding: 15px 9px;
+
+      }
+
+
+      .college-card-logo {
+
+        width: 100%;
+        max-width: 96px;
+        height: 52px;
+
+      }
+
+
+      .information-content h1 {
+
+        font-size: clamp(16px, 5.5vw, 22px);
+
+      }
+
+
+      .login-panel {
+
+        padding: 18px 9px 18px;
+
+      }
+
+
+      .login-brand-title img {
+
+        width: 100%;
+        max-width: 145px;
+        max-height: 55px;
+
+      }
+
+
+      .login-heading h2 {
+
+        font-size: clamp(16px, 5.5vw, 21px);
+
+      }
+
+
+      .login-heading p {
+
+        font-size: 10px;
+
+      }
+
+
+      .auth-copyright {
+
+        min-height: 44px;
+        padding-inline: 10px;
+        font-size: 8px;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       VERY SMALL MOBILE
+       ===================================================== */
+
+    @media (max-width: 340px) {
+
+      .portal-brand {
+
+        gap: 7px;
+
+      }
+
+
+      .portal-logo-image {
+
+        width: 32px;
+        height: 32px;
+
+      }
+
+
+      .portal-brand-text strong {
+
+        font-size: 12px;
+
+      }
+
+
+      .portal-information {
+
+        padding: 13px 7px;
+
+      }
+
+
+      .college-card-logos {
+
+        gap: 3px;
+
+      }
+
+
+      .college-card-logo {
+
+        width: 100%;
+        max-width: 88px;
+        height: 48px;
+
+      }
+
+
+      .information-content h1 {
+
+        font-size: clamp(15px, 5.8vw, 20px);
+
+      }
+
+
+      .login-panel {
+
+        padding: 16px 7px 16px;
+
+      }
+
+
+      .login-brand-title img {
+
+        width: 100%;
+        max-width: 135px;
+        max-width: 70%;
+
+      }
+
+
+      .login-heading h2 {
+
+        font-size: clamp(15px, 5.8vw, 21px);
+
+      }
+
+    }
+
+    /* =========================================================
+   INOUTX — MOBILE LOGIN UI ONLY
+   Desktop layout remains unchanged
+   ========================================================= */
+
+    @media (max-width: 768px) {
+
+      /* -----------------------------------------------------
+       PAGE
+       ----------------------------------------------------- */
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      body.auth-body {
+        min-height: 100vh;
+        background: #063b78;
+      }
+
+
+      /* -----------------------------------------------------
+       HIDE DESKTOP HEADER
+       ----------------------------------------------------- */
+
+      .portal-header {
+        display: none !important;
+      }
+
+
+      /* -----------------------------------------------------
+       MAIN PAGE
+       ----------------------------------------------------- */
+
+      .auth-page {
+        width: 100%;
+        min-height: calc(100vh - 55px);
+
+        padding: 28px 12px 28px;
+
+        display: block;
+
+        background: #063b78;
+      }
+
+
+      /* -----------------------------------------------------
+       MAIN LOGIN WRAPPER
+       ----------------------------------------------------- */
+
+      .login-wrapper {
+        width: 100%;
+        max-width: 650px;
+
+        margin: 0 auto;
+
+        display: flex;
+        flex-direction: column;
+
+        background: transparent;
+
+        border: 0;
+        border-radius: 0;
+
+        box-shadow: none;
+
+        overflow: visible;
+      }
+
+
+      /* =====================================================
+       TOP INFORMATION AREA
+       ===================================================== */
+
+      .portal-information {
+        width: 100%;
+
+        padding: 0 10px 22px;
+
+        background: transparent;
+
+        border: 0;
+
+        text-align: center;
+      }
+
+
+      .information-content {
+        width: 100%;
+        max-width: 600px;
+
+        margin: 0 auto;
+      }
+
+
+      /* -----------------------------------------------------
+       COLLEGE LOGOS
+       ----------------------------------------------------- */
+
+      .college-card {
+        width: 100%;
+
+        margin: 0 auto 15px;
+
+        padding: 0;
+
+        background: transparent;
+
+        border: 0;
+        box-shadow: none;
+      }
+
+
+      .college-card-logos {
+        width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 8px;
+      }
+
+
+      .college-card-logo {
+        width: 165px;
+        max-width: 43vw;
+
+        height: 65px;
+
+        object-fit: contain;
+
+        background: #ffffff;
+
+        border-radius: 7px;
+
+        padding: 3px;
+
+        box-shadow: none;
+      }
+
+
+      /* -----------------------------------------------------
+       SECURITY TEXT
+       ----------------------------------------------------- */
+
+      .college-label {
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        margin: 0 0 8px;
+
+        color: #ffffff;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        line-height: 1.3;
+      }
+
+
+      .college-label i {
+        color: #ffffff;
+      }
+
+
+      /* -----------------------------------------------------
+       WELCOME
+       ----------------------------------------------------- */
+
+      .information-content h1 {
+        margin: 0 0 7px;
+
+        color: #ffffff;
+
+        font-size: 30px;
+
+        font-weight: 800;
+
+        line-height: 1.1;
+
+        text-align: center;
+      }
+
+
+      .information-content h1 span {
+        color: #ffd21c;
+      }
+
+
+      .information-subtitle {
+        width: 100%;
+
+        max-width: 480px;
+
+        margin: 0 auto;
+
+        color: rgba(255, 255, 255, 0.82);
+
+        font-size: 10px;
+
+        line-height: 1.55;
+
+        text-align: center;
+      }
+
+
+      /* -----------------------------------------------------
+       HIDE EXTRA DESKTOP CONTENT
+       ----------------------------------------------------- */
+
+      .feature-list {
+        display: none !important;
+      }
+
+
+      /* =====================================================
+       WHITE LOGIN CONTAINER
+       ===================================================== */
+
+      .login-panel {
+        width: 100%;
+
+        max-width: 650px;
+
+        margin: 0 auto;
+
+        padding: 24px 16px 22px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        background: #ffffff;
+
+        border: 0;
+
+        border-radius: 30px;
+
+        box-shadow:
+          0 12px 30px rgba(0, 30, 70, 0.15);
+
+        min-width: 0;
+      }
+
+
+      /* =====================================================
+       INOUTX LOGO
+       ===================================================== */
+
+      .login-brand-wrap {
+        width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        margin: 0 0 14px;
+      }
+
+
+      .login-brand {
+        width: 100%;
+
+        padding: 0;
+
+        margin: 0;
+
+        background: transparent;
+
+        border: 0;
+
+        box-shadow: none;
+      }
+
+
+      .login-brand-title {
+        width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+      }
+
+
+      .login-brand-title img {
+        width: 150px;
+
+        max-width: 65%;
+
+        height: auto;
+
+        max-height: 65px;
+
+        object-fit: contain;
+
+        display: block;
+
+        margin: 0 auto;
+      }
+
+
+      /* =====================================================
+       LOGIN FORM CARD
+       ===================================================== */
+
+      .login-panel>.login-heading,
+      .login-panel>#loginForm,
+      .login-panel>.auth-footer,
+      .login-panel>.security-note {
+        width: 100%;
+      }
+
+
+      /* -----------------------------------------------------
+       LOGIN HEADING
+       ----------------------------------------------------- */
+
+      .login-heading {
+        margin: 0 0 18px;
+
+        text-align: left;
+      }
+
+
+      .login-heading .eyebrow {
+        margin-bottom: 7px;
+
+        color: #0065ad;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+      }
+
+
+      .login-heading h2 {
+        margin: 0 0 7px;
+
+        color: #172b43;
+
+        font-size: 29px;
+
+        font-weight: 800;
+
+        line-height: 1.1;
+      }
+
+
+      .login-heading p {
+        margin: 0;
+
+        color: #728096;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+      }
+
+
+      /* =====================================================
+       FORM
+       ===================================================== */
+
+      #loginForm {
+        width: 100%;
+      }
+
+
+      /* -----------------------------------------------------
+       LABELS
+       ----------------------------------------------------- */
+
+      .form-label {
+        margin-bottom: 7px;
+
+        color: #26394f;
+
+        font-size: 12px;
+
+        font-weight: 700;
+      }
+
+
+      /* -----------------------------------------------------
+       EMAIL / PASSWORD INPUT
+       ----------------------------------------------------- */
+
+      .input-group-custom {
+        width: 100%;
+
+        position: relative;
+      }
+
+
+      .input-group-custom>i {
+        left: 14px;
+
+        color: #91a0b1;
+
+        font-size: 15px;
+
+        z-index: 2;
+      }
+
+
+      .input-group-custom .form-control {
+        width: 100%;
+
+        height: 49px;
+
+        min-height: 49px;
+
+        padding-left: 42px;
+        padding-right: 44px;
+
+        background: #eaf2ff;
+
+        border: 1px solid #d4deeb;
+
+        border-radius: 10px;
+
+        color: #172b43;
+
+        font-size: 12px;
+
+        box-shadow: none;
+      }
+
+
+      .input-group-custom .form-control:focus {
+        background: #ffffff;
+
+        border-color: #1971b8;
+
+        box-shadow:
+          0 0 0 3px rgba(25, 113, 184, .12);
+      }
+
+
+      /* -----------------------------------------------------
+       PASSWORD EYE
+       ----------------------------------------------------- */
+
+      .password-toggle {
+        position: absolute;
+
+        right: 8px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        width: 35px;
+        height: 35px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        color: #94a2b2;
+
+        cursor: pointer;
+      }
+
+
+      .password-toggle i {
+        font-size: 17px;
+      }
+
+
+      /* =====================================================
+       FORGOT PASSWORD
+       ===================================================== */
+
+      .d-flex.justify-content-between.align-items-center {
+        width: 100%;
+
+        display: flex !important;
+
+        flex-direction: row;
+
+        align-items: center !important;
+
+        justify-content: space-between !important;
+      }
+
+
+      .forgot-link {
+        color: #005da9;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        text-decoration: none;
+      }
+
+
+      /* =====================================================
+       REMEMBER EMAIL
+       ===================================================== */
+
+      .form-check {
+        margin-top: 3px;
+
+        margin-bottom: 20px !important;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 7px;
+      }
+
+
+      .form-check-input {
+        width: 16px;
+
+        height: 16px;
+
+        margin: 0;
+
+        flex-shrink: 0;
+
+        accent-color: #063b78;
+      }
+
+
+      .form-check-label {
+        color: #68778a;
+
+        font-size: 11px;
+      }
+
+
+      /* =====================================================
+       LOGIN BUTTON
+       ===================================================== */
+
+      #loginButton {
+        width: 100%;
+
+        height: 49px;
+
+        min-height: 49px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        border: 0;
+
+        border-radius: 10px;
+
+        background: #063b78;
+
+        color: #ffffff;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        box-shadow:
+          0 5px 12px rgba(6, 59, 120, .18);
+
+        transition: .2s ease;
+      }
+
+
+      #loginButton:hover {
+        background: #022b5b;
+      }
+
+
+      #loginButton:active {
+        transform: scale(.985);
+      }
+
+
+      #loginButton:disabled {
+        opacity: .7;
+
+        cursor: not-allowed;
+      }
+
+
+      /* =====================================================
+       ERROR / SUCCESS
+       ===================================================== */
+
+      #loginError,
+      #loginSuccess {
+        width: 100%;
+
+        margin-bottom: 14px;
+
+        padding: 9px 10px;
+
+        border-radius: 8px;
+
+        font-size: 10px;
+
+        line-height: 1.4;
+      }
+
+
+      /* =====================================================
+       CREATE ACCOUNT
+       ===================================================== */
+
+      .auth-footer {
+        margin-top: 18px;
+
+        padding-top: 15px;
+
+        border-top: 1px solid #e8edf3;
+
+        color: #7a8798;
+
+        font-size: 10px;
+
+        text-align: center;
+      }
+
+
+      .auth-footer a {
+        color: #005da9;
+
+        font-weight: 700;
+
+        text-decoration: none;
+      }
+
+
+      /* =====================================================
+       SECURITY NOTE
+       ===================================================== */
+
+      .security-note {
+        margin-top: 11px;
+
+        color: #9aa5b4;
+
+        font-size: 9px;
+
+        line-height: 1.4;
+
+        text-align: center;
+      }
+
+
+      .security-note i {
+        margin-right: 3px;
+      }
+
+
+      /* =====================================================
+       YELLOW FOOTER
+       ===================================================== */
+
+      .auth-copyright {
+        width: 100%;
+
+        min-height: 55px;
+
+        padding: 10px 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #ffd21c;
+
+        border: 0;
+
+        color: #092f62;
+
+        font-size: 9px;
+
+        line-height: 1.4;
+
+        text-align: center;
+      }
+
+
+      .auth-copyright strong {
+        color: #092f62;
+
+        font-weight: 800;
+      }
+
+    }
+
+    /* IN/OUT X Team Credits Section */
+    .inoutx-team-section {
+      width: 100%;
+      max-width: 950px;
+      margin: 24px auto;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .inoutx-team-title {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .inoutx-team-subtitle {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: inherit;
+    }
+
+    .inoutx-team-department {
+      margin: 0 0 18px;
+      font-size: 12px;
+      color: #c1d1e9;
+    }
+
+    .inoutx-team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .inoutx-team-card {
+      padding: 15px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      background: rgba(148, 163, 184, 0.06);
+      transition: border-color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .inoutx-team-card:hover {
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .inoutx-team-card h4 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      color: inherit;
+    }
+
+    .inoutx-team-card p {
+      margin: 0 0 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .inoutx-team-card span {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 650px) {
+      .inoutx-team-section {
+        padding: 16px 12px;
+        margin: 18px auto;
+      }
+
+      .inoutx-team-grid {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+    }
+
+
+    /* =========================================================
+   480px AND BELOW
+   ========================================================= */
+
+    @media (max-width: 480px) {
+
+      .auth-page {
+        padding: 25px 10px 24px;
+      }
+
+
+      .college-card-logo {
+        width: 145px;
+
+        max-width: 44vw;
+
+        height: 60px;
+      }
+
+
+      .information-content h1 {
+        font-size: 27px;
+      }
+
+
+      .information-subtitle {
+        max-width: 390px;
+
+        font-size: 9.5px;
+      }
+
+
+      .login-panel {
+        padding:
+          23px 15px 21px;
+
+        border-radius: 28px;
+      }
+
+
+      .login-brand-title img {
+        width: 145px;
+      }
+
+
+      .login-heading h2 {
+        font-size: 27px;
+      }
+
+
+      .login-heading p {
+        font-size: 10.5px;
+      }
+
+    }
+
+
+    /* =========================================================
+   390px AND BELOW
+   ========================================================= */
+
+    @media (max-width: 390px) {
+
+      body.auth-body {
+        background:
+          linear-gradient(180deg,
+            #063b78 0,
+            #063b78 300px,
+            #f4f7fb 300px,
+            #f4f7fb 100%);
+      }
+
+
+      .auth-page {
+        padding:
+          22px 7px 20px;
+      }
+
+
+      .college-card-logos {
+        gap: 5px;
+      }
+
+
+      .college-card-logo {
+        width: 132px;
+
+        height: 55px;
+      }
+
+
+      .college-label {
+        font-size: 9px;
+      }
+
+
+      .information-content h1 {
+        font-size: 24px;
+      }
+
+
+      .information-subtitle {
+        font-size: 9px;
+
+        max-width: 350px;
+      }
+
+
+      .login-panel {
+        padding:
+          21px 13px 19px;
+
+        border-radius: 25px;
+      }
+
+
+      .login-brand-title img {
+        width: 135px;
+      }
+
+
+      .login-heading h2 {
+        font-size: 24px;
+      }
+
+
+      .login-heading p {
+        font-size: 10px;
+      }
+
+
+      .input-group-custom .form-control {
+        height: 47px;
+
+        min-height: 47px;
+
+        font-size: 11px;
+      }
+
+
+      #loginButton {
+        height: 47px;
+
+        min-height: 47px;
+
+        font-size: 12px;
+      }
+
+
+      .auth-copyright {
+        min-height: 50px;
+
+        font-size: 8px;
+      }
+
+    }
+
+
+    /* =========================================================
+   350px AND BELOW
+   ========================================================= */
+
+    @media (max-width: 350px) {
+
+      .auth-page {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+
+      .college-card-logo {
+        width: 115px;
+
+        height: 50px;
+      }
+
+
+      .information-content h1 {
+        font-size: 21px;
+      }
+
+
+      .information-subtitle {
+        font-size: 8px;
+      }
+
+
+      .login-panel {
+        padding:
+          18px 11px 17px;
+
+        border-radius: 22px;
+      }
+
+
+      .login-brand-title img {
+        width: 125px;
+      }
+
+
+      .login-heading h2 {
+        font-size: 22px;
+      }
+
+
+      .login-heading p {
+        font-size: 9px;
+      }
+
+
+      .input-group-custom .form-control {
+        height: 44px;
+
+        min-height: 44px;
+
+        padding-left: 38px;
+
+        font-size: 10px;
+      }
+
+
+      #loginButton {
+        height: 45px;
+
+        min-height: 45px;
+
+        font-size: 11px;
+      }
+
+
+      .auth-footer {
+        font-size: 9px;
+      }
+
+
+      .security-note {
+        font-size: 8px;
+      }
+
+
+      .auth-copyright {
+        font-size: 7.5px;
+      }
+
+    }
+
+
+
+    /* =====================================================
+       FINAL MOBILE FOOTER FIX
+       Full yellow rectangle + single-line text
+       ===================================================== */
+
+    @media (max-width: 768px) {
+
+      html,
+      body,
+      body.auth-body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #063b78 !important;
+      }
+
+      .auth-page {
+        width: 100%;
+        margin: 0 !important;
+        padding-bottom: 24px !important;
+        background: #063b78 !important;
+      }
+
+      .auth-copyright {
+        width: 100% !important;
+        min-width: 100% !important;
+        min-height: 52px !important;
+        height: 52px !important;
+        margin: 0 !important;
+        padding: 0 8px !important;
+        box-sizing: border-box !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #ffd21c !important;
+        border: 0 !important;
+        border-top: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+
+        color: #092f62 !important;
+        font-size: 9px !important;
+        line-height: 1 !important;
+        letter-spacing: 0 !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+
+        flex: 0 0 52px !important;
+      }
+
+      .auth-copyright span {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+      }
+
+      .auth-copyright strong {
+        margin: 0 2px !important;
+        color: #092f62 !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .auth-copyright {
+        min-height: 48px !important;
+        height: 48px !important;
+        flex-basis: 48px !important;
+        font-size: 7.5px !important;
+        padding: 0 5px !important;
+      }
+    }
+
+
+    /* =====================================================
+       MOBILE FINAL TUNING
+       Single-line welcome + smaller sign-in box
+       ===================================================== */
+
+    @media (max-width: 768px) {
+
+      .information-content h1 {
+        white-space: nowrap !important;
+        font-size: clamp(22px, 6.2vw, 30px) !important;
+        line-height: 1 !important;
+        margin-bottom: 8px !important;
+      }
+
+      .information-content h1 span {
+        display: inline !important;
+      }
+
+      .login-panel {
+        width: calc(100% - 24px) !important;
+        max-width: 590px !important;
+        margin: 0 auto !important;
+        padding: 18px 14px 16px !important;
+        border-radius: 24px !important;
+        box-shadow: 0 9px 24px rgba(0, 30, 70, 0.14) !important;
+      }
+
+      .login-brand-wrap {
+        margin-bottom: 9px !important;
+      }
+
+      .login-brand-title img {
+        width: 130px !important;
+        max-height: 55px !important;
+      }
+
+      .login-heading {
+        margin-bottom: 13px !important;
+      }
+
+      .login-heading .eyebrow {
+        margin-bottom: 4px !important;
+        font-size: 9px !important;
+      }
+
+      .login-heading h2 {
+        margin-bottom: 4px !important;
+        font-size: 23px !important;
+        line-height: 1.1 !important;
+      }
+
+      .login-heading p {
+        font-size: 10px !important;
+        line-height: 1.35 !important;
+      }
+
+      .form-label {
+        margin-bottom: 5px !important;
+        font-size: 10px !important;
+      }
+
+      .mb-3 {
+        margin-bottom: 12px !important;
+      }
+
+      .input-group-custom .form-control {
+        height: 44px !important;
+        min-height: 44px !important;
+        font-size: 11px !important;
+      }
+
+      .form-check {
+        margin-top: 0 !important;
+        margin-bottom: 14px !important;
+      }
+
+      #loginButton {
+        height: 45px !important;
+        min-height: 45px !important;
+        font-size: 12px !important;
+      }
+
+      .auth-footer {
+        margin-top: 13px !important;
+        padding-top: 11px !important;
+      }
+
+      .security-note {
+        margin-top: 8px !important;
+      }
+    }
+
+    @media (max-width: 390px) {
+
+      .information-content h1 {
+        font-size: 21px !important;
+      }
+
+      .login-panel {
+        width: calc(100% - 16px) !important;
+        padding: 16px 12px 14px !important;
+        border-radius: 21px !important;
+      }
+
+      .login-brand-title img {
+        width: 120px !important;
+        max-height: 50px !important;
+      }
+
+      .login-heading h2 {
+        font-size: 21px !important;
+      }
+
+      .input-group-custom .form-control {
+        height: 42px !important;
+        min-height: 42px !important;
+      }
+
+      #loginButton {
+        height: 43px !important;
+        min-height: 43px !important;
+      }
+    }
+  </style>
+
+</head>
+
+
+
+<body class="auth-body login-page">
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="portal-header">
+
+
+    <a href="index.html" class="portal-brand">
+
+
+      <div class="portal-logo">
+
+        <img src="../assets/images/logo.PNG" alt="INOUTX Project Logo" class="portal-logo-image">
+
+      </div>
+
+
+      <div class="portal-brand-text">
+
+        <strong>
+          INOUTX
+        </strong>
+
+        <span>
+          Smart Campus Vehicle Management System
+        </span>
+
+      </div>
+
+
+    </a>
+
+
+    <div class="portal-header-right">
+
+      <i class="bi bi-shield-lock"></i>
+
+      Secure Portal
+
+    </div>
+
+
+  </header>
+
+
+
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+
+  <main class="auth-page">
+
+
+    <section class="login-wrapper">
+
+
+      <!-- =================================================
+           LEFT INFORMATION PANEL
+           ================================================= -->
+
+      <div class="portal-information">
+
+
+        <div class="information-content">
+
+
+          <!-- COLLEGE LOGOS -->
+
+          <div class="college-card">
+
+
+            <div class="college-card-logos">
+
+
+              <img class="college-card-logo" src="../assets/images/krce_logo.png" alt="KRCE Logo">
+
+
+              <img class="college-card-logo" src="../assets/images/krct_logo.png" alt="KRCT Logo">
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- LABEL -->
+
+          <div class="college-label">
+
+            <i class="bi bi-shield-check"></i>
+
+            Smart Campus Vehicle Security
+
+          </div>
+
+
+
+          <!-- TITLE -->
+
+          <h1>
+
+            Welcome to <span>INOUTX</span>
+
+          </h1>
+
+
+
+          <!-- DESCRIPTION -->
+
+          <p class="information-subtitle">
+
+            A smart campus vehicle management system
+            built to securely monitor, verify and manage
+            vehicle movement across campus entry and exit gates.
+
+          </p>
+
+
+
+          <!-- FEATURES -->
+
+          <div class="feature-list">
+
+
+            <div class="feature-item">
+
+              <div class="feature-icon">
+
+                <i class="bi bi-car-front"></i>
+
+              </div>
+
+              <span>
+                Student &amp; Faculty Vehicle Management
+              </span>
+
+            </div>
+
+
+            <div class="feature-item">
+
+              <div class="feature-icon">
+
+                <i class="bi bi-person-badge"></i>
+
+              </div>
+
+              <span>
+                Visitor Vehicle Registration
+              </span>
+
+            </div>
+
+
+            <div class="feature-item">
+
+              <div class="feature-icon">
+
+                <i class="bi bi-camera"></i>
+
+              </div>
+
+              <span>
+                Automatic Number Plate Recognition
+              </span>
+
+            </div>
+
+
+            <div class="feature-item">
+
+              <div class="feature-icon">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+
+              </div>
+
+              <span>
+                Smart Entry &amp; Exit Tracking
+              </span>
+
+            </div>
+
+
+            <div class="feature-item">
+
+              <div class="feature-icon">
+
+                <i class="bi bi-shield-check"></i>
+
+              </div>
+
+              <span>
+                Secure Campus Gate Monitoring
+              </span>
+
+            </div>
+
+
+            <div class="feature-item">
+
+              <div class="feature-icon">
+
+                <i class="bi bi-clock-history"></i>
+
+              </div>
+
+              <span>
+                Real-Time Vehicle Movement Records
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- =================================================
+           RIGHT LOGIN PANEL
+           ================================================= -->
+
+      <div class="login-panel">
+
+
+        <!-- =================================================
+             INOUTX IMAGE LOGO
+             NO BUS ICON
+             NO BACKGROUND BOX
+             ================================================= -->
+
+        <div class="login-brand-wrap">
+
+
+          <div class="login-brand">
+
+
+            <div class="login-brand-text">
+
+
+              <div class="login-brand-title">
+
+
+                <img src="../assets/images/logo.PNG" alt="INOUTX Project Logo">
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOGIN HEADING
+             ================================================= -->
+
+        <div class="login-heading">
+
+
+          <p class="eyebrow">
+            Secure Access
+          </p>
+
+
+          <h2>
+            Sign in
+          </h2>
+
+
+          <p>
+            Enter your registered credentials
+            to access the INOUTX portal.
+          </p>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOGIN FORM
+             ================================================= -->
+
+        <form id="loginForm" class="needs-validation" novalidate autocomplete="on">
+
+
+          <!-- EMAIL -->
+
+          <div class="mb-3">
+
+
+            <label class="form-label" for="loginEmail">
+
+              College Email address
+
+            </label>
+
+
+            <div class="input-group-custom">
+
+
+              <i class="bi bi-person"></i>
+
+
+              <input class="form-control" id="loginEmail" name="email" type="text" placeholder="College Email ID"
+                autocomplete="username" required>
+
+
+            </div>
+
+
+            <div class="invalid-feedback">
+
+              Enter your College email address.
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- PASSWORD -->
+
+          <div class="mb-3">
+
+
+            <div class="d-flex justify-content-between align-items-center">
+
+
+              <label class="form-label" for="loginPassword">
+
+                Password
+
+              </label>
+
+
+              <a class="forgot-link" href="forgot-password.html">
+
+                Forgot password?
+
+              </a>
+
+
+            </div>
+
+
+            <div class="input-group-custom">
+
+
+              <i class="bi bi-lock"></i>
+
+
+              <input class="form-control" id="loginPassword" name="password" type="password" placeholder="••••••••"
+                minlength="6" autocomplete="current-password" required>
+
+
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+
+
+                <i id="passwordToggleIcon" class="bi bi-eye">
+                </i>
+
+
+              </button>
+
+
+            </div>
+
+
+            <div class="invalid-feedback">
+
+              Password must be at least 6 characters.
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- REMEMBER ME -->
+
+          <div class="form-check mb-3">
+
+
+            <input class="form-check-input" type="checkbox" id="rememberMe">
+
+
+            <label class="form-check-label" for="rememberMe">
+
+              Remember my email
+
+            </label>
+
+
+          </div>
+
+
+
+          <!-- ERROR -->
+
+          <div id="loginError" class="alert alert-danger d-none" role="alert">
+          </div>
+
+
+
+          <!-- SUCCESS -->
+
+          <div id="loginSuccess" class="alert alert-success d-none" role="alert">
+          </div>
+
+
+
+          <!-- LOGIN BUTTON -->
+
+          <button id="loginButton" class="btn btn-primary w-100" type="submit">
+
+
+            <i id="loginIcon" class="bi bi-box-arrow-in-right" aria-hidden="true">
+            </i>
+
+
+            <span id="loginButtonText">
+
+              Login as Student
+
+            </span>
+
+
+          </button>
+
+
+        </form>
+
+
+
+        <!-- =================================================
+             REGISTER
+             ================================================= -->
+
+        <div class="auth-footer">
+
+          New to INOUTX?
+
+          <a href="register.html">
+
+            Create an account
+
+          </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SECURITY
+             ================================================= -->
+
+        <div class="security-note">
+
+          <i class="bi bi-shield-lock"></i>
+
+          Your login credentials are securely transmitted.
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =====================================================
+       FIXED FOOTER
+       ===================================================== -->
+
+  <!-- IN/OUT X Team Credits Section -->
+  <section class="inoutx-team-section">
+    <h3 class="inoutx-team-title">Designed &amp; Developed By</h3>
+    <p class="inoutx-team-subtitle">
+      IN/OUT X — AI Based College Transport Management System
+    </p>
+    <p class="inoutx-team-department">
+      Department of Computer Science and Engineering
+    </p>
+
+    <div class="inoutx-team-grid">
+      <div class="inoutx-team-card">
+        <h4>ABDUL ASIM M</h4>
+        <p>CSE - A</p>
+        <span>Batch 2025–2029</span>
+      </div>
+
+      <div class="inoutx-team-card">
+        <h4>ABISHEK CHRISTOPHER R</h4>
+        <p>CSE - A</p>
+        <span>Batch 2025–2029</span>
+      </div>
+
+      <div class="inoutx-team-card">
+        <h4>AFRIDI MOHAMED J</h4>
+        <p>CSE - A</p>
+        <span>Batch 2025–2029</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="auth-copyright">
+    <span>2026 Designed by <strong>Department Of CSE - KRCT</strong>. All rights reserved.</span>
+  </footer>
+
+
+
+  <!-- =====================================================
+       BOOTSTRAP JS
+       ===================================================== -->
+
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- =====================================================
+       MAIN JS
+       ===================================================== -->
+
+  <script src="../assets/js/main.js"></script>
+
+
+  <!-- =====================================================
+       LOGIN SCRIPT
+       ===================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+
+        /* =================================================
+           ELEMENTS
+           ================================================= */
+
+        const loginForm =
+          document.getElementById("loginForm");
+
+
+        const loginEmail =
+          document.getElementById("loginEmail");
+
+
+        const loginPassword =
+          document.getElementById("loginPassword");
+
+
+        const loginButton =
+          document.getElementById("loginButton");
+
+
+        const loginButtonText =
+          document.getElementById("loginButtonText");
+
+
+        const loginIcon =
+          document.getElementById("loginIcon");
+
+
+        const loginError =
+          document.getElementById("loginError");
+
+
+        const loginSuccess =
+          document.getElementById("loginSuccess");
+
+
+        const rememberMe =
+          document.getElementById("rememberMe");
+
+
+        const passwordToggle =
+          document.getElementById("passwordToggle");
+
+
+        const passwordToggleIcon =
+          document.getElementById(
+            "passwordToggleIcon"
+          );
+
+
+
+        /* =================================================
+           PASSWORD SHOW / HIDE
+           ================================================= */
+
+        if (passwordToggle) {
+
+          passwordToggle.addEventListener(
+            "click",
+            function () {
+
+
+              const isPassword =
+                loginPassword.type === "password";
+
+
+              loginPassword.type =
+                isPassword
+                  ? "text"
+                  : "password";
+
+
+              passwordToggleIcon.className =
+                isPassword
+                  ? "bi bi-eye-slash"
+                  : "bi bi-eye";
+
+
+              passwordToggle.setAttribute(
+                "aria-label",
+                isPassword
+                  ? "Hide password"
+                  : "Show password"
+              );
+
+
+            }
+          );
+
+        }
+
+
+
+        /* =================================================
+           LOGIN
+           ================================================= */
+
+        if (loginForm) {
+
+          loginForm.addEventListener(
+            "submit",
+            async function (event) {
+
+
+              event.preventDefault();
+
+              event.stopPropagation();
+
+
+
+              /* VALIDATION */
+
+              if (!loginForm.checkValidity()) {
+
+                loginForm.classList.add(
+                  "was-validated"
+                );
+
+                return;
+
+              }
+
+
+
+              /* CLEAR ALERTS */
+
+              loginError.classList.add(
+                "d-none"
+              );
+
+              loginSuccess.classList.add(
+                "d-none"
+              );
+
+
+              loginError.textContent = "";
+
+              loginSuccess.textContent = "";
+
+              loginError.classList.remove(
+                "alert-warning"
+              );
+
+              loginError.classList.add(
+                "alert-danger"
+              );
+
+
+
+              /* VALUES */
+
+              const email =
+                loginEmail.value
+                  .trim()
+                  .toLowerCase();
+
+
+              const password =
+                loginPassword.value;
+
+
+
+              /* DISABLE BUTTON */
+
+              loginButton.disabled = true;
+
+
+              loginIcon.className =
+                "bi bi-arrow-repeat";
+
+
+              loginButtonText.textContent =
+                "Signing in...";
+
+
+
+              try {
+
+
+                /* API REQUEST */
+
+                const response =
+                  await fetch(
+                    "/api/login",
+                    {
+
+                      method: "POST",
+
+                      headers: {
+
+                        "Content-Type":
+                          "application/json"
+
+                      },
+
+                      credentials: "include",
+
+                      body:
+                        JSON.stringify({
+
+                          email: email,
+
+                          password: password
+
+                        })
+
+                    }
+                  );
+
+
+
+                /* RESPONSE */
+
+                let data = {};
+
+
+                try {
+
+                  data =
+                    await response.json();
+
+                }
+
+                catch (jsonError) {
+
+                  data = {};
+
+                }
+
+
+
+                console.log(
+                  "Login response:",
+                  data
+                );
+
+
+
+                /* LOGIN FAILED */
+
+                if (
+                  !response.ok ||
+                  !data.success
+                ) {
+
+
+                  loginError.textContent =
+                    data.error ||
+                    "Invalid email or password.";
+
+                  const isApprovalNotice =
+                    data.approval_status === "PENDING" ||
+                    data.approval_status === "REJECTED";
+
+                  loginError.classList.toggle(
+                    "alert-warning",
+                    isApprovalNotice
+                  );
+
+                  loginError.classList.toggle(
+                    "alert-danger",
+                    !isApprovalNotice
+                  );
+
+                  loginError.classList.remove(
+                    "d-none"
+                  );
+
+
+                  loginButton.disabled =
+                    false;
+
+
+                  loginIcon.className =
+                    "bi bi-box-arrow-in-right";
+
+
+                  loginButtonText.textContent =
+                    "Login as Student";
+
+
+                  return;
+
+                }
+
+
+
+                /* LOGIN SUCCESS */
+
+                console.log(
+                  "INOUTX Login successful"
+                );
+
+
+                console.log(
+                  "Logged in user:",
+                  data.user
+                );
+
+
+                loginSuccess.textContent =
+                  "Login successful. Redirecting...";
+
+
+                loginSuccess.classList.remove(
+                  "d-none"
+                );
+
+
+
+                /* REMEMBER EMAIL */
+
+                if (rememberMe.checked) {
+
+                  localStorage.setItem(
+                    "inoutx_remember_email",
+                    email
+                  );
+
+                }
+
+                else {
+
+                  localStorage.removeItem(
+                    "inoutx_remember_email"
+                  );
+
+                }
+
+
+
+                /* SUCCESS BUTTON */
+
+                loginIcon.className =
+                  "bi bi-check-circle";
+
+
+                loginButtonText.textContent =
+                  "Login Successful";
+
+
+
+                /* REDIRECT */
+
+                setTimeout(
+                  function () {
+
+                    window.location.href =
+                      "index.html";
+
+                  },
+                  500
+                );
+
+
+              }
+
+
+              /* CONNECTION ERROR */
+
+              catch (error) {
+
+
+                console.error(
+                  "Login request failed:",
+                  error
+                );
+
+
+                loginError.textContent =
+                  "Unable to connect to the INOUTX server. Make sure Flask is running.";
+
+
+                loginError.classList.remove(
+                  "d-none"
+                );
+
+
+                loginButton.disabled =
+                  false;
+
+
+                loginIcon.className =
+                  "bi bi-box-arrow-in-right";
+
+
+                loginButtonText.textContent =
+                  "Login as Student";
+
+
+              }
+
+
+            }
+          );
+
+        }
+
+
+
+        /* =================================================
+           REMEMBERED EMAIL
+           ================================================= */
+
+        const rememberedEmail =
+          localStorage.getItem(
+            "inoutx_remember_email"
+          );
+
+
+        if (rememberedEmail) {
+
+          loginEmail.value =
+            rememberedEmail;
+
+
+          rememberMe.checked =
+            true;
+
+        }
+
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>
