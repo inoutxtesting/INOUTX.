@@ -2074,6 +2074,81 @@ def get_approved_users():
         }), 500
 
 
+@app.route(
+    "/api/approved-users/<user_id>/remove",
+    methods=["POST", "DELETE"]
+)
+@app.route(
+    "/api/approved-users/<user_id>",
+    methods=["DELETE"]
+)
+def remove_approved_user(user_id):
+    if not session.get("user"):
+        return jsonify({
+            "success": False,
+            "authorized": False,
+            "error": "Login required."
+        }), 401
+
+    if not is_config_admin_session():
+        return jsonify({
+            "success": False,
+            "authorized": False,
+            "error": (
+                "Only the INOUTX configuration administrator "
+                "can remove approved users."
+            )
+        }), 403
+
+    try:
+        try:
+            object_id = ObjectId(user_id)
+        except Exception:
+            return jsonify({
+                "success": False,
+                "error": "Invalid user account identifier."
+            }), 400
+
+        user_to_remove = users.find_one({"_id": object_id})
+        if not user_to_remove:
+            return jsonify({
+                "success": False,
+                "error": "User account was not found."
+            }), 404
+
+        user_email = str(user_to_remove.get("email") or "").strip().lower()
+        if CONFIG_ADMIN_EMAIL and user_email == CONFIG_ADMIN_EMAIL.lower():
+            return jsonify({
+                "success": False,
+                "error": "Cannot remove the configuration administrator account."
+            }), 400
+
+        # Remove from MongoDB users collection
+        users.delete_one({"_id": object_id})
+
+        # Remove from active session presence
+        try:
+            _session_presence_collection().delete_many({
+                "user_id": str(object_id)
+            })
+        except Exception:
+            pass
+
+        user_name = str(user_to_remove.get("name") or user_email).strip()
+        return jsonify({
+            "success": True,
+            "message": f"User '{user_name}' has been successfully removed.",
+            "removed_id": str(object_id)
+        }), 200
+
+    except Exception as e:
+        print("Remove approved user error:", e)
+        return jsonify({
+            "success": False,
+            "error": "Unable to remove approved user."
+        }), 500
+
+
 @app.route("/api/login-activity", methods=["GET"])
 def get_login_activity():
     if not is_config_admin_session():

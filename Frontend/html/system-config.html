@@ -31,9 +31,9 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
 
-    <style>
+        <style>
         /* =========================================================
-           SYSTEM CONFIGURATION
+           INOUTX ADMIN SETTINGS / SYSTEM CONFIGURATION STYLES
         ========================================================= */
 
         .config-page {
@@ -43,65 +43,231 @@
             box-sizing: border-box;
         }
 
+        /* =========================================================
+           PAGE HEADER
+        ========================================================= */
+
         .config-page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
             margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .config-page-title-wrap {
+            min-width: 0;
         }
 
         .config-page-header h1 {
             margin: 0;
-            font-size: 28px;
-            font-weight: 700;
-            color: #1f2937;
+            font-size: 26px;
+            font-weight: 800;
+            color: #17202A;
+            letter-spacing: -0.3px;
         }
 
         .config-page-header p {
-            margin: 7px 0 0;
-            color: #6b7280;
+            margin: 6px 0 0;
+            color: #5B6775;
             font-size: 14px;
+            line-height: 1.45;
         }
 
+        .config-header-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            background: #FFFFFF;
+            border: 1px solid #D5DCE5;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #003377;
+            box-shadow: 0 2px 6px rgba(0, 51, 119, 0.04);
+            white-space: nowrap;
+        }
+
+        .config-header-meta i {
+            color: #198754;
+            font-size: 9px;
+        }
+
+        /* =========================================================
+           PAGE ALERTS & NOTICES
+        ========================================================= */
+
+        .config-message {
+            display: none;
+            padding: 13px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .config-message.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-message.success {
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #047857;
+        }
+
+        .config-message.error,
+        .config-message.danger {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #B91C1C;
+        }
+
+        .config-message.info {
+            background: #EAF2FA;
+            border: 1px solid #B8C8DE;
+            color: #003377;
+        }
+
+        /* =========================================================
+           SUMMARY OVERVIEW METRICS
+        ========================================================= */
+
+        .config-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .config-metric-card {
+            background: #FFFFFF;
+            border: 1px solid #D5DCE5;
+            border-radius: 12px;
+            padding: 18px 20px;
+            box-shadow: 0 4px 14px rgba(0, 51, 119, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .config-metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 51, 119, 0.09);
+            border-color: #B8C8DE;
+        }
+
+        .config-metric-info {
+            min-width: 0;
+        }
+
+        .config-metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5B6775;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .config-metric-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #17202A;
+            line-height: 1.1;
+        }
+
+        .config-metric-desc {
+            font-size: 11px;
+            color: #8C98A6;
+            margin-top: 4px;
+        }
+
+        .config-metric-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .config-metric-icon.amber {
+            background: #FFFBEB;
+            color: #D97706;
+            border: 1px solid #FDE68A;
+        }
+
+        .config-metric-icon.blue {
+            background: #EAF2FA;
+            color: #003377;
+            border: 1px solid #C7D8EB;
+        }
+
+        .config-metric-icon.green {
+            background: #ECFDF5;
+            color: #047857;
+            border: 1px solid #A7F3D0;
+        }
 
         /* =========================================================
            CONFIG PANELS
         ========================================================== */
 
         .config-panel {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            margin-bottom: 22px;
+            background: #FFFFFF;
+            border: 1px solid #D5DCE5;
+            border-radius: 12px;
+            margin-bottom: 24px;
             overflow: hidden;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 4px 16px rgba(0, 51, 119, 0.06);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .config-panel:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 6px 20px rgba(0, 51, 119, 0.08);
         }
 
         .config-panel-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            padding: 18px 22px;
-            border-bottom: 1px solid #e5e7eb;
-            background: #fafafa;
+            gap: 16px;
+            padding: 18px 24px;
+            border-bottom: 1px solid #E7ECF1;
+            background: #FBFDFE;
         }
 
         .config-panel-title {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             min-width: 0;
         }
 
         .config-panel-title-icon {
-            width: 38px;
-            height: 38px;
-            min-width: 38px;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 10px;
-            background: #eef4ff;
-            color: #2563eb;
-            font-size: 18px;
+            background: #EAF2FA;
+            color: #003377;
+            font-size: 20px;
+            border: 1px solid #D5E2F0;
         }
 
         .config-panel-title-text {
@@ -112,557 +278,497 @@
             margin: 0;
             font-size: 17px;
             font-weight: 700;
-            color: #1f2937;
+            color: #17202A;
+            letter-spacing: -0.2px;
         }
 
         .config-panel-title-text p {
             margin: 3px 0 0;
-            color: #6b7280;
-            font-size: 12px;
+            color: #5B6775;
+            font-size: 13px;
+            line-height: 1.4;
         }
 
         .config-panel-body {
-            padding: 22px;
+            padding: 22px 24px;
         }
-
 
         /* =========================================================
-           CAMERA CONFIGURATION
-        ========================================================== */
-
-        .camera-config-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-            gap: 20px;
-        }
-
-        .camera-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 18px;
-            background: #ffffff;
-            min-width: 0;
-        }
-
-        .camera-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .camera-card-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0;
-        }
-
-        .camera-card-title i {
-            font-size: 20px;
-            color: #2563eb;
-            flex-shrink: 0;
-        }
-
-        .camera-card-title h3 {
-            margin: 0;
-            font-size: 15px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .camera-status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 9px;
-            border-radius: 20px;
-            background: #f3f4f6;
-            color: #6b7280;
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .camera-status-badge::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #9ca3af;
-        }
-
-
-        /* =========================================================
-           FORM ELEMENTS
-        ========================================================== */
-
-        .config-form-group {
-            margin-bottom: 16px;
-        }
-
-        .config-form-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .config-label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #374151;
-        }
-
-        .config-label .required {
-            color: #dc2626;
-        }
-
-        .config-input,
-        .config-select {
-            width: 100%;
-            min-height: 42px;
-            padding: 9px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            background: #ffffff;
-            color: #1f2937;
-            font-size: 13px;
-            outline: none;
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-            box-sizing: border-box;
-        }
-
-        .config-input:focus,
-        .config-select:focus {
-            border-color: #2563eb;
-            box-shadow:
-                0 0 0 3px rgba(37, 99, 235, 0.10);
-        }
-
-        .config-input[readonly] {
-            background: #f9fafb;
-            color: #6b7280;
-        }
-
-        .input-with-action {
-            position: relative;
-            width: 100%;
-        }
-
-        .input-with-action .config-input {
-            padding-right: 46px;
-        }
-
-        .input-action-btn {
-            position: absolute;
-            right: 6px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 34px;
-            height: 34px;
-            border: 0;
-            background: transparent;
-            color: #6b7280;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .input-action-btn:hover {
-            background: #f3f4f6;
-            color: #111827;
-        }
-
-        .config-help {
-            display: block;
-            margin-top: 6px;
-            color: #9ca3af;
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-
-        /* =========================================================
-           GATE CONFIGURATION
-        ========================================================== */
-
-        .gate-config-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .gate-field {
-            min-width: 0;
-        }
-
-
-        /* =========================================================
-           MONGODB
-        ========================================================== */
-
-        .mongodb-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .mongodb-grid .full-width {
-            grid-column: 1 / -1;
-        }
-
-
-        /* =========================================================
-           CONFIGURATION PREVIEW
-        ========================================================== */
-
-        .environment-preview {
-            display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-            gap: 14px;
-        }
-
-        .environment-item {
-            min-width: 0;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 14px;
-            background: #f9fafb;
-        }
-
-        .environment-key {
-            display: block;
-            margin-bottom: 6px;
-            color: #6b7280;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .environment-value {
-            display: block;
-            color: #111827;
-            font-size: 13px;
-            font-weight: 600;
-            overflow-wrap: anywhere;
-            word-break: break-word;
-        }
-
-
-        /* =========================================================
-           ACTION BUTTONS
-        ========================================================== */
-
-        .config-actions {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 24px;
-        }
-
-        .config-btn {
-            min-height: 42px;
-            padding: 9px 17px;
-            border-radius: 8px;
-            border: 1px solid transparent;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.15s ease;
-        }
-
-        .config-btn:active {
-            transform: translateY(1px);
-        }
-
-        .config-btn-secondary {
-            background: #ffffff;
-            border-color: #d1d5db;
-            color: #374151;
-        }
-
-        .config-btn-secondary:hover {
-            background: #f9fafb;
-        }
-
-        .config-btn-danger {
-            background: #ffffff;
-            border-color: #fecaca;
-            color: #dc2626;
-        }
-
-        .config-btn-danger:hover {
-            background: #fef2f2;
-        }
-
-        .config-btn-primary {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #ffffff;
-        }
-
-        .config-btn-primary:hover {
-            background: #1d4ed8;
-            border-color: #1d4ed8;
-        }
-
-
-        /* =========================================================
-           ALERT / MESSAGE
-        ========================================================== */
-
-        .config-message {
-            display: none;
-            margin-bottom: 20px;
-            padding: 12px 14px;
-            border-radius: 9px;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .config-message.show {
-            display: block;
-        }
-
-        .config-message.success {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            color: #047857;
-        }
-
-        .config-message.error {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
-        }
-
-        .config-message.warning {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            color: #92400e;
-        }
-
-
-        /* =========================================================
-           USER APPROVALS
+           SUMMARY BADGES IN PANEL HEADERS
         ========================================================== */
 
         .approval-summary {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .approval-badge-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #5B6775;
         }
 
         .approval-count {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 30px;
-            height: 26px;
-            padding: 0 9px;
+            min-width: 32px;
+            height: 28px;
+            padding: 0 10px;
             border-radius: 999px;
-            background: #eff6ff;
-            color: #1d4ed8;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            color: #B45309;
             font-size: 12px;
             font-weight: 800;
         }
 
-        .approval-table-wrap {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
+        .user-monitor-summary {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-shrink: 0;
         }
 
-        .approval-table {
+        .monitor-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #F4F7FA;
+            border: 1px solid #D5DCE5;
+            color: #374151;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .monitor-count.online {
+            background: #ECFDF5;
+            border-color: #A7F3D0;
+            color: #047857;
+        }
+
+        .monitor-count.online i {
+            color: #10B981;
+            font-size: 8px;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* =========================================================
+           TABLES & CONTAINERS
+        ========================================================== */
+
+        .approval-table-wrap,
+        .monitor-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            background: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            scrollbar-gutter: stable;
+        }
+
+        .approval-table,
+        .monitor-table {
             width: 100%;
             min-width: 720px;
             border-collapse: collapse;
-            background: #ffffff;
+            background: #FFFFFF;
+            font-size: 13px;
         }
 
-        .approval-table th {
-            padding: 12px 14px;
+        .approval-table th,
+        .monitor-table th {
+            padding: 13px 16px;
             text-align: left;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            color: #6b7280;
+            background: #F8FAFC;
+            border-bottom: 2px solid #E2E8F0;
+            color: #475569;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: .35px;
+            letter-spacing: 0.5px;
             white-space: nowrap;
         }
 
-        .approval-table td {
-            padding: 13px 14px;
-            border-bottom: 1px solid #eef0f3;
-            color: #1f2937;
-            font-size: 13px;
+        .approval-table td,
+        .monitor-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #F1F5F9;
+            color: #1E293B;
             vertical-align: middle;
         }
 
-        .approval-table tbody tr:last-child td {
+        .approval-table tbody tr:hover,
+        .monitor-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .approval-table tbody tr:last-child td,
+        .monitor-table tbody tr:last-child td {
             border-bottom: 0;
         }
 
-        .approval-user-name {
+        /* =========================================================
+           TABLE CELLS & BADGES
+        ========================================================== */
+
+        .approval-user-name,
+        .monitor-table td strong {
             font-weight: 700;
-            color: #111827;
+            color: #17202A;
+            display: block;
         }
 
         .approval-user-email {
-            color: #4b5563;
+            color: #5B6775;
+            font-size: 12.5px;
             overflow-wrap: anywhere;
         }
 
         .approval-role {
             display: inline-flex;
-            padding: 4px 8px;
-            border-radius: 999px;
-            background: #f3f4f6;
-            color: #374151;
-            font-size: 10px;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            color: #334155;
+            font-size: 11px;
             font-weight: 700;
             text-transform: capitalize;
+            letter-spacing: 0.2px;
         }
 
         .approval-status {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 8px;
+            gap: 6px;
+            padding: 4px 10px;
             border-radius: 999px;
-            background: #fffbeb;
-            color: #92400e;
-            font-size: 10px;
-            font-weight: 800;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            color: #B45309;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
         }
+
+        .presence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .presence-badge.online {
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #047857;
+        }
+
+        .presence-badge.online i {
+            font-size: 7px;
+            color: #10B981;
+        }
+
+        .presence-badge.offline {
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            color: #6B7280;
+        }
+
+        .presence-badge.offline i {
+            font-size: 7px;
+            color: #9CA3AF;
+        }
+
+        .activity-login {
+            color: #047857;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-logout {
+            color: #64748B;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* =========================================================
+           APPROVAL ACTION BUTTONS
+        ========================================================== */
 
         .approval-actions {
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 7px;
+            gap: 8px;
             white-space: nowrap;
         }
 
         .approval-action {
             min-height: 34px;
-            padding: 7px 11px;
+            padding: 6px 14px;
             border-radius: 7px;
             border: 1px solid transparent;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: .18s ease;
+            transition: all 0.18s ease;
         }
 
         .approval-action:disabled {
-            opacity: .55;
+            opacity: 0.55;
             cursor: not-allowed;
+            pointer-events: none;
         }
 
         .approval-approve {
-            background: #ecfdf5;
-            border-color: #a7f3d0;
+            background: #ECFDF5;
+            border-color: #A7F3D0;
             color: #047857;
         }
 
         .approval-approve:hover:not(:disabled) {
-            background: #d1fae5;
+            background: #047857;
+            border-color: #047857;
+            color: #FFFFFF;
+            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.2);
         }
 
         .approval-reject {
-            background: #fef2f2;
-            border-color: #fecaca;
-            color: #b91c1c;
+            background: #FEF2F2;
+            border-color: #FECACA;
+            color: #B91C1C;
         }
 
         .approval-reject:hover:not(:disabled) {
-            background: #fee2e2;
+            background: #B91C1C;
+            border-color: #B91C1C;
+            color: #FFFFFF;
+            box-shadow: 0 4px 10px rgba(185, 28, 28, 0.2);
         }
 
-        .approval-empty {
-            padding: 28px 16px;
+        /* =========================================================
+           EMPTY STATES
+        ========================================================== */
+
+        .approval-empty,
+        .monitor-empty {
+            padding: 38px 20px;
             text-align: center;
-            color: #6b7280;
+            color: #64748B;
             font-size: 13px;
         }
 
-        .approval-empty i {
+        .approval-empty i,
+        .monitor-empty i {
             display: block;
-            margin-bottom: 7px;
-            color: #9ca3af;
-            font-size: 25px;
+            margin-bottom: 8px;
+            color: #94A3B8;
+            font-size: 28px;
         }
-
-        @media (max-width: 576px) {
-            .approval-table-wrap {
-                border: 0;
-            }
-
-            .approval-table {
-                min-width: 650px;
-            }
-
-            .approval-actions {
-                justify-content: flex-start;
-            }
-        }
-
 
         /* =========================================================
-           NAVBAR / SIDEBAR MOBILE FIX
+           NAVBAR PAGE HEADING
+        ========================================================= */
+
+        .admin-navbar .navbar-page-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            margin-left: 14px;
+            margin-right: 14px;
+        }
+
+        .admin-navbar .navbar-page-heading .page-icon {
+            flex: 0 0 auto;
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #EAF2FA;
+            color: #003377;
+            font-size: 18px;
+        }
+
+        .admin-navbar .navbar-page-heading .eyebrow {
+            margin-bottom: 0.1rem !important;
+            font-size: 10px;
+            line-height: 1.1;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #003377;
+        }
+
+        .admin-navbar .navbar-page-heading h1 {
+            margin-bottom: 0 !important;
+            font-size: 18px;
+            line-height: 1.15;
+            font-weight: 800;
+            color: #17202A;
+        }
+
+        .admin-navbar .navbar-page-heading p.text-muted {
+            margin-top: 2px;
+            font-size: 11px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: min(440px, 38vw);
+            color: #5B6775 !important;
+        }
+
+        /* =========================================================
+           LIVE CLOCK & NOTIFICATIONS
+        ========================================================= */
+
+        .live-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #17202A;
+            background: #F4F7FA;
+            padding: 6px 12px;
+            border-radius: 7px;
+            border: 1px solid #D5DCE5;
+            white-space: nowrap;
+        }
+
+        .live-time i {
+            color: #003377;
+            font-size: 14px;
+        }
+
+        .notification-button {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border: 1px solid #D5DCE5;
+            background: #FFFFFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #374151;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+
+        .notification-button:hover {
+            background: #F4F7FA;
+            color: #003377;
+            border-color: #B8C8DE;
+        }
+
+        .notification-menu {
+            width: 320px;
+            border-radius: 10px;
+            border: 1px solid #D5DCE5;
+            box-shadow: 0 10px 30px rgba(0, 51, 119, 0.12);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .notification-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #E7ECF1;
+            background: #FBFDFE;
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           FOOTER
         ========================================================== */
 
-        .sidebar-toggle {
-            position: relative;
-            z-index: 1201;
+        .config-footer {
+            width: 100%;
+            padding: 24px 10px 16px;
+            text-align: center;
+            color: #8C98A6;
+            font-size: 12px;
+            box-sizing: border-box;
+            border-top: 1px solid #E7ECF1;
+            margin-top: 12px;
+        }
+
+        .config-footer strong {
+            color: #5B6775;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           RESPONSIVE BREAKPOINTS
+        ========================================================== */
+
+        @media (max-width: 1200px) {
+            .config-metrics-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 12px;
+            }
         }
 
         @media (max-width: 992px) {
+            .config-page {
+                padding: 18px;
+            }
+
+            .config-metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .config-panel-header {
+                padding: 16px 18px;
+            }
+
+            .config-panel-body {
+                padding: 18px;
+            }
 
             .admin-sidebar {
                 position: fixed !important;
                 top: 0;
                 left: 0;
                 bottom: 0;
-
                 width: 270px;
                 max-width: 85vw;
-
                 z-index: 1100;
-
                 transform: translateX(-100%);
-                transition:
-                    transform 0.25s ease;
-
+                transition: transform 0.25s ease;
                 overflow-y: auto;
                 overflow-x: hidden;
             }
@@ -673,20 +779,12 @@
 
             .sidebar-backdrop {
                 position: fixed;
-
                 inset: 0;
-
                 z-index: 1090;
-
-                background:
-                    rgba(0, 0, 0, 0.45);
-
+                background: rgba(0, 0, 0, 0.45);
                 opacity: 0;
                 visibility: hidden;
-
-                transition:
-                    opacity 0.25s ease,
-                    visibility 0.25s ease;
+                transition: opacity 0.25s ease, visibility 0.25s ease;
             }
 
             .sidebar-backdrop.show {
@@ -697,106 +795,30 @@
             .admin-main {
                 width: 100%;
                 min-width: 0;
+                margin-left: 0 !important;
             }
 
             .admin-navbar {
                 position: relative;
                 z-index: 1050;
             }
-        }
 
-
-        /* =========================================================
-           LARGE TABLET
-           <= 1200px
-        ========================================================== */
-
-        @media (max-width: 1200px) {
-
-            .config-page {
-                padding: 22px;
-            }
-
-            .camera-config-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .gate-config-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .gate-config-grid .gate-field:last-child {
-                grid-column: 1 / -1;
+            .admin-navbar .navbar-page-heading p.text-muted {
+                display: none;
             }
         }
-
-
-        /* =========================================================
-           TABLET
-           <= 992px
-        ========================================================== */
-
-        @media (max-width: 992px) {
-
-            .config-page {
-                padding: 20px;
-            }
-
-            .config-page-header h1 {
-                font-size: 25px;
-            }
-
-            .camera-config-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .gate-config-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .gate-config-grid .gate-field:last-child {
-                grid-column: 1 / -1;
-            }
-
-            .mongodb-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .environment-preview {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .config-panel-header {
-                padding: 16px 18px;
-            }
-
-            .config-panel-body {
-                padding: 18px;
-            }
-        }
-
-
-        /* =========================================================
-           SMALL TABLET
-           <= 768px
-        ========================================================== */
 
         @media (max-width: 768px) {
-
-            html,
-            body {
-                max-width: 100%;
-                overflow-x: hidden;
+            .config-panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
             }
 
-            .config-page {
+            .approval-summary,
+            .user-monitor-summary {
                 width: 100%;
-                padding: 16px;
+                justify-content: flex-start;
             }
 
             .config-page-header {
@@ -804,396 +826,38 @@
             }
 
             .config-page-header h1 {
-                font-size: 23px;
+                font-size: 22px;
             }
+        }
 
-            .config-page-header p {
-                font-size: 13px;
-            }
-
-            .config-panel {
-                border-radius: 12px;
-                margin-bottom: 16px;
-            }
-
-            .config-panel-header {
-                align-items: flex-start;
-                flex-direction: column;
-                padding: 15px;
+        @media (max-width: 576px) {
+            .config-page {
+                padding: 14px;
             }
 
             .config-panel-body {
-                padding: 15px;
-            }
-
-            .camera-config-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-
-            .gate-config-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-
-            .gate-config-grid .gate-field:last-child {
-                grid-column: auto;
-            }
-
-            .mongodb-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-
-            .mongodb-grid .full-width {
-                grid-column: auto;
-            }
-
-            .environment-preview {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .camera-card {
-                padding: 15px;
-            }
-
-            .camera-card-header {
-                align-items: flex-start;
-                flex-wrap: wrap;
-            }
-
-            .config-actions {
-                justify-content: stretch;
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .config-btn {
-                width: 100%;
-            }
-
-            .admin-navbar {
-                min-height: 58px;
-            }
-
-            .navbar-page-heading {
-                min-width: 0;
-                flex: 1;
-            }
-
-            .navbar-page-heading h1,
-            .navbar-page-heading .page-title,
-            .page-heading-copy h1 {
-                font-size: 18px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .navbar-actions {
-                gap: 6px;
+                padding: 14px;
             }
 
             .live-time {
                 display: none !important;
             }
-        }
 
-
-        /* =========================================================
-           MOBILE
-           <= 576px
-        ========================================================== */
-
-        @media (max-width: 576px) {
-
-            .config-page {
-                padding: 12px;
+            .approval-actions {
+                justify-content: flex-start;
             }
 
-            .config-page-header h1 {
-                font-size: 21px;
+            .admin-navbar .navbar-page-heading .page-icon {
+                display: none;
             }
 
-            .config-page-header p {
-                font-size: 12px;
-                line-height: 1.5;
+            .admin-navbar .navbar-page-heading .eyebrow {
+                display: none;
             }
 
-            .config-panel {
-                border-radius: 10px;
-            }
-
-            .config-panel-header {
-                padding: 13px;
-            }
-
-            .config-panel-body {
-                padding: 13px;
-            }
-
-            .config-panel-title {
-                width: 100%;
-            }
-
-            .config-panel-title-icon {
-                width: 34px;
-                height: 34px;
-                min-width: 34px;
-                font-size: 16px;
-            }
-
-            .config-panel-title-text h2 {
+            .admin-navbar .navbar-page-heading h1 {
                 font-size: 15px;
             }
-
-            .config-panel-title-text p {
-                font-size: 11px;
-            }
-
-            .camera-card {
-                padding: 13px;
-                border-radius: 9px;
-            }
-
-            .camera-card-title h3 {
-                font-size: 14px;
-            }
-
-            .camera-card-title i {
-                font-size: 18px;
-            }
-
-            .camera-status-badge {
-                font-size: 10px;
-                padding: 4px 7px;
-            }
-
-            .config-label {
-                font-size: 11px;
-            }
-
-            .config-input,
-            .config-select {
-                min-height: 40px;
-                font-size: 13px;
-            }
-
-            .config-help {
-                font-size: 10px;
-            }
-
-            .environment-item {
-                padding: 12px;
-            }
-
-            .environment-key {
-                font-size: 10px;
-            }
-
-            .environment-value {
-                font-size: 12px;
-            }
-
-            .config-btn {
-                min-height: 40px;
-                font-size: 12px;
-            }
-
-            .navbar-actions {
-                gap: 4px;
-            }
-
-            .navbar-page-heading h1,
-            .navbar-page-heading .page-title,
-            .page-heading-copy h1 {
-                font-size: 16px;
-            }
-
-            .notification-dropdown,
-            .notifications-dropdown,
-            .dropdown-menu {
-                max-width:
-                    calc(100vw - 24px);
-            }
-        }
-
-
-        /* =========================================================
-           VERY SMALL MOBILE
-           <= 400px
-        ========================================================== */
-
-        @media (max-width: 400px) {
-
-            .config-page {
-                padding: 9px;
-            }
-
-            .config-page-header h1 {
-                font-size: 19px;
-            }
-
-            .config-page-header p {
-                font-size: 11px;
-            }
-
-            .config-panel-header {
-                padding: 11px;
-            }
-
-            .config-panel-body {
-                padding: 11px;
-            }
-
-            .camera-card {
-                padding: 11px;
-            }
-
-            .config-panel-title-icon {
-                width: 31px;
-                height: 31px;
-                min-width: 31px;
-                font-size: 14px;
-            }
-
-            .config-panel-title-text h2 {
-                font-size: 14px;
-            }
-
-            .camera-card-header {
-                gap: 8px;
-            }
-
-            .camera-status-badge {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-
-        /* =========================================================
-           FOOTER
-        ========================================================== */
-
-        .config-footer {
-            width: 100%;
-            padding: 18px 10px 24px;
-            text-align: center;
-            color: #9ca3af;
-            font-size: 11px;
-            box-sizing: border-box;
-        }
-
-        .config-footer strong {
-            color: #6b7280;
-        }
-
-
-        /* =========================================================
-           APPROVED USERS + LOGIN ACTIVITY
-        ========================================================== */
-
-        .user-monitor-summary {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .monitor-count {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            background: #f3f4f6;
-            color: #374151;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .monitor-count.online {
-            background: #ecfdf5;
-            color: #047857;
-        }
-
-        .monitor-table-wrap {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            margin-bottom: 14px;
-        }
-
-        .monitor-table {
-            width: 100%;
-            min-width: 760px;
-            border-collapse: collapse;
-            background: #fff;
-        }
-
-        .monitor-table th {
-            padding: 11px 13px;
-            text-align: left;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            color: #6b7280;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: .35px;
-            white-space: nowrap;
-        }
-
-        .monitor-table td {
-            padding: 12px 13px;
-            border-bottom: 1px solid #eef0f3;
-            color: #1f2937;
-            font-size: 12px;
-            vertical-align: middle;
-        }
-
-        .monitor-table tbody tr:last-child td {
-            border-bottom: 0;
-        }
-
-        .presence-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .presence-badge.online {
-            background: #ecfdf5;
-            color: #047857;
-        }
-
-        .presence-badge.offline {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-
-        .activity-login {
-            color: #047857;
-            font-weight: 800;
-        }
-
-        .activity-logout {
-            color: #6b7280;
-            font-weight: 700;
-        }
-
-        .monitor-empty {
-            padding: 22px;
-            text-align: center;
-            color: #9ca3af;
-            font-size: 12px;
         }
     </style>
 
@@ -1207,156 +871,89 @@
 
         <!-- =====================================================
          SIDEBAR BACKDROP
-    ====================================================== -->
+        ====================================================== -->
 
-        <div class="sidebar-backdrop"></div>
+        <div class="sidebar-backdrop" data-sidebar-close></div>
 
 
         <!-- =====================================================
          SIDEBAR
-    ====================================================== -->
+        ====================================================== -->
 
-        <aside class="admin-sidebar" id="adminSidebar">
+        <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
 
             <div class="sidebar-header">
 
-                <div class="brand-mark">
+                <a class="brand-mark" href="index.html" aria-label="INOUTX dashboard">
 
-                    <div class="brand-icon">
+                    <span class="brand-icon">
+                        <i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>
+                    </span>
 
-                        <i class="bi bi-bus-front-fill"></i>
+                    <span class="brand-copy">
+                        <span class="brand-title">INOUTX</span>
+                        <span class="brand-subtitle">Admin Dashboard</span>
+                    </span>
 
-                    </div>
-
-                    <div class="brand-copy">
-
-                        <div class="brand-title">
-                            INOUTX
-                        </div>
-
-                        <div class="brand-subtitle">
-                            Smart Campus Vehicle Management
-                        </div>
-
-                    </div>
-
-                </div>
+                </a>
 
             </div>
 
 
             <!-- =================================================
              SIDEBAR NAVIGATION
-        ================================================== -->
+            ================================================== -->
 
             <nav class="sidebar-nav">
 
                 <a class="nav-link" href="index.html">
-
                     <span class="nav-icon">
-
-                        <i class="bi bi-grid-1x2-fill" aria-hidden="true"></i>
-
+                        <i class="bi bi-speedometer2" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Dashboard
-                    </span>
-
+                    <span class="nav-text">Dashboard</span>
                 </a>
-
 
                 <a class="nav-link" href="vehicle.html">
-
                     <span class="nav-icon">
-
-                        <i class="bi bi-arrow-left-right" aria-hidden="true"></i>
-
+                        <i class="bi bi-bus-front" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Vehicle Entry / Exit
-                    </span>
-
+                    <span class="nav-text">Vehicle Movements</span>
                 </a>
-
 
                 <a class="nav-link" href="staff-vehicles.html">
-
                     <span class="nav-icon">
-
-                        <i class="bi bi-person-badge" aria-hidden="true"></i>
-
+                        <i class="bi bi-person-vcard" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Faculty / Staff Vehicles
-                    </span>
-
+                    <span class="nav-text">Staff Vehicles</span>
                 </a>
 
-
-                <a class="nav-link" href="unknown-vehicles.html">
-
+                <a class="nav-link" href="visitor.html">
                     <span class="nav-icon">
-
-                        <i class="bi bi-person-walking" aria-hidden="true"></i>
-
+                        <i class="bi bi-question-circle" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Visitors
-                    </span>
-
+                    <span class="nav-text">Visitor Vehicles</span>
                 </a>
-
 
                 <a class="nav-link" href="download.html">
-
                     <span class="nav-icon">
-
-                        <i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i>
-
+                        <i class="bi bi-download" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Reports & Downloads
-                    </span>
-
+                    <span class="nav-text">Reports &amp; Downloads</span>
                 </a>
-
 
                 <a class="nav-link" href="profile.html">
-
                     <span class="nav-icon">
-
-                        <i class="bi bi-person-circle" aria-hidden="true"></i>
-
+                        <i class="bi bi-person-badge" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Profile
-                    </span>
-
+                    <span class="nav-text">Profile</span>
                 </a>
 
-
-                <!-- =================================================
-                 SYSTEM CONFIGURATION
-            ================================================== -->
-
-                <a class="nav-link active" href="system-config.html" id="system-config-nav">
-
+                <!-- SYSTEM CONFIGURATION / ADMIN SETTING -->
+                <a class="nav-link active" href="system-config.html" id="system-config-nav" aria-current="page">
                     <span class="nav-icon">
-
-                        <i class="bi bi-gear" aria-hidden="true"></i>
-
+                        <i class="bi bi-gear-fill" aria-hidden="true"></i>
                     </span>
-
-                    <span class="nav-text">
-
-                    </span>
-
+                    <span class="nav-text">Admin Setting</span>
                 </a>
 
             </nav>
@@ -1366,146 +963,131 @@
 
 
         <!-- =====================================================
-         MAIN
-    ====================================================== -->
+         MAIN CONTENT AREA
+        ====================================================== -->
 
         <main class="admin-main">
 
 
             <!-- =================================================
              NAVBAR
-        ================================================== -->
+            ================================================== -->
 
-            <nav class="navbar admin-navbar">
+            <nav class="navbar admin-navbar navbar-expand bg-white">
 
-                <div class="navbar-page-heading">
+                <div class="container-fluid px-3 px-lg-4">
 
 
                     <!-- SIDEBAR TOGGLE -->
 
-                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open navigation"
-                        aria-controls="adminSidebar" aria-expanded="false">
-
-                        <i class="bi bi-list"></i>
-
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation"
+                        aria-controls="adminSidebar" aria-expanded="false" data-sidebar-toggle>
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </button>
 
 
-                    <div class="page-heading-copy">
+                    <!-- PAGE HEADING COPY -->
 
-                        <h1>
-                            Admin Setting
-                        </h1>
+                    <div class="page-heading-copy navbar-page-heading">
 
-                    </div>
+                        <span class="page-icon">
+                            <i class="bi bi-gear-fill" aria-hidden="true"></i>
+                        </span>
 
-                </div>
-
-
-                <!-- =================================================
-                 NAVBAR ACTIONS
-            ================================================== -->
-
-                <div class="navbar-actions">
-
-
-                    <!-- LIVE TIME -->
-
-                    <div class="live-time" id="live-time">
-
-                        --:--:--
+                        <div>
+                            <p class="eyebrow mb-1">
+                                Configuration
+                            </p>
+                            <h1 class="h3 mb-1">
+                                Admin Setting
+                            </h1>
+                            <p class="text-muted mb-0">
+                                User registration approvals, verified accounts &amp; audit records
+                            </p>
+                        </div>
 
                     </div>
 
 
-                    <!-- =================================================
-                     NOTIFICATIONS
-                ================================================== -->
+                    <!-- NAVBAR ACTIONS -->
 
-                    <div class="dropdown">
-
-                        <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false" aria-label="Notifications">
-
-                            <i class="bi bi-bell"></i>
-
-                        </button>
+                    <div class="navbar-actions ms-auto">
 
 
-                        <div class="dropdown-menu dropdown-menu-end notification-dropdown">
+                        <!-- LIVE TIME CLOCK -->
 
-                            <div class="px-3 py-2">
-
-                                <strong>
-                                    Notifications
-                                </strong>
-
-                            </div>
+                        <div class="live-time">
+                            <i class="bi bi-clock" aria-hidden="true"></i>
+                            <span id="live-time">--:--:--</span>
+                        </div>
 
 
-                            <div id="notification-list" class="px-3 pb-3">
+                        <!-- NOTIFICATIONS DROPDOWN -->
 
-                                <div class="text-muted small">
-                                    No new notifications.
+                        <div class="dropdown">
+
+                            <button class="notification-button" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" aria-label="Notifications">
+                                <i class="bi bi-bell" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-end notification-menu">
+
+                                <div class="notification-header">
+                                    <strong>Notifications</strong>
+                                </div>
+
+                                <div id="notification-list" class="px-3 py-3">
+                                    <div class="text-muted small">
+                                        No new notifications.
+                                    </div>
                                 </div>
 
                             </div>
 
                         </div>
 
-                    </div>
 
+                        <!-- PROFILE DROPDOWN -->
 
+                        <div class="dropdown">
 
-                    <!-- =================================================
-                     PROFILE
-                ================================================== -->
+                            <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <span class="avatar-img avatar-sm profile-avatar">
+                                    <i class="bi bi-person-fill"></i>
+                                </span>
+                                <span class="profile-user-copy">
+                                    <span>Administrator</span>
+                                    <small>Admin Settings</small>
+                                </span>
+                            </button>
 
-                    <div class="dropdown">
+                            <ul class="dropdown-menu dropdown-menu-end">
 
-                        <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                                <li>
+                                    <a class="dropdown-item" href="profile.html">
+                                        <i class="bi bi-person me-2"></i>
+                                        Profile
+                                    </a>
+                                </li>
 
-                            <i class="bi bi-person-circle"></i>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
 
-                        </button>
+                                <li>
+                                    <a class="dropdown-item" href="login.html">
+                                        <i class="bi bi-box-arrow-right me-2"></i>
+                                        Logout
+                                    </a>
+                                </li>
 
+                            </ul>
 
-                        <ul class="dropdown-menu dropdown-menu-end">
-
-                            <li>
-
-                                <a class="dropdown-item" href="profile.html">
-
-                                    <i class="bi bi-person me-2"></i>
-
-                                    Profile
-
-                                </a>
-
-                            </li>
-
-
-                            <li>
-
-                                <hr class="dropdown-divider">
-
-                            </li>
-
-
-                            <li>
-
-                                <a class="dropdown-item" href="login.html">
-
-                                    <i class="bi bi-box-arrow-right me-2"></i>
-
-                                    Logout
-
-                                </a>
-
-                            </li>
-
-                        </ul>
+                        </div>
 
                     </div>
 
@@ -1516,243 +1098,265 @@
 
 
             <!-- =================================================
-             CONFIGURATION CONTENT
-        ================================================== -->
+             CONFIGURATION PAGE CONTENT
+            ================================================== -->
 
             <section class="dashboard-content">
 
-                <div class="config-page">
+                <div class="container-fluid px-3 px-lg-4 py-3">
+
+                    <div class="config-page">
 
 
-                    <!-- =================================================
-                     PAGE HEADER
-                ================================================== -->
+                        <!-- =================================================
+                         PAGE HEADER
+                        ================================================== -->
 
-                    <div class="config-page-header">
+                        <div class="config-page-header">
 
-                        <h1>
-                            Admin Setting
-                        </h1>
+                            <div class="config-page-title-wrap">
+                                <h1>Admin Setting</h1>
+                                <p>Review pending user registrations, view approved system operators, and track session activity logs.</p>
+                            </div>
 
-                        <p>
-                            User Approvals Pending Request
-                        </p>
+                            <div class="config-header-meta">
+                                <i class="bi bi-circle-fill"></i>
+                                INOUTX Enterprise System
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                         GLOBAL CONFIG MESSAGE / ALERT
+                        ================================================== -->
+
+                        <div id="config-message" class="config-message"></div>
+
+
+
+
+                        <!-- =================================================
+                         USER APPROVALS PANEL
+                        ================================================== -->
+
+                        <section class="config-panel" id="user-approvals-panel">
+
+                            <div class="config-panel-header">
+
+                                <div class="config-panel-title">
+
+                                    <div class="config-panel-title-icon">
+                                        <i class="bi bi-person-check-fill"></i>
+                                    </div>
+
+                                    <div class="config-panel-title-text">
+                                        <h2>Pending User Approvals</h2>
+                                        <p>
+                                            Review new account requests. Approve or reject each registration
+                                            manually. Only authorized college email addresses are granted access.
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                <div class="approval-summary">
+                                    <span class="approval-badge-label">Pending</span>
+                                    <span id="pending-users-count" class="approval-count">0</span>
+                                </div>
+
+                            </div>
+
+                            <div class="config-panel-body">
+
+                                <div id="approval-message" class="config-message" style="margin-bottom: 16px;"></div>
+
+                                <div class="approval-table-wrap">
+
+                                    <table class="approval-table">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th style="text-align: right;">Actions</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="pending-users-body">
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="approval-empty">
+                                                        <i class="bi bi-hourglass-split"></i>
+                                                        Loading pending registrations...
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+
+
+                        <!-- =================================================
+                         APPROVED USERS PANEL
+                        ================================================== -->
+
+                        <section class="config-panel" id="approved-users-panel">
+
+                            <div class="config-panel-header">
+
+                                <div class="config-panel-title">
+
+                                    <div class="config-panel-title-icon">
+                                        <i class="bi bi-people-fill"></i>
+                                    </div>
+
+                                    <div class="config-panel-title-text">
+                                        <h2>Approved Users</h2>
+                                        <p>
+                                            All verified users approved for the INOUTX platform,
+                                            including real-time presence monitoring.
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                <div class="user-monitor-summary">
+                                    <span id="approved-users-count" class="monitor-count">
+                                        <i class="bi bi-people"></i> 0 approved
+                                    </span>
+                                    <span id="online-users-count" class="monitor-count online">
+                                        <i class="bi bi-circle-fill"></i> 0 online
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="config-panel-body">
+
+                                <div class="monitor-table-wrap">
+
+                                    <table class="monitor-table">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Last Login</th>
+                                                <th style="text-align: right;">Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="approved-users-body">
+                                            <tr>
+                                                <td colspan="6">
+                                                    <div class="monitor-empty">
+                                                        <i class="bi bi-hourglass-split"></i>
+                                                        Loading approved users...
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+
+
+                        <!-- =================================================
+                         LOGIN ACTIVITY PANEL
+                        ================================================== -->
+
+                        <section class="config-panel" id="login-activity-panel">
+
+                            <div class="config-panel-header">
+
+                                <div class="config-panel-title">
+
+                                    <div class="config-panel-title-icon">
+                                        <i class="bi bi-clock-history"></i>
+                                    </div>
+
+                                    <div class="config-panel-title-text">
+                                        <h2>Login &amp; Session Activity</h2>
+                                        <p>
+                                            Audit trail of authentication records, sessions, and origin IP addresses for security compliance.
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="config-panel-body">
+
+                                <div class="monitor-table-wrap">
+
+                                    <table class="monitor-table">
+
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Activity</th>
+                                                <th>Time</th>
+                                                <th>IP Address</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="login-activity-body">
+                                            <tr>
+                                                <td colspan="6">
+                                                    <div class="monitor-empty">
+                                                        <i class="bi bi-hourglass-split"></i>
+                                                        Loading login activity...
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+
+
+                        <!-- =================================================
+                         FOOTER
+                        ================================================== -->
+
+                        <footer class="config-footer">
+                            2026 Designed by
+                            <strong>Department Of CSE - KRCT</strong>.
+                            All rights reserved.
+                        </footer>
 
                     </div>
-
-
-
-                    <!-- =================================================
-                     MESSAGE
-                ================================================== -->
-
-                    <div id="config-message" class="config-message">
-                    </div>
-
-
-
-
-                    <!-- =================================================
-                     USER APPROVALS
-                ================================================== -->
-
-                    <section class="config-panel" id="user-approvals-panel">
-
-                        <div class="config-panel-header">
-
-                            <div class="config-panel-title">
-
-                                <div class="config-panel-title-icon">
-                                    <i class="bi bi-person-check"></i>
-                                </div>
-
-                                <div class="config-panel-title-text">
-                                    <h2>User Approvals</h2>
-                                    <p>
-                                        Review new account requests. Approve or reject each registration
-                                        manually. Only KRCT/KRCE college email addresses are accepted.
-                                    </p>
-                                </div>
-
-                            </div>
-
-                            <div class="approval-summary">
-                                <span id="pending-users-count" class="approval-count">
-                                    0
-                                </span>
-                            </div>
-
-                        </div>
-
-                        <div class="config-panel-body">
-
-                            <div id="approval-message" class="config-message" style="margin-bottom: 14px;">
-                            </div>
-
-                            <div class="approval-table-wrap">
-
-                                <table class="approval-table">
-
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Status</th>
-                                            <th style="text-align:right;">
-                                                Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="pending-users-body">
-                                        <tr>
-                                            <td colspan="5">
-                                                <div class="approval-empty">
-                                                    <i class="bi bi-hourglass-split"></i>
-                                                    Loading pending registrations...
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-
-                    <!-- =================================================
-                     APPROVED USERS
-                ================================================== -->
-
-                    <section class="config-panel" id="approved-users-panel">
-
-                        <div class="config-panel-header">
-                            <div class="config-panel-title">
-                                <div class="config-panel-title-icon">
-                                    <i class="bi bi-people"></i>
-                                </div>
-                                <div class="config-panel-title-text">
-                                    <h2>Approved Users</h2>
-                                    <p>
-                                        All users approved by the INOUTX configuration administrator,
-                                        including who is currently using the system.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="user-monitor-summary">
-                                <span id="approved-users-count" class="monitor-count">
-                                    <i class="bi bi-people"></i> 0 approved
-                                </span>
-                                <span id="online-users-count" class="monitor-count online">
-                                    <i class="bi bi-circle-fill"></i> 0 online
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="config-panel-body">
-
-                            <div class="monitor-table-wrap">
-                                <table class="monitor-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Status</th>
-                                            <th>Last Login</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="approved-users-body">
-                                        <tr>
-                                            <td colspan="5">
-                                                <div class="monitor-empty">
-                                                    Loading approved users...
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </section>
-
-
-                    <!-- =================================================
-                     LOGIN ACTIVITY
-                ================================================== -->
-
-                    <section class="config-panel" id="login-activity-panel">
-
-                        <div class="config-panel-header">
-                            <div class="config-panel-title">
-                                <div class="config-panel-title-icon">
-                                    <i class="bi bi-clock-history"></i>
-                                </div>
-                                <div class="config-panel-title-text">
-                                    <h2>Login Activity</h2>
-                                    <p>
-                                        Recent login and logout records for approved system users.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="config-panel-body">
-
-                            <div class="monitor-table-wrap">
-                                <table class="monitor-table">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Activity</th>
-                                            <th>Time</th>
-                                            <th>IP Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="login-activity-body">
-                                        <tr>
-                                            <td colspan="6">
-                                                <div class="monitor-empty">
-                                                    Loading login activity...
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </section>
-
-
-
-
-
-
-                    <!-- =================================================
-                     FOOTER
-                ================================================== -->
-
-                    <footer class="config-footer">
-
-                        2026 Designed by
-
-                        <strong>
-                            Department Of CSE - KRCT
-                        </strong>.
-
-                        All rights reserved.
-
-                    </footer>
 
                 </div>
 
@@ -3323,7 +2927,7 @@
                 if (!rows.length) {
                     body.innerHTML = `
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <div class="monitor-empty">
                             <i class="bi bi-people"></i>
                             No approved users found.
@@ -3335,6 +2939,7 @@
                 }
 
                 body.innerHTML = rows.map(user => {
+                    const id = escapeHtml(user.id || "");
                     const name = escapeHtml(user.name || "—");
                     const email = escapeHtml(user.email || "—");
                     const role = escapeHtml(formatMonitorRole(user.role));
@@ -3353,6 +2958,18 @@
                         </span>
                     </td>
                     <td>${lastLogin}</td>
+                    <td style="text-align: right;">
+                        <button
+                            type="button"
+                            class="approval-action approval-reject"
+                            data-remove-user-id="${id}"
+                            data-user-name="${name}"
+                            title="Remove approved user"
+                            style="padding: 5px 12px; font-size: 11px;">
+                            <i class="bi bi-trash3"></i>
+                            Remove
+                        </button>
+                    </td>
                 </tr>
             `;
                 }).join("");
@@ -3380,7 +2997,7 @@
                     if (body) {
                         body.innerHTML = `
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="monitor-empty">
                                 Unable to load approved users.
                             </div>
@@ -3504,6 +3121,95 @@
                         handleUserApproval(
                             userId,
                             action
+                        );
+                    }
+                );
+            }
+
+
+            /* =====================================================
+               REMOVE APPROVED USER
+            ====================================================== */
+
+            async function handleRemoveApprovedUser(userId, userName) {
+                if (!userId) {
+                    return;
+                }
+
+                const confirmed = window.confirm(
+                    `Are you sure you want to remove the approved user "${userName || "this user"}"? This will revoke their access to the system.`
+                );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch(
+                        `/api/approved-users/${encodeURIComponent(userId)}/remove`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            credentials: "include",
+                            cache: "no-store"
+                        }
+                    );
+
+                    const result = await response.json();
+
+                    if (!response.ok || result.success !== true) {
+                        throw new Error(
+                            result.error || "Unable to remove approved user."
+                        );
+                    }
+
+                    showMessage(
+                        result.message || "User removed successfully.",
+                        "success"
+                    );
+
+                    loadApprovedUsers();
+                }
+                catch (error) {
+                    console.error("Remove approved user error:", error);
+                    showMessage(
+                        error.message || "Unable to remove approved user.",
+                        "error"
+                    );
+                }
+            }
+
+            function setupApprovedUsersRemoval() {
+                const body = getElement("approved-users-body");
+
+                if (!body) {
+                    return;
+                }
+
+                body.addEventListener(
+                    "click",
+                    function (event) {
+                        const button = event.target.closest(
+                            "[data-remove-user-id]"
+                        );
+
+                        if (!button) {
+                            return;
+                        }
+
+                        const userId = button.getAttribute(
+                            "data-remove-user-id"
+                        );
+
+                        const userName = button.getAttribute(
+                            "data-user-name"
+                        );
+
+                        handleRemoveApprovedUser(
+                            userId,
+                            userName
                         );
                     }
                 );
@@ -3664,6 +3370,7 @@
 
 
                 setupUserApprovals();
+                setupApprovedUsersRemoval();
 
 
                 const formInputs =
