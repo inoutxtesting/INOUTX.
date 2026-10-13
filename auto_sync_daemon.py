@@ -118,6 +118,25 @@ def restart_process_by_pattern(pattern, start_cmd, env=None):
         return False
 
 
+def restart_systemd_service(service_name):
+    """Restart a systemd-managed service and report failures to the deploy log."""
+    try:
+        result = subprocess.run(
+            ["systemctl", "restart", service_name],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=True,
+        )
+        logger.info("Restarted systemd service '%s'.", service_name)
+        return True
+    except subprocess.CalledProcessError as e:
+        logger.error("Could not restart '%s': %s", service_name, e.stderr.strip())
+    except Exception as e:
+        logger.error("Could not restart '%s': %s", service_name, e)
+    return False
+
+
 def check_and_deploy():
     """Checks origin/main for new commits and applies updates."""
     # 1. Fetch latest changes from GitHub
@@ -179,7 +198,13 @@ def check_and_deploy():
     # 6. Check what services need reloading
     has_dep_changes = any("requirements" in f for f in changed_files)
     has_app_changes = any("Frontend/app.py" in f or "mongodb.py" in f or ".env" in f for f in changed_files)
-    has_camera_changes = any("camera.py" in f or "main.py" in f or "bus_detector.py" in f or "models" in f for f in changed_files)
+    has_camera_changes = any(
+        (f.endswith(".py") and ("/" not in f or f == "Frontend/daily_report_email.py"))
+        or f in {".env", "lines_config.json"}
+        or f.startswith("models/")
+        or "requirements" in f
+        for f in changed_files
+    )
     has_frontend_only = all(
         f.startswith("Frontend/html/") or f.startswith("Frontend/assets/") or f.startswith("Frontend/public/") or f.endswith(".md")
         for f in changed_files
@@ -198,9 +223,8 @@ def check_and_deploy():
 
     # Reload camera AI engine if camera.py changed
     if has_camera_changes:
-        logger.info("🎥 Reloading Dual-Camera AI engine (main.py)...")
-        main_script = os.path.join(REPO_DIR, "main.py")
-        restart_process_by_pattern("main.py", [VENV_PYTHON, main_script], env={"DISPLAY": ":0"})
+        logger.info("🎥 Reloading camera engine through inoutx-camera.service...")
+        restart_systemd_service("inoutx-camera.service")
 
     if has_frontend_only:
         logger.info("⚡ Frontend static changes applied! Live on https://inoutx.zynix.us instantly (no restart needed).")

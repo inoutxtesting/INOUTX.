@@ -15,8 +15,6 @@ if [ -f "$DIR/$WEB_SERVICE" ]; then
     echo "Installing $WEB_SERVICE..."
     sudo cp "$DIR/$WEB_SERVICE" "/etc/systemd/system/$WEB_SERVICE"
     sudo chmod 644 "/etc/systemd/system/$WEB_SERVICE"
-    sudo systemctl enable "$WEB_SERVICE"
-    sudo systemctl restart "$WEB_SERVICE"
 fi
 
 # Copy camera service
@@ -24,12 +22,13 @@ if [ -f "$DIR/$CAMERA_SERVICE" ]; then
     echo "Installing $CAMERA_SERVICE..."
     sudo cp "$DIR/$CAMERA_SERVICE" "/etc/systemd/system/$CAMERA_SERVICE"
     sudo chmod 644 "/etc/systemd/system/$CAMERA_SERVICE"
-    sudo systemctl enable "$CAMERA_SERVICE"
-    sudo systemctl restart "$CAMERA_SERVICE"
 fi
 
 echo "Reloading systemd daemon..."
 sudo systemctl daemon-reload
+
+sudo systemctl enable "$WEB_SERVICE" "$CAMERA_SERVICE"
+sudo systemctl restart "$WEB_SERVICE" "$CAMERA_SERVICE"
 
 echo ""
 echo "Checking service statuses..."

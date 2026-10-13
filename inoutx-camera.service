@@ -6,10 +6,11 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=iqac2
-WorkingDirectory=/home/iqac2/Documents/INOUTX
-ExecStart=/home/iqac2/Documents/INOUTX/venv313/bin/python3 /home/iqac2/Documents/INOUTX/camera.py
+WorkingDirectory=/home/iqac2/Documents/INOUTX-FINAL/INOUTX.
+ExecStart=/home/iqac2/Documents/INOUTX/venv313/bin/python3 /home/iqac2/Documents/INOUTX-FINAL/INOUTX./main.py
 Restart=always
 RestartSec=5
+Environment=DISPLAY=:0
 Environment=PYTHONUNBUFFERED=1
 
 [Install]
