@@ -1245,6 +1245,8 @@
 
                             <div class="config-panel-body">
 
+                                <div id="approved-users-message" class="config-message" style="margin: 0 0 16px;"></div>
+
                                 <div class="monitor-table-wrap">
 
                                     <table class="monitor-table">
@@ -1256,12 +1258,13 @@
                                                 <th>Role</th>
                                                 <th>Status</th>
                                                 <th>Last Login</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
 
                                         <tbody id="approved-users-body">
                                             <tr>
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                     <div class="monitor-empty">
                                                         <i class="bi bi-hourglass-split"></i>
                                                         Loading approved users...
@@ -1336,6 +1339,18 @@
 
                                     </table>
 
+                                </div>
+
+                                <div id="login-activity-pagination" class="d-flex align-items-center justify-content-between gap-3 mt-3" hidden>
+                                    <span id="login-activity-page-label" class="text-muted" aria-live="polite"></span>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-login-activity-page="previous">
+                                            <i class="bi bi-chevron-left" aria-hidden="true"></i> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-login-activity-page="next">
+                                            Next <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                             </div>
@@ -2926,7 +2941,7 @@
                 if (!rows.length) {
                     body.innerHTML = `
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <div class="monitor-empty">
                             <i class="bi bi-people"></i>
                             No approved users found.
@@ -2942,6 +2957,10 @@
                     const email = escapeHtml(user.email || "—");
                     const role = escapeHtml(formatMonitorRole(user.role));
                     const lastLogin = escapeHtml(formatActivityTime(user.last_login_at));
+                    const userId = escapeHtml(user.id || "");
+                    const action = user.can_delete === true
+                        ? `<button type="button" class="btn btn-sm btn-outline-danger" data-delete-approved-user data-user-id="${userId}" data-user-name="${name}" aria-label="Delete approved user ${name}" title="Delete approved user"><i class="bi bi-trash3" aria-hidden="true"></i></button>`
+                        : "Protected";
                     const online = user.online === true;
 
                     return `
@@ -2956,9 +2975,56 @@
                         </span>
                     </td>
                     <td>${lastLogin}</td>
+                    <td>${action}</td>
                 </tr>
             `;
                 }).join("");
+            }
+
+            function showApprovedUsersMessage(message, type = "success") {
+                const element = getElement("approved-users-message");
+                if (!element) return;
+
+                element.textContent = message;
+                element.className = `config-message show ${type}`;
+                window.clearTimeout(showApprovedUsersMessage.timeout);
+                showApprovedUsersMessage.timeout = window.setTimeout(() => {
+                    element.classList.remove("show");
+                }, 5000);
+            }
+
+            function setupApprovedUserActions() {
+                const body = getElement("approved-users-body");
+                if (!body) return;
+
+                body.addEventListener("click", async event => {
+                    const button = event.target.closest("[data-delete-approved-user]");
+                    if (!button) return;
+
+                    const userId = button.dataset.userId;
+                    const userName = button.dataset.userName || "this user";
+                    if (!window.confirm(`Permanently delete approved user ${userName}?`)) {
+                        return;
+                    }
+
+                    button.disabled = true;
+                    try {
+                        const response = await fetch(
+                            `/api/approved-users/${encodeURIComponent(userId)}`,
+                            { method: "DELETE", credentials: "include" }
+                        );
+                        const result = await response.json();
+                        if (!response.ok || result.success !== true) {
+                            throw new Error(result.error || "Unable to delete the approved user.");
+                        }
+
+                        showApprovedUsersMessage(result.message || "Approved user deleted.");
+                        await loadApprovedUsers();
+                    } catch (error) {
+                        button.disabled = false;
+                        showApprovedUsersMessage(error.message || "Unable to delete the approved user.", "error");
+                    }
+                });
             }
 
             async function loadApprovedUsers() {
@@ -2983,7 +3049,7 @@
                     if (body) {
                         body.innerHTML = `
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="monitor-empty">
                                 Unable to load approved users.
                             </div>
@@ -2994,7 +3060,9 @@
                 }
             }
 
-            function renderLoginActivity(logs) {
+            let loginActivityPage = 1;
+
+            function renderLoginActivity(logs, pagination = {}) {
                 const body = getElement("login-activity-body");
                 const rows = Array.isArray(logs) ? logs : [];
 
@@ -3010,20 +3078,18 @@
                     </td>
                 </tr>
             `;
-                    return;
-                }
+                } else {
+                    body.innerHTML = rows.map(log => {
+                        const name = escapeHtml(log.name || "—");
+                        const email = escapeHtml(log.email || "—");
+                        const role = escapeHtml(formatMonitorRole(log.role));
+                        const activity = String(log.status || "").toUpperCase() === "LOGIN";
+                        const time = escapeHtml(
+                            formatActivityTime(log.login_at || log.logout_at)
+                        );
+                        const ip = escapeHtml(log.ip_address || "—");
 
-                body.innerHTML = rows.map(log => {
-                    const name = escapeHtml(log.name || "—");
-                    const email = escapeHtml(log.email || "—");
-                    const role = escapeHtml(formatMonitorRole(log.role));
-                    const activity = String(log.status || "").toUpperCase() === "LOGIN";
-                    const time = escapeHtml(
-                        formatActivityTime(log.login_at || log.logout_at)
-                    );
-                    const ip = escapeHtml(log.ip_address || "—");
-
-                    return `
+                        return `
                 <tr>
                     <td><strong>${name}</strong></td>
                     <td>${email}</td>
@@ -3036,12 +3102,32 @@
                     <td>${ip}</td>
                 </tr>
             `;
-                }).join("");
+                    }).join("");
+                }
+
+                const page = Number(pagination.page) || 1;
+                const pageSize = Number(pagination.page_size) || 5;
+                const totalCount = Number(pagination.total_count) || 0;
+                const totalPages = Number(pagination.total_pages) || 1;
+                const firstLog = totalCount ? ((page - 1) * pageSize) + 1 : 0;
+                const lastLog = Math.min(page * pageSize, totalCount);
+                const pager = getElement("login-activity-pagination");
+                const pageLabel = getElement("login-activity-page-label");
+
+                loginActivityPage = page;
+                if (pageLabel) {
+                    pageLabel.textContent = `Showing ${firstLog}-${lastLog} of ${totalCount} logs · Page ${page} of ${totalPages}`;
+                }
+                if (pager) {
+                    pager.hidden = totalPages <= 1;
+                    pager.querySelector('[data-login-activity-page="previous"]').disabled = page <= 1;
+                    pager.querySelector('[data-login-activity-page="next"]').disabled = page >= totalPages;
+                }
             }
 
-            async function loadLoginActivity() {
+            async function loadLoginActivity(page = loginActivityPage) {
                 try {
-                    const response = await fetch("/api/login-activity", {
+                    const response = await fetch(`/api/login-activity?page=${page}`, {
                         method: "GET",
                         credentials: "include",
                         cache: "no-store"
@@ -3053,7 +3139,7 @@
                         throw new Error(result.error || "Unable to load login activity.");
                     }
 
-                    renderLoginActivity(result.logs || []);
+                    renderLoginActivity(result.logs || [], result);
                 } catch (error) {
                     console.error("Login activity load error:", error);
 
@@ -3070,6 +3156,20 @@
                 `;
                     }
                 }
+            }
+
+            function setupLoginActivityPagination() {
+                const pager = getElement("login-activity-pagination");
+                if (!pager) return;
+
+                pager.addEventListener("click", event => {
+                    const button = event.target.closest("[data-login-activity-page]");
+                    if (!button || button.disabled) return;
+
+                    const direction = button.dataset.loginActivityPage;
+                    const nextPage = loginActivityPage + (direction === "next" ? 1 : -1);
+                    loadLoginActivity(Math.max(1, nextPage));
+                });
             }
 
             function setupUserApprovals() {
@@ -3315,6 +3415,8 @@
                 setupMongoVisibility();
 
                 setupEvents();
+                setupApprovedUserActions();
+                setupLoginActivityPagination();
 
                 updateGateCamera();
 

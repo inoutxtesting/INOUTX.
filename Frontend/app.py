@@ -1733,7 +1733,7 @@ def update_logged_in_presence():
         return None
 
     try:
-        _session_presence_collection().update_one(
+        result = _session_presence_collection().update_one(
             {
                 "session_id": presence_id,
                 "user_id": str(user.get("id"))
@@ -1745,6 +1745,21 @@ def update_logged_in_presence():
                 }
             }
         )
+
+        if result.matched_count != 1:
+            session.clear()
+            if request.path.startswith("/api/"):
+                return jsonify({
+                    "success": False,
+                    "error": "Your session has expired. Please log in again."
+                }), 401
+            if request.path not in {
+                "/login.html",
+                "/register.html",
+                "/forgot-password.html",
+                "/reset-password.html",
+            }:
+                return redirect("/login.html")
     except Exception as error:
         print("Presence update warning:", repr(error))
 
@@ -2053,6 +2068,10 @@ def get_approved_users():
                 "email": str(user.get("email") or "").strip(),
                 "role": str(user.get("role") or "").strip(),
                 "active": user.get("active") is True,
+                "can_delete": (
+                    str(user.get("email") or "").strip().lower() != CONFIG_ADMIN_EMAIL
+                    and str(user.get("role") or "").strip().lower() != "config_admin"
+                ),
                 "approval_status": str(user.get("approval_status") or "").upper(),
                 "online": str(user.get("_id")) in active_presence,
                 "last_login_at": serialize_value(user.get("last_login_at")),
@@ -2074,6 +2093,75 @@ def get_approved_users():
         }), 500
 
 
+@app.route("/api/approved-users/<user_id>", methods=["DELETE"])
+def delete_approved_user(user_id):
+    if not is_config_admin_session():
+        return jsonify({
+            "success": False,
+            "authorized": False,
+            "error": "Only the INOUTX configuration administrator can delete approved users."
+        }), 403
+
+    try:
+        try:
+            object_id = ObjectId(user_id)
+        except Exception:
+            return jsonify({
+                "success": False,
+                "error": "Invalid user account identifier."
+            }), 400
+
+        query = {
+            "_id": object_id,
+            "approval_status": "APPROVED",
+            "active": True
+        }
+        target = users.find_one(query, {"email": 1, "role": 1})
+
+        if not target:
+            return jsonify({
+                "success": False,
+                "error": "Approved user account was not found."
+            }), 404
+
+        target_email = str(target.get("email", "")).strip().lower()
+        target_role = str(target.get("role", "")).strip().lower()
+        if target_email == CONFIG_ADMIN_EMAIL or target_role == "config_admin":
+            return jsonify({
+                "success": False,
+                "error": "The configuration administrator account cannot be deleted."
+            }), 403
+
+        result = users.delete_one(query)
+        if result.deleted_count != 1:
+            return jsonify({
+                "success": False,
+                "error": "The approved user account could not be deleted."
+            }), 409
+
+        for collection, filter_query in (
+            (_session_presence_collection(), {"user_id": str(object_id)}),
+            (email_verifications, {"email": target_email}),
+            (password_resets, {"email": target_email}),
+        ):
+            try:
+                collection.delete_many(filter_query)
+            except Exception as cleanup_error:
+                print("Deleted user cleanup warning:", repr(cleanup_error))
+
+        return jsonify({
+            "success": True,
+            "message": "Approved user deleted successfully."
+        }), 200
+
+    except Exception as error:
+        print("Approved user deletion error:", repr(error))
+        return jsonify({
+            "success": False,
+            "error": "Unable to delete the approved user."
+        }), 500
+
+
 @app.route("/api/login-activity", methods=["GET"])
 def get_login_activity():
     if not is_config_admin_session():
@@ -2084,7 +2172,21 @@ def get_login_activity():
         }), 403
 
     try:
-        logs = _login_logs_collection().find(
+        page_size = 5
+        try:
+            page = max(1, int(request.args.get("page", "1")))
+        except (TypeError, ValueError):
+            return jsonify({
+                "success": False,
+                "error": "Page must be a positive integer."
+            }), 400
+
+        login_logs = _login_logs_collection()
+        total_count = login_logs.count_documents({})
+        total_pages = max(1, (total_count + page_size - 1) // page_size)
+        page = min(page, total_pages)
+
+        logs = login_logs.find(
             {},
             {
                 "name": 1,
@@ -2095,13 +2197,17 @@ def get_login_activity():
                 "status": 1,
                 "ip_address": 1,
             }
-        ).sort("login_at", DESCENDING).limit(100)
+        ).sort("login_at", DESCENDING).skip((page - 1) * page_size).limit(page_size)
 
         data = [serialize_document(row) for row in logs]
 
         return jsonify({
             "success": True,
             "count": len(data),
+            "total_count": total_count,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
             "logs": data
         }), 200
 
