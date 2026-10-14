@@ -1978,10 +1978,9 @@
             const isHttps = window.location.protocol === "https:";
             const hostname = window.location.hostname || "localhost";
 
-            // When hosted on inoutx.zynix.us (or any zynix.us domain) via Cloudflare tunnel,
-            // the camera WebSocket stream is routed through camera.zynix.us over secure WSS
-            if (hostname === "inoutx.zynix.us" || hostname.endsWith(".zynix.us")) {
-                return "wss://camera.zynix.us" + cameraPath;
+            // Cloudflare routes camera WebSockets through the main portal hostname.
+            if (hostname === "inoutx.zynix.us") {
+                return "wss://inoutx.zynix.us" + cameraPath;
             }
 
             // Other HTTPS deployments

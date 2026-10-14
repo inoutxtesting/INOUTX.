@@ -3441,6 +3441,14 @@
             "passwordToggleIcon"
           );
 
+        if (
+          new URLSearchParams(window.location.search).get("unauthorized") === "1"
+        ) {
+          loginError.textContent =
+            "You are not authorized to access this webpage.";
+          loginError.classList.remove("d-none");
+        }
+
 
 
         /* =================================================
@@ -3641,6 +3649,11 @@
                   loginError.textContent =
                     data.error ||
                     "Invalid email or password.";
+
+                  if (data.authorized === false) {
+                    loginError.textContent =
+                      "You are not authorized to access this webpage.";
+                  }
 
                   const isApprovalNotice =
                     data.approval_status === "PENDING" ||

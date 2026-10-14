@@ -4,6 +4,7 @@ aiosignal==1.4.0
 aistudio_sdk==0.3.9
 annotated-types==0.8.0
 anyio==4.15.1
+APScheduler==3.11.0
 attrs==26.1.0
 bce-python-sdk==0.9.79
 bcrypt==5.0.0

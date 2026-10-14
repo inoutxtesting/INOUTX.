@@ -259,7 +259,7 @@ def run_daemon():
     logger.info("IN/OUT X - Git Auto-Sync Poller Daemon Started")
     logger.info("Watching repository: %s", REPO_DIR)
     logger.info("Polling interval   : %d seconds", POLL_INTERVAL_SECONDS)
-    logger.info("Deployment domain  : https://inoutx.zynix.us & https://camera.zynix.us")
+    logger.info("Deployment domain  : https://inoutx.zynix.us")
     logger.info("Log file location  : %s", LOG_FILE)
     logger.info("=" * 65)
 
