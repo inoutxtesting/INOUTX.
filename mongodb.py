@@ -1,99 +1,25 @@
-import os
-from pathlib import Path
-from urllib.parse import quote_plus
 from datetime import datetime
 
-from dotenv import load_dotenv
-from pymongo import MongoClient, ASCENDING, DESCENDING
+from postgres import (
+    ASCENDING,
+    DESCENDING,
+    alerts,
+    bus_logs,
+    college_buses,
+    db,
+    detections,
+    email_verifications,
+    gate_events,
+    password_resets,
+    staff_logs,
+    staff_vehicles,
+    unknown_vehicles,
+    users,
+    vehicle_states,
+    visitor_logs,
+    visitor_vehicles,
+)
 from rapidfuzz import process, fuzz
-
-
-# ============================================================
-# ENVIRONMENT
-# ============================================================
-
-BASE_DIR = Path(__file__).resolve().parent
-
-load_dotenv(BASE_DIR / ".env")
-
-MONGODB_USERNAME = os.getenv("MONGODB_USERNAME")
-MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD")
-MONGO_DB = os.getenv("MONGO_DB", "IN_OUTX")
-
-if not MONGODB_USERNAME:
-    raise RuntimeError("MONGODB_USERNAME is missing from .env")
-
-if not MONGODB_PASSWORD:
-    raise RuntimeError("MONGODB_PASSWORD is missing from .env")
-
-
-# ============================================================
-# MONGODB ATLAS CONNECTION
-# ============================================================
-
-encoded_username = quote_plus(MONGODB_USERNAME)
-encoded_password = quote_plus(MONGODB_PASSWORD)
-
-MONGO_URI = (
-    f"mongodb+srv://"
-    f"{encoded_username}:{encoded_password}"
-    f"@cluster0.c2phmz2.mongodb.net/"
-    f"?appName=Cluster0"
-)
-
-print()
-print("=" * 65)
-print("IN/OUT X - MongoDB Atlas")
-print("=" * 65)
-print("Connecting to MongoDB Atlas...")
-
-
-client = MongoClient(
-    MONGO_URI,
-    serverSelectionTimeoutMS=10000
-)
-
-try:
-    client.admin.command("ping")
-    print("MongoDB Atlas connected successfully!")
-except Exception as e:
-    print("MongoDB Atlas connection failed!")
-    print(e)
-    raise
-
-
-db = client[MONGO_DB]
-
-print(f"Database : {MONGO_DB}")
-
-
-# ============================================================
-# COLLECTIONS
-# ===========================
-# =================================
-users = db["users"]
-email_verifications = db["email_verifications"]
-password_resets = db["password_resets"]
-
-college_buses = db["college_buses"]
-bus_logs = db["bus_logs"]
-
-staff_vehicles = db["staff_vehicles"]
-staff_logs = db["staff_logs"]
-
-# Existing project uses visitor_vehicles for unknown vehicles
-visitor_vehicles = db["visitor_vehicles"]
-unknown_vehicles = visitor_vehicles
-visitor_logs = db["visitor_logs"]
-
-alerts = db["alerts"]
-detections = db["detections"]
-
-# Current movement state
-vehicle_states = db["vehicle_states"]
-
-# Unified gate crossing history
-gate_events = db["gate_events"]
 
 
 # ============================================================
@@ -1091,7 +1017,7 @@ def create_indexes():
         )
 
         print(
-            "MongoDB indexes ready."
+            "PostgreSQL indexes ready."
         )
 
     except Exception as e:
@@ -1108,16 +1034,14 @@ def test_connection():
 
     try:
 
-        client.admin.command(
-            "ping"
-        )
+        result = db.command("ping")
 
         print()
         print("=" * 65)
-        print("IN/OUT X - ATLAS TEST")
+        print("IN/OUT X - POSTGRESQL TEST")
         print("=" * 65)
         print(
-            "MongoDB Atlas : OK"
+            "PostgreSQL    : OK"
         )
         print(
             f"Database      : {db.name}"
@@ -1138,7 +1062,7 @@ def test_connection():
     except Exception as e:
 
         print(
-            "MongoDB Atlas : FAILED"
+            "PostgreSQL    : FAILED"
         )
 
         print(e)
@@ -1150,6 +1074,7 @@ def test_connection():
 # STARTUP
 # ============================================================
 
+db.command("ping")
 create_indexes()
 
 

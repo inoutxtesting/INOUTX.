@@ -1,8 +1,26 @@
 #!/bin/bash
 # Script to set up IN/OUT X app (Frontend & Camera) to run automatically on system boot.
+set -euo pipefail
 
 WEB_SERVICE="inoutx.service"
 CAMERA_SERVICE="inoutx-camera.service"
+TARGET="${1:-all}"
+
+case "$TARGET" in
+    web)
+        SERVICES=("$WEB_SERVICE")
+        ;;
+    camera)
+        SERVICES=("$CAMERA_SERVICE")
+        ;;
+    all)
+        SERVICES=("$WEB_SERVICE" "$CAMERA_SERVICE")
+        ;;
+    *)
+        echo "Usage: $0 [web|camera|all]"
+        exit 2
+        ;;
+esac
 
 DIR="$(dirname "$(realpath "$0")")"
 
@@ -10,39 +28,31 @@ echo "=================================================="
 echo "Installing IN/OUT X Systemd Services for Auto-start"
 echo "=================================================="
 
-# Copy web service
-if [ -f "$DIR/$WEB_SERVICE" ]; then
-    echo "Installing $WEB_SERVICE..."
-    sudo cp "$DIR/$WEB_SERVICE" "/etc/systemd/system/$WEB_SERVICE"
-    sudo chmod 644 "/etc/systemd/system/$WEB_SERVICE"
-fi
-
-# Copy camera service
-if [ -f "$DIR/$CAMERA_SERVICE" ]; then
-    echo "Installing $CAMERA_SERVICE..."
-    sudo cp "$DIR/$CAMERA_SERVICE" "/etc/systemd/system/$CAMERA_SERVICE"
-    sudo chmod 644 "/etc/systemd/system/$CAMERA_SERVICE"
-fi
+for SERVICE in "${SERVICES[@]}"; do
+    echo "Installing $SERVICE..."
+    sudo cp "$DIR/$SERVICE" "/etc/systemd/system/$SERVICE"
+    sudo chmod 644 "/etc/systemd/system/$SERVICE"
+done
 
 echo "Reloading systemd daemon..."
 sudo systemctl daemon-reload
 
-sudo systemctl enable "$WEB_SERVICE" "$CAMERA_SERVICE"
-sudo systemctl restart "$WEB_SERVICE" "$CAMERA_SERVICE"
+sudo systemctl enable "${SERVICES[@]}"
+sudo systemctl restart "${SERVICES[@]}"
 
 echo ""
 echo "Checking service statuses..."
-echo "--- Web App Service ---"
-sudo systemctl status "$WEB_SERVICE" --no-pager
-echo ""
-echo "--- Camera AI Service ---"
-sudo systemctl status "$CAMERA_SERVICE" --no-pager
+for SERVICE in "${SERVICES[@]}"; do
+    echo "--- $SERVICE ---"
+    sudo systemctl status "$SERVICE" --no-pager
+done
 
 echo "=================================================="
-echo "Setup complete! Both Web App and Camera AI service will start on boot."
+echo "Setup complete! Selected service(s) are enabled and restarted."
 echo "Useful commands:"
 echo "  Check Web App status   : sudo systemctl status inoutx.service"
 echo "  Check Camera status    : sudo systemctl status inoutx-camera.service"
 echo "  View Camera AI logs    : sudo journalctl -u inoutx-camera.service -f"
 echo "  View Web App logs      : sudo journalctl -u inoutx.service -f"
+echo "  Configure/restart one  : sudo ./setup_autostart.sh [web|camera|all]"
 echo "=================================================="

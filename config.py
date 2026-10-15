@@ -253,8 +253,8 @@ WEBSOCKET_PORT = 8000
 # DATABASE CONFIGURATION
 # ============================================================
 
-MONGO_URI = ""
-DATABASE_NAME = "IN_OUTX"
+DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_NAME = os.getenv("POSTGRES_DB", "inoutx")
 
 
 # ============================================================

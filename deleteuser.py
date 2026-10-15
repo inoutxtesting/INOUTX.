@@ -1,15 +1,4 @@
-from pymongo import MongoClient
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-client = MongoClient(os.getenv("MONGODB_URI"))
-
-db = client["IN_OUTX"]
-
-users = db["users"]
-email_verifications = db["email_verifications"]
+from postgres import email_verifications, users
 
 # -----------------------------
 # USERS

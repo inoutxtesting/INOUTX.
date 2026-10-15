@@ -9,6 +9,7 @@ venv/
 venv313/
 .venv/
 .venv313/
+.migration-venv/
 
 # Secrets
 .env

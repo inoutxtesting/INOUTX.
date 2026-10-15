@@ -225,6 +225,30 @@ def point_to_segment_distance(point, line):
 # IMAGE & OCR UTILITIES
 # ============================================================
 
+def zoom_vehicle_crop(crop, scale=2.0):
+    """Enlarge a vehicle crop by `scale` using cv2.resize and cv2.INTER_CUBIC.
+
+    Safely handles empty, None, or invalid crops by returning the original crop or None.
+    """
+    if crop is None:
+        return None
+    try:
+        if not hasattr(crop, "shape") or len(crop.shape) < 2:
+            return crop
+        h, w = crop.shape[:2]
+        if h <= 0 or w <= 0 or getattr(crop, "size", 0) == 0:
+            return crop
+        if scale <= 0 or scale == 1.0:
+            return crop
+        new_w = int(round(w * scale))
+        new_h = int(round(h * scale))
+        if new_w <= 0 or new_h <= 0:
+            return crop
+        return cv2.resize(crop, (new_w, new_h), interpolation=cv2.INTER_CUBIC)
+    except Exception:
+        return crop
+
+
 def vehicle_frame_quality(frame, box):
     """Estimate frame sharpness and size without expensive inference."""
     try:
@@ -667,12 +691,16 @@ class CameraProcessor:
     def _remove_ocr_state(self, track_id):
         with self.ocr_lock:
             self.ocr_state.pop(track_id, None)
-
+    
     def submit_ocr_job(self, track_id, frame, vehicle_box, vehicle_type, priority=1):
         global ocr_job_counter
         try:
             x1, y1, x2, y2 = vehicle_box
             crop = frame[y1:y2, x1:x2].copy()
+            if crop is None or crop.size == 0:
+                return False
+
+            crop = zoom_vehicle_crop(crop, scale=2.0)
             if crop is None or crop.size == 0:
                 return False
 

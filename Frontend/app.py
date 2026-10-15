@@ -6,7 +6,6 @@ import hashlib
 import bcrypt
 import jwt
 import re
-from bson import ObjectId
 from datetime import datetime
 import secrets
 import smtplib
@@ -52,8 +51,6 @@ from flask import (
     send_from_directory
 )
 
-from bson import ObjectId
-
 from flask_socketio import SocketIO
 from flask_cors import CORS
 
@@ -76,14 +73,11 @@ from reportlab.platypus import (
     KeepTogether
 )
 
-from pymongo import (
-    DESCENDING,
-    ASCENDING
-)
+# =========================================================
+# DATABASE
+# =========================================================
+from postgres import ObjectId, ASCENDING, DESCENDING
 
-# =========================================================
-# MONGODB
-# =========================================================
 from mongodb import (
     db,
     users,
@@ -156,30 +150,44 @@ KRCT_LOGO = os.path.join(
 # FLASK APP
 # =========================================================
 
+APP_BASE_URL = os.getenv(
+    "APP_BASE_URL",
+    "http://127.0.0.1:5000"
+).strip().rstrip("/")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY must be configured before starting IN/OUT X")
+
+CORS_ALLOWED_ORIGINS = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv("CORS_ORIGINS", APP_BASE_URL).split(",")
+    if origin.strip()
+]
+
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = os.getenv(
-    "SECRET_KEY",
-    "INOUTX_CHANGE_THIS_SECRET_KEY"
-)
+app.config["SECRET_KEY"] = SECRET_KEY
 
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["SESSION_COOKIE_SECURE"] = False
+app.config["SESSION_COOKIE_SECURE"] = os.getenv(
+    "SESSION_COOKIE_SECURE",
+    "true" if APP_BASE_URL.startswith("https://") else "false"
+).strip().lower() in {"1", "true", "yes", "on"}
 
 CORS(
     app,
     supports_credentials=True,
     resources={
         r"/api/*": {
-            "origins": "*"
+            "origins": CORS_ALLOWED_ORIGINS
         }
     }
 )
 
 socketio = SocketIO(
     app,
-    cors_allowed_origins="*",
+    cors_allowed_origins=CORS_ALLOWED_ORIGINS,
     async_mode="threading"
 )
 
@@ -218,10 +226,6 @@ RESET_TOKEN_EXPIRY_MINUTES = int(
     )
 )
 
-APP_BASE_URL = os.getenv(
-    "APP_BASE_URL",
-    "http://127.0.0.1:5000"
-)
 PRIVILEGED_ROLES = {
     "principal",
     "executive_director",
@@ -1034,7 +1038,7 @@ def fetch_report_rows(
     Fetch bus logs and perform date filtering in Python.
 
     This avoids problems caused by storing dates as
-    DD-MM-YYYY strings in MongoDB.
+    DD-MM-YYYY strings in the database.
     """
 
     logs = (
@@ -1557,10 +1561,10 @@ def pdf_footer(
 
 
 # =========================================================
-# MONGODB CONNECTION CHECK
+# POSTGRESQL CONNECTION CHECK
 # =========================================================
 
-def check_mongodb():
+def check_database():
 
     try:
 
@@ -1570,7 +1574,7 @@ def check_mongodb():
 
         print()
         print("=" * 60)
-        print("MONGODB CONNECTION")
+        print("POSTGRESQL CONNECTION")
         print("=" * 60)
         print("Status        : CONNECTED")
         print("Database      :", db.name)
@@ -1587,7 +1591,7 @@ def check_mongodb():
 
         print()
         print("=" * 60)
-        print("MONGODB CONNECTION ERROR")
+        print("POSTGRESQL CONNECTION ERROR")
         print("=" * 60)
         print(str(e))
         print("=" * 60)
@@ -2847,7 +2851,7 @@ def current_user():
 
 
 # =========================================================
-# PROFILE - GET CURRENT USER FROM MONGODB
+# PROFILE - GET CURRENT USER FROM DATABASE
 # =========================================================
 
 @app.route(
@@ -2887,7 +2891,7 @@ def get_profile():
 
         safe_user = build_safe_user(user)
 
-        # Keep the session synchronized with MongoDB.
+        # Keep the session synchronized with the database.
         session["user"] = safe_user
 
         return jsonify({
@@ -3275,14 +3279,14 @@ def ensure_indexes():
         # =====================================================
 
         print(
-            "MongoDB indexes checked/created successfully."
+            "PostgreSQL indexes checked/created successfully."
         )
 
 
     except Exception as e:
 
         print(
-            "MongoDB index setup warning:",
+            "PostgreSQL index setup warning:",
             e
         )
 
@@ -3345,7 +3349,7 @@ def watch_collection(
         try:
 
             print(
-                f"Starting MongoDB change stream: "
+                f"Listening for PostgreSQL notifications: "
                 f"{collection_name}"
             )
 
@@ -3411,7 +3415,7 @@ def watch_collection(
         except Exception as e:
 
             print(
-                f"Change stream error "
+                f"Database notification error "
                 f"({collection_name}):",
                 e
             )
@@ -3485,7 +3489,7 @@ def start_change_streams():
 
             daemon=True,
 
-            name=f"MongoWatch-{name}"
+            name=f"PostgresWatch-{name}"
 
         )
 
@@ -3646,7 +3650,7 @@ def dashboard():
         # =====================================================
         # TOTAL REGISTERED COUNTS
         # =====================================================
-        # These are real MongoDB collection counts.
+        # These are persisted database collection counts.
         # No hard-coded/mock values are used.
 
         total_buses = college_buses.count_documents({})
@@ -4156,7 +4160,7 @@ def register_bus():
 
                 "error":
                     (
-                        "MongoDB did not acknowledge "
+                        "PostgreSQL did not acknowledge "
                         "the insert."
                     )
 
@@ -4470,7 +4474,7 @@ def register_staff_vehicle():
 
                 "error":
                     (
-                        "MongoDB did not acknowledge "
+                        "PostgreSQL did not acknowledge "
                         "the insert."
                     )
 
@@ -7402,8 +7406,8 @@ def health():
             "database":
                 db.name,
 
-            "mongodb":
-                "Atlas",
+            "postgresql":
+                "connected",
 
             "ping":
                 result
@@ -7441,7 +7445,7 @@ def test_database():
                 True,
 
             "message":
-                "IN_OUT_X MongoDB test",
+                "IN_OUT_X PostgreSQL test",
 
             "created_at":
                 datetime.now()
@@ -7469,7 +7473,7 @@ def test_database():
                 True,
 
             "message":
-                "MongoDB insert test successful.",
+                "PostgreSQL insert test successful.",
 
             "database":
                 db.name,
