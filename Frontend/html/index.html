@@ -1454,9 +1454,17 @@
                 "database-status"
             );
 
+        let dashboardRequestInFlight = false;
+
 
 
         async function loadDashboard() {
+
+            if (dashboardRequestInFlight) {
+                return;
+            }
+
+            dashboardRequestInFlight = true;
 
             try {
 
@@ -1490,76 +1498,67 @@
                     await response.json();
 
 
-                console.log(
-                    "MongoDB Atlas Dashboard Data:",
-                    data
-                );
-
-
                 /* COLLEGE BUSES
                    Exact total registered in MongoDB. */
 
-                collegeBusesElement.textContent =
-                    Number(
-                        data.totalBuses || 0
-                    );
+                if (collegeBusesElement) {
+                    collegeBusesElement.textContent =
+                        Number(
+                            data.totalBuses || 0
+                        );
+                }
 
 
 
                 /* FACULTY / STAFF VEHICLES
                    Exact total registered in MongoDB. */
 
-                facultyVehiclesElement.textContent =
-                    Number(
-                        data.totalStaffVehicles || 0
-                    );
+                if (facultyVehiclesElement) {
+                    facultyVehiclesElement.textContent =
+                        Number(
+                            data.totalStaffVehicles || 0
+                        );
+                }
 
 
 
                 /* VISITORS
                    Exact total visitor records in MongoDB. */
 
-                visitorsOnCampusElement.textContent =
-                    Number(
-                        data.totalVisitors || 0
-                    );
+                if (visitorsOnCampusElement) {
+                    visitorsOnCampusElement.textContent =
+                        Number(
+                            data.totalVisitors || 0
+                        );
+                }
 
 
 
                 /* DATABASE STATUS */
 
-                databaseStatusElement.textContent =
-                    "● MongoDB Atlas Connected";
-
-
-                databaseStatusElement.style.background =
-                    "#dcfce7";
-
-
-                databaseStatusElement.style.color =
-                    "#166534";
+                if (databaseStatusElement) {
+                    databaseStatusElement.textContent =
+                        "● MongoDB Atlas Connected";
+                    databaseStatusElement.style.background =
+                        "#dcfce7";
+                    databaseStatusElement.style.color =
+                        "#166534";
+                }
 
             }
 
-            catch (error) {
+            catch {
+                if (databaseStatusElement) {
+                    databaseStatusElement.textContent =
+                        "● Database/API Error";
+                    databaseStatusElement.style.background =
+                        "#fee2e2";
+                    databaseStatusElement.style.color =
+                        "#991b1b";
+                }
 
-                console.error(
-                    "Dashboard API error:",
-                    error
-                );
-
-
-                databaseStatusElement.textContent =
-                    "● Database/API Error";
-
-
-                databaseStatusElement.style.background =
-                    "#fee2e2";
-
-
-                databaseStatusElement.style.color =
-                    "#991b1b";
-
+            } finally {
+                dashboardRequestInFlight = false;
             }
 
         }
@@ -1745,10 +1744,7 @@
                     await response.json();
 
 
-                console.log(
-                    "Notifications:",
-                    data
-                );
+
 
 
                 notifications =
@@ -1780,13 +1776,19 @@
 
             }
 
-            catch (error) {
-
-                console.error(
-                    "Notification loading error:",
-                    error
-                );
-
+            catch {
+                const list = document.getElementById("notification-list");
+                const badge = document.getElementById("notification-badge");
+                const count = document.getElementById("notification-count");
+                if (badge) {
+                    badge.style.display = "none";
+                }
+                if (count) {
+                    count.textContent = "Unable to load notifications.";
+                }
+                if (list) {
+                    list.textContent = "Notifications are temporarily unavailable.";
+                }
             }
 
         }
@@ -1836,13 +1838,11 @@
 
                     }
 
-                    catch (error) {
-
-                        console.error(
-                            "Clear notifications error:",
-                            error
-                        );
-
+                    catch {
+                        const count = document.getElementById("notification-count");
+                        if (count) {
+                            count.textContent = "Unable to clear notifications.";
+                        }
                     }
 
                 }
@@ -1926,16 +1926,16 @@
 
         function connectCamera1() {
             const wsUrl1 = getCameraWsUrl("/ws/camera1");
-            console.log("Connecting to KRCT Camera 1:", wsUrl1);
+
             if (camera1Socket) {
-                try { camera1Socket.close(); } catch (_) { }
+                camera1Socket.close();
                 camera1Socket = null;
             }
             try {
                 camera1Socket = new WebSocket(wsUrl1);
                 camera1Socket.binaryType = "blob";
             } catch (error) {
-                console.error("KRCT WebSocket creation error:", error);
+
                 if (camera1Status) {
                     camera1Status.textContent = "KRCT Camera connection failed";
                     camera1Status.style.color = "#ff5555";
@@ -1945,7 +1945,7 @@
             }
 
             camera1Socket.onopen = function () {
-                console.log("KRCT Camera 1 connected");
+
                 if (camera1Status) {
                     camera1Status.textContent = "● KRCT LIVE";
                     camera1Status.style.color = "#00ff88";
@@ -1985,16 +1985,16 @@
 
         function connectCamera2() {
             const wsUrl2 = getCameraWsUrl("/ws/camera2");
-            console.log("Connecting to KRCE Camera 2:", wsUrl2);
+
             if (camera2Socket) {
-                try { camera2Socket.close(); } catch (_) { }
+                camera2Socket.close();
                 camera2Socket = null;
             }
             try {
                 camera2Socket = new WebSocket(wsUrl2);
                 camera2Socket.binaryType = "blob";
             } catch (error) {
-                console.error("KRCE WebSocket creation error:", error);
+
                 if (camera2Status) {
                     camera2Status.textContent = "KRCE Camera connection failed";
                     camera2Status.style.color = "#ff5555";
@@ -2004,7 +2004,7 @@
             }
 
             camera2Socket.onopen = function () {
-                console.log("KRCE Camera 2 connected");
+
                 if (camera2Status) {
                     camera2Status.textContent = "● KRCE LIVE";
                     camera2Status.style.color = "#00ff88";

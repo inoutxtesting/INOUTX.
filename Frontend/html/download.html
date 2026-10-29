@@ -2397,12 +2397,8 @@
                 }
 
                 catch (jsonError) {
-
-                    console.error(
-                        "Error reading API error:",
-                        jsonError
-                    );
-
+                    errorMessage =
+                        `Report generation failed. HTTP ${response.status}.`;
                 }
 
 
@@ -2577,10 +2573,7 @@
 
         catch (error) {
 
-            console.error(
-                "Report download error:",
-                error
-            );
+
 
 
             setExportStatus(
@@ -2889,12 +2882,17 @@
 
 
         catch (error) {
-
-            console.error(
-                "Notification loading error:",
-                error
-            );
-
+            const list =
+                document.getElementById("notification-list");
+            const count =
+                document.getElementById("notification-count");
+            if (count) {
+                count.textContent = "Unable to load notifications.";
+            }
+            if (list) {
+                list.textContent =
+                    "Notifications are temporarily unavailable.";
+            }
         }
 
     }
@@ -2955,12 +2953,11 @@
 
 
                 catch (error) {
-
-                    console.error(
-                        "Clear notification error:",
-                        error
-                    );
-
+                    const count =
+                        document.getElementById("notification-count");
+                    if (count) {
+                        count.textContent = "Unable to clear notifications.";
+                    }
                 }
 
             }

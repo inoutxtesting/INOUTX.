@@ -3388,6 +3388,13 @@
   <script>
 
     document.addEventListener(
+      "contextmenu",
+      function (event) {
+        event.preventDefault();
+      }
+    );
+
+    document.addEventListener(
       "DOMContentLoaded",
       function () {
 
@@ -3631,10 +3638,7 @@
 
 
 
-                console.log(
-                  "Login response:",
-                  data
-                );
+
 
 
 
@@ -3694,15 +3698,10 @@
 
                 /* LOGIN SUCCESS */
 
-                console.log(
-                  "INOUTX Login successful"
-                );
 
 
-                console.log(
-                  "Logged in user:",
-                  data.user
-                );
+
+
 
 
                 loginSuccess.textContent =
@@ -3768,10 +3767,7 @@
               catch (error) {
 
 
-                console.error(
-                  "Login request failed:",
-                  error
-                );
+
 
 
                 loginError.textContent =

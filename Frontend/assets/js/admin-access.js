@@ -59,7 +59,7 @@
         adminNavLink.setAttribute("aria-hidden", "true");
         adminNavLink.tabIndex = -1;
       });
-      console.error("Admin navigation access check failed:", error);
+
     });
   });
 
@@ -72,7 +72,7 @@
 
       document.documentElement.style.visibility = "";
     }).catch(function (error) {
-      console.error("Admin settings access check failed:", error);
+
       window.location.replace("/html/index.html");
     });
   }

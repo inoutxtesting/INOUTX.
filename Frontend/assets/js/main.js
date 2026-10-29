@@ -216,7 +216,7 @@
         event.preventDefault();
         event.stopPropagation();
 
-        console.log("INOUTX: Login form submitted");
+
 
 
         /* ---------------------------------------------------
@@ -227,9 +227,7 @@
 
           loginForm.classList.add("was-validated");
 
-          console.log(
-            "INOUTX: Login validation failed"
-          );
+
 
           return;
         }
@@ -287,14 +285,9 @@
         }
 
 
-        console.log(
-          "INOUTX: Sending login request..."
-        );
 
-        console.log(
-          "INOUTX: Email =",
-          email
-        );
+
+
 
 
         try {
@@ -324,10 +317,7 @@
             });
 
 
-          console.log(
-            "INOUTX: API status =",
-            response.status
-          );
+
 
 
           /* ------------------------------------------------
@@ -343,10 +333,7 @@
 
           } catch (jsonError) {
 
-            console.error(
-              "INOUTX: Invalid server response",
-              jsonError
-            );
+
 
             throw new Error(
               "Server returned an invalid response."
@@ -355,10 +342,7 @@
           }
 
 
-          console.log(
-            "INOUTX: API response =",
-            data
-          );
+
 
 
           /* ------------------------------------------------
@@ -371,10 +355,7 @@
               data.error ||
               "Invalid email or password.";
 
-            console.error(
-              "INOUTX: Login failed:",
-              errorMessage
-            );
+
 
 
             if (loginError) {
@@ -415,22 +396,13 @@
              LOGIN SUCCESS
           ------------------------------------------------ */
 
-          console.log(
-            "================================="
-          );
 
-          console.log(
-            "INOUTX LOGIN SUCCESS"
-          );
 
-          console.log(
-            "User:",
-            data.user
-          );
 
-          console.log(
-            "================================="
-          );
+
+
+
+
 
 
           /* ------------------------------------------------
@@ -450,11 +422,9 @@
               );
 
             } catch (storageError) {
-
-              console.warn(
-                "Unable to save remembered email."
-              );
-
+              if (rememberMe) {
+                rememberMe.checked = false;
+              }
             }
 
           } else {
@@ -512,9 +482,7 @@
              DASHBOARD REDIRECT
           ------------------------------------------------ */
 
-          console.log(
-            "INOUTX: Redirecting to dashboard..."
-          );
+
 
 
           setTimeout(function () {
@@ -532,10 +500,7 @@
 
         } catch (error) {
 
-          console.error(
-            "INOUTX: Login request error:",
-            error
-          );
+
 
 
           if (loginError) {
@@ -599,10 +564,9 @@
         }
 
       } catch (storageError) {
-
-        console.warn(
-          "INOUTX: LocalStorage unavailable."
-        );
+        if (rememberMe) {
+          rememberMe.checked = false;
+        }
 
       }
 
@@ -1199,14 +1163,10 @@ async function loadCurrentUser() {
 
     } catch (error) {
 
-        console.error(
-            "Failed to load current user:",
-            error
-        );
+
 
         userNameElement.textContent =
             "";
 
     }
 }
-

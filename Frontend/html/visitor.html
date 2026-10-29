@@ -2251,10 +2251,7 @@
 
                 try {
 
-                    console.log(
-                        "Sending visitor data:",
-                        visitorData
-                    );
+
 
 
                     const response =
@@ -2299,10 +2296,7 @@
                         const text =
                             await response.text();
 
-                        console.error(
-                            "Non-JSON Flask response:",
-                            text
-                        );
+
 
                         throw new Error(
                             `Server returned HTTP ${response.status}. Check Flask API.`
@@ -2333,10 +2327,7 @@
                     }
 
 
-                    console.log(
-                        "Visitor saved successfully:",
-                        result
-                    );
+
 
 
                     await loadVisitors();
@@ -2376,10 +2367,7 @@
 
                 catch (error) {
 
-                    console.error(
-                        "Visitor registration error:",
-                        error
-                    );
+
 
 
                     if (registrationStatus) {
@@ -2458,10 +2446,7 @@
                 const text =
                     await response.text();
 
-                console.error(
-                    "Visitor API returned non-JSON:",
-                    text
-                );
+
 
                 throw new Error(
                     `Visitor API returned HTTP ${response.status}`
@@ -2498,10 +2483,7 @@
 
         catch (error) {
 
-            console.error(
-                "Visitor loading error:",
-                error
-            );
+
 
 
             if (visitorTableBody) {
@@ -3103,12 +3085,17 @@
 
 
         catch (error) {
-
-            console.error(
-                "Notification loading error:",
-                error
-            );
-
+            const list =
+                document.getElementById("notification-list");
+            const count =
+                document.getElementById("notification-count");
+            if (count) {
+                count.textContent = "Unable to load notifications.";
+            }
+            if (list) {
+                list.textContent =
+                    "Notifications are temporarily unavailable.";
+            }
         }
 
     }
@@ -3158,12 +3145,11 @@
 
 
                 catch (error) {
-
-                    console.error(
-                        "Clear notification error:",
-                        error
-                    );
-
+                    const count =
+                        document.getElementById("notification-count");
+                    if (count) {
+                        count.textContent = "Unable to clear notifications.";
+                    }
                 }
 
             }

@@ -2161,10 +2161,7 @@
 
       catch (error) {
 
-        console.error(
-          "Staff vehicles error:",
-          error
-        );
+
 
 
         updateStaffSummaryCards(
@@ -3158,12 +3155,6 @@
             );
 
           } catch (error) {
-
-            console.error(
-              "Register staff vehicle error:",
-              error
-            );
-
             showStaffRegisterStatus(
               error.message ||
               "Unable to register staff vehicle.",

@@ -3261,26 +3261,15 @@
         }
 
 
-        console.log(
-          "Vehicle Summary:",
-          {
-            totalRegisteredFleet:
-              activeFleet.length,
-            enteredCampusToday:
-              enteredCount,
-            exitedCampusToday:
-              exitedCount
-          }
-        );
 
-      }
-      catch (error) {
-
-        console.error(
-          "Vehicle summary error:",
-          error
-        );
-
+      } catch {
+        ["totalRegisteredFleet", "enteredCampusToday", "exitedCampusToday"]
+          .forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+              element.textContent = "—";
+            }
+          });
       }
 
     }
@@ -3829,10 +3818,7 @@
       }
       catch (error) {
 
-        console.error(
-          "Vehicle table error:",
-          error
-        );
+
 
 
         const tableBody =
@@ -4870,13 +4856,7 @@
           catch (error) {
 
 
-            console.error(
 
-              "Register bus error:",
-
-              error
-
-            );
 
 
             showRegisterStatus(

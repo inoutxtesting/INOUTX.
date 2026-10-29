@@ -1810,10 +1810,7 @@
                 }
                 catch (error) {
 
-                    console.error(
-                        "Save configuration error:",
-                        error
-                    );
+
 
 
                     showMessage(
@@ -1884,10 +1881,7 @@
                 }
                 catch (error) {
 
-                    console.error(
-                        "Load configuration error:",
-                        error
-                    );
+
 
 
                     applyConfiguration(
@@ -2185,9 +2179,7 @@
 
                 if (!toggle || !sidebar) {
 
-                    console.error(
-                        "INOUTX sidebar elements not found."
-                    );
+
 
                     return;
 
@@ -2511,12 +2503,8 @@
 
                 }
                 catch (error) {
-
-                    console.error(
-                        "Notification load error:",
-                        error
-                    );
-
+                    list.textContent =
+                        "Notifications are temporarily unavailable.";
                 }
 
             }
@@ -2782,11 +2770,6 @@
                 }
                 catch (error) {
 
-                    console.error(
-                        "Pending user load error:",
-                        error
-                    );
-
                     if (body) {
                         body.innerHTML = `
                     <tr>
@@ -2882,11 +2865,6 @@
 
                 }
                 catch (error) {
-
-                    console.error(
-                        "User approval action error:",
-                        error
-                    );
 
                     showApprovalMessage(
                         error.message ||
@@ -3044,8 +3022,6 @@
 
                     renderApprovedUsers(result.users || []);
                 } catch (error) {
-                    console.error("Approved users load error:", error);
-
                     const body = getElement("approved-users-body");
                     if (body) {
                         body.innerHTML = `
@@ -3142,8 +3118,6 @@
 
                     renderLoginActivity(result.logs || [], result);
                 } catch (error) {
-                    console.error("Login activity load error:", error);
-
                     const body = getElement("login-activity-body");
                     if (body) {
                         body.innerHTML = `
@@ -3258,23 +3232,10 @@
                     }
 
 
-                    console.log(
-                        "System Configuration access granted:",
-                        result.email
-                    );
-
-
                     return true;
 
                 }
                 catch (error) {
-
-                    console.error(
-                        "Configuration access check failed:",
-                        error
-                    );
-
-
                     alert(
                         "Unable to verify configuration access."
                     );
