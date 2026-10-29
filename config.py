@@ -174,14 +174,15 @@ OCR_CONFIDENCE = 0.80
 # OCR will be allowed only AFTER first virtual-line crossing.
 OCR_AFTER_FIRST_LINE_ONLY = True
 
-# Maximum time OCR / identity pipeline can run after first line crossing.
-IDENTITY_WINDOW_SECONDS = 4.0
-
 # Process OCR approximately once during this interval.
 OCR_INTERVAL = 0.8
 
-# Maximum number of OCR attempts for one tracked vehicle.
-MAX_OCR_FRAMES = 4
+# Maximum number of OCR attempts for one tracked vehicle; 0 means unlimited.
+MAX_OCR_FRAMES = 0
+
+# Retry a transient college-bus verification database failure up to this many times.
+DB_VERIFICATION_RETRIES = 3
+DB_VERIFICATION_RETRY_INTERVAL = 2.0
 
 # Number of repeated stable results required.
 REQUIRED_STABLE_RESULTS = 2
@@ -215,8 +216,8 @@ BUS_NUMBER_FUZZY_THRESHOLD = 80
 # TRACKING & BUFFERING
 # ============================================================
 
-# How long a missing track can remain in memory.
-TRACK_MISSING_TIMEOUT = 0.5
+# Brief missed detections do not expire a tracked vehicle.
+TRACK_MISSING_TIMEOUT = 1.5
 
 # Initial warmup frames.
 WARMUP_FRAMES = 1
@@ -225,7 +226,11 @@ WARMUP_FRAMES = 1
 FRAME_QUEUE_SIZE = 2
 
 # Background OCR job queue limit
+# This is a per-camera bound; scheduling is round-robin across camera IDs.
 OCR_QUEUE_SIZE = 30
+
+# Number of timestamped frames retained for a bus before and during crossing.
+PRE_CROSSING_FRAME_COUNT = 8
 
 # Distance in pixels to line for preliminary zone detection
 OCR_ZONE_DISTANCE_PIXELS = 450

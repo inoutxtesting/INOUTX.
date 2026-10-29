@@ -134,6 +134,7 @@ def run_verification():
     # ----------------------------------------------------
     print("\n[TEST 5] Independent Line Crossing Calculations...")
     # KRCT Exit Line = ((600, 389), (1327, 246))
+    proc1.exit_line = ((600, 389), (1327, 246))
     # Box touching exit line
     box_touching_exit_1 = (620, 350, 750, 420)
     touch_exit = line_touches_box(box_touching_exit_1, proc1.exit_line)
@@ -189,8 +190,8 @@ def run_verification():
         # ----------------------------------------------------
         print("\n[TEST 8] OCR Background Queue & Metadata Preservation...", flush=True)
         import camera
-        orig_detect = camera.detect_plate
-        camera.detect_plate = lambda vehicle_crop: []
+        orig_detect = camera.detect_plate_for_vehicle
+        camera.detect_plate_for_vehicle = lambda vehicle_crop: []
         try:
             test_frame = np.zeros((480, 640, 3), dtype=np.uint8)
             test_box = (100, 100, 300, 300)
@@ -213,7 +214,7 @@ def run_verification():
             print("  -> OCR queuing, result handling, and per-camera isolation: PASS", flush=True)
             passed += 1
         finally:
-            camera.detect_plate = orig_detect
+            camera.detect_plate_for_vehicle = orig_detect
 
         # ----------------------------------------------------
         # Test 9: Duplicate Cooldown Protection

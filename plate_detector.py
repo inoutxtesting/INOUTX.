@@ -19,6 +19,8 @@ MODEL_PATH = (
     / "license_plate_detector.pt"
 )
 
+BUS_PLATE_MODEL_PATH = BASE_DIR / "models" / "best.pt"
+
 
 # ============================================================
 # CONFIGURATION
@@ -28,6 +30,7 @@ PLATE_CONFIDENCE = 0.20
 PLATE_IOU = 0.45
 PLATE_IMAGE_SIZE = 640
 MAX_DETECTIONS = 5
+BUS_REAR_CONFIDENCE = 0.20
 
 MIN_ASPECT_RATIO = 1.20
 MAX_ASPECT_RATIO = 6.00
@@ -63,6 +66,155 @@ except Exception as e:
 
 
 print("=" * 60)
+
+
+print("=" * 60)
+print("INOUTX - Loading bus-rear and license-plate model")
+print("Model:", BUS_PLATE_MODEL_PATH)
+print("=" * 60)
+
+try:
+    bus_plate_model = YOLO(str(BUS_PLATE_MODEL_PATH))
+    print("Bus-rear and license-plate model loaded successfully.")
+except Exception as e:
+    print("Bus-rear and license-plate model load error:", e)
+    bus_plate_model = None
+
+
+def _model_class_name(names, class_id):
+    if isinstance(names, dict):
+        return names.get(class_id)
+    if isinstance(names, (list, tuple)) and 0 <= class_id < len(names):
+        return names[class_id]
+    return None
+
+
+def _valid_coordinates(box, image_width, image_height):
+    try:
+        x1, y1, x2, y2 = map(int, box)
+    except (TypeError, ValueError):
+        return None
+    x1 = max(0, min(x1, image_width))
+    y1 = max(0, min(y1, image_height))
+    x2 = max(0, min(x2, image_width))
+    y2 = max(0, min(y2, image_height))
+    if x2 <= x1 or y2 <= y1:
+        return None
+    return x1, y1, x2, y2
+
+
+def detect_bus_rear_and_plates(image):
+    """Return detections grouped by the model's named object classes."""
+    detections = {"bus_rear": [], "license_plate": []}
+    if image is None or getattr(image, "size", 0) == 0 or bus_plate_model is None:
+        return detections
+
+    try:
+        results = bus_plate_model.predict(
+            image,
+            conf=min(BUS_REAR_CONFIDENCE, PLATE_CONFIDENCE),
+            iou=PLATE_IOU,
+            imgsz=PLATE_IMAGE_SIZE,
+            max_det=MAX_DETECTIONS * 2,
+            verbose=False,
+        )
+        if not results or results[0].boxes is None:
+            return detections
+
+        image_height, image_width = image.shape[:2]
+        result = results[0]
+        for index in range(len(result.boxes)):
+            try:
+                box = result.boxes[index]
+                class_id = int(box.cls[0].item())
+                class_name = _model_class_name(bus_plate_model.names, class_id)
+                if class_name not in detections:
+                    continue
+                confidence = float(box.conf[0].item())
+                minimum_confidence = (
+                    BUS_REAR_CONFIDENCE
+                    if class_name == "bus_rear"
+                    else PLATE_CONFIDENCE
+                )
+                if confidence < minimum_confidence:
+                    continue
+                coordinates = _valid_coordinates(
+                    box.xyxy[0].tolist(),
+                    image_width,
+                    image_height,
+                )
+                if coordinates is None:
+                    continue
+                if class_name == "license_plate" and not is_valid_plate_box(
+                    *coordinates,
+                    confidence,
+                ):
+                    continue
+                detections[class_name].append(
+                    {"box": coordinates, "confidence": confidence}
+                )
+            except (AttributeError, IndexError, TypeError, ValueError):
+                continue
+    except Exception as e:
+        print("Bus-rear and license-plate detection error:", e)
+
+    detections["bus_rear"].sort(
+        key=lambda item: item["confidence"],
+        reverse=True,
+    )
+    detections["license_plate"].sort(
+        key=lambda item: item["confidence"],
+        reverse=True,
+    )
+    return detections
+
+
+def detect_plate_for_vehicle(vehicle_crop):
+    """Use best.pt for plate crops, retaining the legacy detector as fallback."""
+    if vehicle_crop is None or getattr(vehicle_crop, "size", 0) == 0:
+        return []
+
+    detections = detect_bus_rear_and_plates(vehicle_crop)
+    if detections["license_plate"]:
+        return detections["license_plate"]
+
+    height, width = vehicle_crop.shape[:2]
+    fallback_crop = vehicle_crop
+    offset_x = 0
+    offset_y = 0
+    if detections["bus_rear"]:
+        x1, y1, x2, y2 = detections["bus_rear"][0]["box"]
+        pad_x = max(2, int((x2 - x1) * 0.05))
+        pad_y = max(2, int((y2 - y1) * 0.05))
+        offset_x = max(0, x1 - pad_x)
+        offset_y = max(0, y1 - pad_y)
+        crop_x2 = min(width, x2 + pad_x)
+        crop_y2 = min(height, y2 + pad_y)
+        fallback_crop = vehicle_crop[offset_y:crop_y2, offset_x:crop_x2]
+        if fallback_crop.size == 0:
+            fallback_crop = vehicle_crop
+            offset_x = 0
+            offset_y = 0
+
+    legacy_detections = detect_plate(fallback_crop)
+    shifted_detections = []
+    for detection in legacy_detections:
+        coordinates = detection.get("box")
+        if coordinates is None:
+            continue
+        x1, y1, x2, y2 = coordinates
+        shifted_detections.append(
+            {
+                **detection,
+                "box": (
+                    x1 + offset_x,
+                    y1 + offset_y,
+                    x2 + offset_x,
+                    y2 + offset_y,
+                ),
+            }
+        )
+    return shifted_detections
 
 
 # ============================================================

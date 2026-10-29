@@ -196,6 +196,10 @@ def is_plausible_ocr_variant(ocr_str: str, target_str: str) -> bool:
     return diffs <= 2
 
 
+class CollegeBusVerificationError(RuntimeError):
+    """Raised when college-bus verification could not query the database."""
+
+
 def verify_college_bus(ocr_plate, plausible_candidates=None):
     """
     Strict College Bus Verification:
@@ -212,24 +216,23 @@ def verify_college_bus(ocr_plate, plausible_candidates=None):
     """
     norm_plate = clean_plate(ocr_plate)
 
-    # 1. Exact normalized match for primary reading
+    # 1. Exact normalized match for primary and candidate readings.
+    exact_candidates = [norm_plate]
+    exact_candidates.extend(
+        clean_plate(candidate)
+        for candidate in (plausible_candidates or [])
+    )
     try:
-        if norm_plate:
-            bus = find_college_bus(norm_plate)
+        for candidate in dict.fromkeys(value for value in exact_candidates if value):
+            bus = college_buses.find_one({
+                "plate": candidate,
+                "status": "ACTIVE"
+            })
             if bus is not None:
                 return bus
-
-        # 2. Check candidate readings from multiple frames
-        if plausible_candidates:
-            for cand in plausible_candidates:
-                c_norm = clean_plate(cand)
-                if c_norm and c_norm != norm_plate:
-                    bus = find_college_bus(c_norm)
-                    if bus is not None:
-                        return bus
     except Exception as e:
         print("[DB ERROR] Error during exact college bus verification:", e)
-        return None
+        raise CollegeBusVerificationError("Exact college bus verification failed") from e
 
     # 3. Disambiguate against active database records
     if not norm_plate:
@@ -239,7 +242,7 @@ def verify_college_bus(ocr_plate, plausible_candidates=None):
         active_buses = list(college_buses.find({"status": "ACTIVE"}))
     except Exception as e:
         print("[DB ERROR] Failed to query college_buses for verification:", e)
-        return None
+        raise CollegeBusVerificationError("College bus list verification failed") from e
 
     unambiguous_matches = []
     for bus in active_buses:

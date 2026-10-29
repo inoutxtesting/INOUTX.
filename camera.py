@@ -7,6 +7,7 @@ import cv2
 import time
 import queue
 import asyncio
+import math
 import threading
 from collections import Counter, deque
 from datetime import datetime
@@ -41,6 +42,9 @@ from config import (
     REQUIRED_STABLE_RESULTS,
     BEST_FRAME_CANDIDATES,
     BEST_FRAME_COLLECTION_SECONDS,
+    PRE_CROSSING_FRAME_COUNT,
+    DB_VERIFICATION_RETRIES,
+    DB_VERIFICATION_RETRY_INTERVAL,
     OCR_ZONE_DISTANCE_PIXELS,
     WEBSOCKET_HOST,
     WEBSOCKET_PORT,
@@ -50,12 +54,13 @@ from config import (
 
 from tracker import VehicleTracker
 from frame_capture import save_frame
-from plate_detector import detect_plate
+from plate_detector import detect_plate_for_vehicle
 from ocr import read_plate, preload_ocr
 from metadata import create_metadata
 from notification import create_notification
 
 from mongodb import (
+    CollegeBusVerificationError,
     insert_bus_log,
     find_college_bus,
     verify_college_bus,
@@ -249,27 +254,6 @@ def zoom_vehicle_crop(crop, scale=2.0):
         return crop
 
 
-def vehicle_frame_quality(frame, box):
-    """Estimate frame sharpness and size without expensive inference."""
-    try:
-        x1, y1, x2, y2 = map(int, box)
-        h, w = frame.shape[:2]
-        x1, x2 = max(0, x1), min(w, x2)
-        y1, y2 = max(0, y1), min(h, y2)
-        if x2 <= x1 or y2 <= y1:
-            return -1.0
-        crop = frame[y1:y2, x1:x2]
-        if crop.size == 0:
-            return -1.0
-        crop_h, crop_w = crop.shape[:2]
-        gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-        sharpness = float(cv2.Laplacian(gray, cv2.CV_64F).var())
-        size_factor = min(1.5, (crop_w * crop_h) ** 0.5 / 300.0)
-        return sharpness * max(0.5, size_factor)
-    except Exception:
-        return -1.0
-
-
 def get_best_plate_crop(vehicle_crop, plate_results):
     if vehicle_crop is None or not plate_results:
         return None, None, 0.0
@@ -325,29 +309,46 @@ def get_best_plate_crop(vehicle_crop, plate_results):
     return plate_crop, best_box, best_confidence
 
 
+def plate_crop_quality(plate_crop, confidence, plate_box):
+    """Rank detected plate crops by detector confidence, size, and sharpness."""
+    try:
+        x1, y1, x2, y2 = plate_box
+        area = max(0, x2 - x1) * max(0, y2 - y1)
+        if area == 0 or plate_crop is None or plate_crop.size == 0:
+            return -1.0
+        gray = cv2.cvtColor(plate_crop, cv2.COLOR_BGR2GRAY)
+        sharpness = float(cv2.Laplacian(gray, cv2.CV_64F).var())
+        return float(confidence) * math.sqrt(area) * (1.0 + math.log1p(sharpness))
+    except Exception:
+        return -1.0
+
+
+def normalize_plate_result(value):
+    return "".join(char for char in clean_result(value) if char.isalnum())
+
+
 def clean_result(value):
     if value is None:
         return ""
     return str(value).strip().upper()
 
 
-def get_most_common(values):
+def get_stable_plate(values):
     if not values:
-        return ""
-    cleaned = [clean_result(v) for v in values if clean_result(v)]
+        return None
+    cleaned = [normalize_plate_result(v) for v in values if normalize_plate_result(v)]
     if not cleaned:
-        return ""
-    return Counter(cleaned).most_common(1)[0][0]
+        return None
+    counts = Counter(cleaned)
+    highest_count = max(counts.values())
+    winners = [plate for plate, count in counts.items() if count == highest_count]
+    if highest_count < REQUIRED_STABLE_RESULTS or len(winners) != 1:
+        return None
+    return winners[0]
 
 
 def is_stable(values):
-    if not values:
-        return False
-    cleaned = [clean_result(v) for v in values if clean_result(v)]
-    if not cleaned:
-        return False
-    _, count = Counter(cleaned).most_common(1)[0]
-    return count >= REQUIRED_STABLE_RESULTS
+    return get_stable_plate(values) is not None
 
 
 def normalize_bus_number(value):
@@ -376,9 +377,65 @@ class OCRJob:
     priority: int
     job_id: int
     payload: Any = field(compare=False)
+    enqueued_at: float = field(default_factory=time.monotonic, compare=False)
 
 
-ocr_queue = queue.PriorityQueue(maxsize=OCR_QUEUE_SIZE)
+class FairOCRQueue:
+    """Bounded per-camera FIFO queues scheduled round-robin."""
+
+    def __init__(self, camera_ids, maxsize):
+        self.maxsize = maxsize
+        self._queues = {camera_id: deque() for camera_id in camera_ids}
+        self._camera_order = list(camera_ids)
+        self._next_camera = 0
+        self._condition = threading.Condition()
+        self._unfinished_tasks = 0
+
+    def put_nowait(self, job):
+        camera_id = job.payload["camera_proc"].camera_id
+        with self._condition:
+            if camera_id not in self._queues:
+                self._queues[camera_id] = deque()
+                self._camera_order.append(camera_id)
+            camera_jobs = self._queues[camera_id]
+            if len(camera_jobs) >= self.maxsize:
+                raise queue.Full
+            camera_jobs.append(job)
+            self._unfinished_tasks += 1
+            self._condition.notify()
+
+    def get(self, block=True, timeout=None):
+        deadline = None if timeout is None else time.monotonic() + timeout
+        with self._condition:
+            while True:
+                camera_count = len(self._camera_order)
+                for offset in range(camera_count):
+                    index = (self._next_camera + offset) % camera_count
+                    camera_id = self._camera_order[index]
+                    camera_jobs = self._queues[camera_id]
+                    if camera_jobs:
+                        self._next_camera = (index + 1) % camera_count
+                        return camera_jobs.popleft()
+                if not block:
+                    raise queue.Empty
+                remaining = None if deadline is None else deadline - time.monotonic()
+                if remaining is not None and remaining <= 0:
+                    raise queue.Empty
+                self._condition.wait(remaining)
+
+    def task_done(self):
+        with self._condition:
+            if self._unfinished_tasks <= 0:
+                raise ValueError("task_done() called too many times")
+            self._unfinished_tasks -= 1
+            self._condition.notify_all()
+
+    def qsize(self):
+        with self._condition:
+            return sum(len(items) for items in self._queues.values())
+
+
+ocr_queue = FairOCRQueue((CAMERA_1_ID, CAMERA_2_ID), OCR_QUEUE_SIZE)
 ocr_worker_running = False
 ocr_worker_thread = None
 ocr_job_counter = 0
@@ -413,45 +470,63 @@ def _ocr_worker_loop():
             job_item = ocr_queue.get(timeout=0.2)
         except queue.Empty:
             continue
-        if job_item is None:
-            continue
-
-        payload = job_item.payload if isinstance(job_item, OCRJob) else job_item[2]
-        camera_proc = payload["camera_proc"]
-        track_id = payload["track_id"]
-        crop = payload["crop"]
-        vtype = payload["vehicle_type"]
-        vbox = payload.get("vehicle_box")
-
+        camera_proc = None
+        track_id = None
+        vtype = "BUS"
+        plate_text = ""
+        plate_box = None
+        plate_conf = 0.0
         try:
-            # 1. Plate detection
-            plate_crop, plate_box, plate_conf = None, None, 0.0
-            try:
-                plate_results = detect_plate(crop)
-                plate_crop, plate_box, plate_conf = get_best_plate_crop(crop, plate_results)
-            except Exception as pe:
-                print(f"[OCR] Plate detection error ({camera_proc.camera_id} Track {track_id}):", pe)
+            payload = job_item.payload if isinstance(job_item, OCRJob) else job_item[2]
+            camera_proc = payload["camera_proc"]
+            track_id = payload["track_id"]
+            generation = payload.get("generation")
+            vtype = payload["vehicle_type"]
+            enqueued_at = getattr(job_item, "enqueued_at", None)
+            if enqueued_at is not None:
+                camera_proc.record_ocr_queue_wait(
+                    max(0.0, time.monotonic() - enqueued_at)
+                )
+            best_quality = -1.0
+            best_plate_crop = None
 
-            # 2. Plate OCR
-            plate_text = ""
-            if plate_crop is not None:
-                try:
-                    plate_text = clean_result(read_plate(plate_crop))
-                except Exception as oe:
-                    print(f"[OCR] Plate OCR error ({camera_proc.camera_id} Track {track_id}):", oe)
+            for frame, vehicle_box in payload["candidates"]:
+                x1, y1, x2, y2 = vehicle_box
+                vehicle_crop = frame[y1:y2, x1:x2].copy()
+                if vehicle_crop.size == 0:
+                    continue
+                vehicle_crop = zoom_vehicle_crop(vehicle_crop, scale=2.0)
+                plate_results = detect_plate_for_vehicle(vehicle_crop)
+                candidate_crop, candidate_box, candidate_conf = get_best_plate_crop(
+                    vehicle_crop, plate_results
+                )
+                if candidate_crop is None:
+                    continue
+                quality = plate_crop_quality(candidate_crop, candidate_conf, candidate_box)
+                if quality > best_quality:
+                    best_quality = quality
+                    best_plate_crop = candidate_crop
+                    plate_box = candidate_box
+                    plate_conf = candidate_conf
 
-            # 3. Deliver result back to the originating camera processor
-            camera_proc.on_ocr_result(
-                track_id=track_id,
-                plate_text=plate_text,
-                plate_box=plate_box,
-                plate_conf=plate_conf,
-                vehicle_type=vtype,
-            )
-
+            if best_plate_crop is not None:
+                plate_text = normalize_plate_result(read_plate(best_plate_crop))
         except Exception as e:
-            print(f"[OCR] Error processing track {track_id} for {camera_proc.camera_id}:", e)
+            camera_label = camera_proc.camera_id if camera_proc is not None else "unknown camera"
+            print(f"[OCR] Error processing track {track_id} for {camera_label}:", e)
         finally:
+            if camera_proc is not None and track_id is not None:
+                try:
+                    camera_proc.on_ocr_result(
+                        track_id=track_id,
+                        plate_text=plate_text,
+                        plate_box=plate_box,
+                        plate_conf=plate_conf,
+                        vehicle_type=vtype,
+                        generation=generation,
+                    )
+                except Exception as e:
+                    print(f"[OCR] Failed delivering result for track {track_id}:", e)
             try:
                 ocr_queue.task_done()
             except Exception:
@@ -504,8 +579,21 @@ class CameraProcessor:
         self.status = "INITIALIZING"
         self.status_message = "Starting worker..."
         self.fps = 0.0
+        self.capture_fps = 0.0
         self.frame_count = 0
         self.last_frame_time = time.time()
+        self.capture_frame_count = 0
+        self.capture_window_start = time.monotonic()
+        self.process_window_start = time.monotonic()
+        self.processed_frames = 0
+        self.dropped_frames = 0
+        self.ocr_attempt_count = 0
+        self.ocr_completed_count = 0
+        self.ocr_nonempty_count = 0
+        self.accepted_plate_count = 0
+        self.ocr_queue_wait_total = 0.0
+        self.ocr_queue_wait_count = 0
+        self.ocr_metrics_lock = threading.Lock()
 
         # Frames & Threading
         self.running = False
@@ -530,6 +618,7 @@ class CameraProcessor:
         # OCR state per track (RLock ensures nested helper calls never deadlock)
         self.ocr_state = {}
         self.ocr_lock = threading.RLock()
+        self.track_generation_counter = 0
 
         # Line calibration state
         self.calibration_mode = False
@@ -639,7 +728,15 @@ class CameraProcessor:
                 self.frame_width = frame.shape[1]
                 self.frame_height = frame.shape[0]
                 with self.capture_lock:
+                    if len(self.frame_queue) == self.frame_queue.maxlen:
+                        self.dropped_frames += 1
                     self.frame_queue.append(frame)
+                self.capture_frame_count += 1
+                capture_elapsed = time.monotonic() - self.capture_window_start
+                if capture_elapsed >= 1.0:
+                    self.capture_fps = self.capture_frame_count / capture_elapsed
+                    self.capture_frame_count = 0
+                    self.capture_window_start = time.monotonic()
                 self.capture_ready.set()
             else:
                 print(f"[{self.camera_id}] Frame read failed or stream lost. Reconnecting...")
@@ -665,9 +762,42 @@ class CameraProcessor:
         with self.capture_lock:
             if not self.frame_queue:
                 return None
+            self.dropped_frames += max(0, len(self.frame_queue) - 1)
             frame = self.frame_queue[-1]
             self.frame_queue.clear()
             return frame
+
+    def record_ocr_queue_wait(self, wait_seconds):
+        with self.ocr_metrics_lock:
+            self.ocr_queue_wait_total += wait_seconds
+            self.ocr_queue_wait_count += 1
+
+    def metrics_snapshot(self):
+        with self.ocr_metrics_lock:
+            queue_wait = (
+                self.ocr_queue_wait_total / self.ocr_queue_wait_count
+                if self.ocr_queue_wait_count
+                else 0.0
+            )
+        with self.ocr_lock:
+            attempts_per_track = {
+                track_id: state["attempts"]
+                for track_id, state in self.ocr_state.items()
+            }
+        return {
+            "capture_fps": self.capture_fps,
+            "processing_fps": self.fps,
+            "ocr_queue_wait_seconds_avg": queue_wait,
+            "ocr_attempts": self.ocr_attempt_count,
+            "ocr_attempts_per_track": attempts_per_track,
+            "ocr_results": self.ocr_completed_count,
+            "ocr_nonempty_results": self.ocr_nonempty_count,
+            "plate_acceptance_rate": (
+                self.accepted_plate_count / self.ocr_completed_count
+                if self.ocr_completed_count else 0.0
+            ),
+            "dropped_frames": self.dropped_frames,
+        }
 
     # --------------------------------------------------------
     # OCR STATE & SUBMISSION
@@ -676,15 +806,25 @@ class CameraProcessor:
     def _ensure_ocr_state(self, track_id):
         with self.ocr_lock:
             if track_id not in self.ocr_state:
+                self.track_generation_counter += 1
                 self.ocr_state[track_id] = {
+                    "generation": self.track_generation_counter,
                     "plates": [],
                     "bus_numbers": [],
                     "plate_box": None,
                     "plate_confidence": 0.0,
                     "submitted": 0,
+                    "attempts": 0,
                     "completed": 0,
                     "pending": False,
                     "last_submit": 0.0,
+                    "terminal": False,
+                    "outcome": None,
+                    "verification_attempted": False,
+                    "rejected_plates": set(),
+                    "db_retry_plate": None,
+                    "db_retry_count": 0,
+                    "db_retry_at": 0.0,
                 }
             return self.ocr_state[track_id]
 
@@ -692,59 +832,118 @@ class CameraProcessor:
         with self.ocr_lock:
             self.ocr_state.pop(track_id, None)
     
-    def submit_ocr_job(self, track_id, frame, vehicle_box, vehicle_type, priority=1):
+    def submit_ocr_job(
+        self,
+        track_id,
+        frame=None,
+        vehicle_box=None,
+        vehicle_type="BUS",
+        priority=1,
+        candidates=None,
+    ):
         global ocr_job_counter
-        try:
-            x1, y1, x2, y2 = vehicle_box
-            crop = frame[y1:y2, x1:x2].copy()
-            if crop is None or crop.size == 0:
+        state = self._ensure_ocr_state(track_id)
+        with self.ocr_lock:
+            if (
+                state["terminal"]
+                or (MAX_OCR_FRAMES > 0 and state["attempts"] >= MAX_OCR_FRAMES)
+            ):
                 return False
 
-            crop = zoom_vehicle_crop(crop, scale=2.0)
-            if crop is None or crop.size == 0:
+        try:
+            if candidates is None:
+                candidates = [(frame, vehicle_box)]
+            usable_candidates = []
+            for frame, vehicle_box in candidates:
+                if frame is None or vehicle_box is None:
+                    continue
+                x1, y1, x2, y2 = vehicle_box
+                crop = frame[y1:y2, x1:x2]
+                if crop.size:
+                    usable_candidates.append((frame, vehicle_box))
+            if not usable_candidates:
                 return False
 
             ocr_job_counter += 1
             payload = {
                 "camera_proc": self,
                 "track_id": track_id,
-                "crop": crop,
+                "generation": state["generation"],
+                "candidates": usable_candidates,
                 "vehicle_type": vehicle_type,
-                "vehicle_box": vehicle_box,
             }
             job = OCRJob(priority=priority, job_id=ocr_job_counter, payload=payload)
-            ocr_queue.put_nowait(job)
 
-            state = self._ensure_ocr_state(track_id)
             with self.ocr_lock:
-                state["submitted"] += 1
                 state["pending"] = True
                 state["last_submit"] = time.time()
+                try:
+                    ocr_queue.put_nowait(job)
+                except queue.Full:
+                    state["pending"] = False
+                    print(f"[{self.camera_id}] OCR queue full. Skipping track {track_id}.")
+                    return False
+                state["submitted"] += 1
+                state["attempts"] += 1
+                self.ocr_attempt_count += 1
             return True
-        except queue.Full:
-            print(f"[{self.camera_id}] OCR queue full. Skipping track {track_id}.")
-            return False
         except Exception as e:
+            with self.ocr_lock:
+                state["pending"] = False
             print(f"[{self.camera_id}] Failed to submit OCR job:", e)
             return False
 
-    def on_ocr_result(self, track_id, plate_text, plate_box, plate_conf, vehicle_type):
+    def on_ocr_result(
+        self,
+        track_id,
+        plate_text,
+        plate_box,
+        plate_conf,
+        vehicle_type,
+        generation=None,
+    ):
         with self.ocr_lock:
             state = self.ocr_state.get(track_id)
-            if state is None:
+            if state is None or (
+                generation is not None and generation != state["generation"]
+            ):
+                return
+            if state["terminal"]:
+                state["pending"] = False
+                if state["outcome"] == "expired":
+                    self.ocr_state.pop(track_id, None)
                 return
             if plate_text:
-                state["plates"].append(plate_text)
+                state["plates"].append(normalize_plate_result(plate_text))
                 state["plates"] = state["plates"][-5:]
             if plate_box is not None:
                 state["plate_box"] = plate_box
             state["plate_confidence"] = plate_conf
             state["completed"] += 1
             state["pending"] = False
+            with self.ocr_metrics_lock:
+                self.ocr_completed_count += 1
+                if plate_text:
+                    self.ocr_nonempty_count += 1
 
         print(
             f"[{self.camera_id} OCR] Track {track_id} | Plate: {plate_text or 'NOT READ'} | Conf: {plate_conf:.2f}"
         )
+
+    def finalize_if_ocr_exhausted(self, track_id):
+        with self.ocr_lock:
+            state = self.ocr_state.get(track_id)
+            if state is None:
+                return False
+            if (
+                not state["terminal"]
+                and MAX_OCR_FRAMES > 0
+                and state["attempts"] >= MAX_OCR_FRAMES
+                and not state["pending"]
+            ):
+                state["terminal"] = True
+                state["outcome"] = "rejected"
+            return state["terminal"]
 
     # --------------------------------------------------------
     # LINE CROSSING CHECK
@@ -757,10 +956,30 @@ class CameraProcessor:
         touched = []
         exit_points = _line_to_points(self.exit_line)
         entry_points = _line_to_points(self.entry_line)
+        previous_center = box_center(previous_box)
+        current_center = box_center(current_box)
 
-        if exit_points is not None and line_touches_box(current_box, exit_points):
+        if exit_points is not None and (
+            line_touches_box(current_box, exit_points)
+            or (
+                previous_center is not None
+                and current_center is not None
+                and segments_intersect(
+                    previous_center, current_center, exit_points[0], exit_points[1]
+                )
+            )
+        ):
             touched.append("EXIT")
-        if entry_points is not None and line_touches_box(current_box, entry_points):
+        if entry_points is not None and (
+            line_touches_box(current_box, entry_points)
+            or (
+                previous_center is not None
+                and current_center is not None
+                and segments_intersect(
+                    previous_center, current_center, entry_points[0], entry_points[1]
+                )
+            )
+        ):
             touched.append("ENTRY")
 
         if not touched:
@@ -801,27 +1020,71 @@ class CameraProcessor:
             self.recent_plates[plate] = current_time
 
     def classify_and_save(self, frame, track_id, data, current_time):
-        vtype = data.get("vehicle_type", "VEHICLE")
         movement = data.get("movement_status") or "ENTRY"
         crossing_time = data.get("crossing_time") or datetime.now()
 
         with self.ocr_lock:
             state = self.ocr_state.get(track_id, {})
             plates = list(state.get("plates", []))
+            if state.get("terminal"):
+                return state.get("outcome") == "accepted"
 
-        stable_plate = get_most_common(plates)
-        plate_is_stable = is_stable(plates)
-
-        if not plate_is_stable and vtype != "BUS":
+        stable_plate = get_stable_plate(plates)
+        if stable_plate is None:
             return False
 
-        # STRICT COLLEGE BUS VERIFICATION
-        bus_data = None
-        if stable_plate or plates:
-            try:
-                bus_data = verify_college_bus(stable_plate, plausible_candidates=plates)
-            except Exception as e:
-                print(f"[{self.camera_id}] DB bus lookup error:", e)
+        now = time.time()
+        with self.ocr_lock:
+            if stable_plate in state["rejected_plates"]:
+                return False
+            if state["db_retry_plate"] == stable_plate and now < state["db_retry_at"]:
+                return False
+            if state["db_retry_plate"] != stable_plate:
+                state["db_retry_plate"] = stable_plate
+                state["db_retry_count"] = 0
+                state["db_retry_at"] = 0.0
+            state["verification_attempted"] = True
+
+        matching_candidates = [
+            normalize_plate_result(plate)
+            for plate in plates
+            if normalize_plate_result(plate) == stable_plate
+        ]
+
+        try:
+            bus_data = verify_college_bus(
+                stable_plate,
+                plausible_candidates=matching_candidates,
+            )
+        except CollegeBusVerificationError as e:
+            print(f"[{self.camera_id}] DB bus lookup error:", e)
+            with self.ocr_lock:
+                state["db_retry_count"] += 1
+                if state["db_retry_count"] >= DB_VERIFICATION_RETRIES:
+                    state["rejected_plates"].add(stable_plate)
+                    state["db_retry_plate"] = None
+                    state["db_retry_count"] = 0
+                    state["db_retry_at"] = 0.0
+                else:
+                    state["db_retry_at"] = now + DB_VERIFICATION_RETRY_INTERVAL
+            return False
+        except Exception as e:
+            print(f"[{self.camera_id}] Unexpected bus verification error:", e)
+            with self.ocr_lock:
+                state["db_retry_count"] += 1
+                if state["db_retry_count"] >= DB_VERIFICATION_RETRIES:
+                    state["rejected_plates"].add(stable_plate)
+                    state["db_retry_plate"] = None
+                    state["db_retry_count"] = 0
+                    state["db_retry_at"] = 0.0
+                else:
+                    state["db_retry_at"] = now + DB_VERIFICATION_RETRY_INTERVAL
+            return False
+
+        with self.ocr_lock:
+            state["db_retry_plate"] = None
+            state["db_retry_count"] = 0
+            state["db_retry_at"] = 0.0
 
         if bus_data is not None:
             # Verified College Bus Record
@@ -830,6 +1093,9 @@ class CameraProcessor:
 
             if self.is_duplicate(atlas_plate, current_time):
                 print(f"[{self.camera_id}] Duplicate college bus ignored: {atlas_plate}")
+                with self.ocr_lock:
+                    state["terminal"] = True
+                    state["outcome"] = "duplicate"
                 return True
 
             img_path = save_detection_image(frame, track_id)
@@ -862,26 +1128,41 @@ class CameraProcessor:
             }
 
             try:
-                insert_bus_log(meta)
+                insert_result = insert_bus_log(meta)
+                if insert_result is None:
+                    raise RuntimeError("Bus log insert returned no identifier")
                 print(f"[{self.camera_id}] {self.college} COLLEGE BUS {movement} SAVED: Bus #{atlas_bus_no} ({atlas_plate})")
             except Exception as e:
                 print(f"[{self.camera_id}] DB error saving college bus:", e)
+                with self.ocr_lock:
+                    state["terminal"] = True
+                    state["outcome"] = "log_failed"
+                return False
 
             self.remember_plate(atlas_plate, current_time)
-            create_notification(
-                title=f"{self.college} College Bus Verified",
-                message=f"Bus #{atlas_bus_no} ({atlas_plate}) {movement.lower()}ed {self.gate_name}.",
-                notification_type="success",
-                college=self.college,
-                camera_id=self.camera_id
-            )
+            with self.ocr_lock:
+                state["terminal"] = True
+                state["outcome"] = "accepted"
+            self.accepted_plate_count += 1
+            try:
+                create_notification(
+                    title=f"{self.college} College Bus Verified",
+                    message=f"Bus #{atlas_bus_no} ({atlas_plate}) {movement.lower()}ed {self.gate_name}.",
+                    notification_type="success",
+                    college=self.college,
+                    camera_id=self.camera_id
+                )
+            except Exception as e:
+                print(f"[{self.camera_id}] Notification error:", e)
             return True
 
-        # Unregistered bus or unverified plate: NEVER log event and NEVER send notification
+        # A confirmed non-match is ignored, but subsequent OCR readings remain eligible.
         with self.ocr_lock:
-            submitted = self.ocr_state.get(track_id, {}).get("submitted", 0)
-        if submitted >= MAX_OCR_FRAMES and plates:
-            print(f"[{self.camera_id}] Bus ID {track_id} (plates={plates}) is NOT a registered college bus. Skipped.")
+            state["rejected_plates"].add(stable_plate)
+            state["db_retry_plate"] = None
+            state["db_retry_count"] = 0
+            state["db_retry_at"] = 0.0
+        print(f"[{self.camera_id}] Track {track_id} plate {stable_plate} is not a registered college bus.")
 
         return False
 
@@ -962,11 +1243,17 @@ class CameraProcessor:
 
             current_time = time.time()
             self.frame_count += 1
+            self.processed_frames += 1
             dt = current_time - self.last_frame_time
             if dt >= 1.0:
                 self.fps = self.frame_count / dt
                 self.frame_count = 0
                 self.last_frame_time = current_time
+            process_elapsed = time.monotonic() - self.process_window_start
+            if process_elapsed >= 1.0:
+                self.fps = self.processed_frames / process_elapsed
+                self.processed_frames = 0
+                self.process_window_start = time.monotonic()
 
             # 1. Detect & Track with this camera's independent tracker
             try:
@@ -1018,6 +1305,11 @@ class CameraProcessor:
 
                     # Initialize track state if new
                     if track_id not in self.vehicle_data:
+                        old_ocr_state = self.ocr_state.get(track_id)
+                        if old_ocr_state and (
+                            old_ocr_state["terminal"] or not old_ocr_state["pending"]
+                        ):
+                            self._remove_ocr_state(track_id)
                         self.vehicle_data[track_id] = {
                             "last_seen": current_time,
                             "vehicle_type": vtype,
@@ -1030,6 +1322,8 @@ class CameraProcessor:
                             "processed": False,
                             "candidates": [],
                             "collection_start": None,
+                            "last_candidate_time": 0.0,
+                            "frame_buffer": deque(maxlen=PRE_CROSSING_FRAME_COUNT),
                             "last_frame": raw_frame.copy(),
                         }
                         self._ensure_ocr_state(track_id)
@@ -1037,9 +1331,11 @@ class CameraProcessor:
                     tdata = self.vehicle_data[track_id]
                     tdata["last_seen"] = current_time
                     tdata["vehicle_type"] = vtype
-                    tdata["last_frame"] = raw_frame.copy()
+                    frame_copy = raw_frame.copy()
+                    tdata["last_frame"] = frame_copy
                     tdata["previous_box"] = tdata.get("current_box")
                     tdata["current_box"] = current_box
+                    tdata["frame_buffer"].append((current_time, frame_copy, current_box))
 
                     bx1, by1, bx2, by2 = current_box
 
@@ -1051,6 +1347,12 @@ class CameraProcessor:
                             tdata["movement_status"] = touched
                             tdata["crossing_time"] = datetime.now()
                             tdata["identity_enabled"] = True
+                            tdata["candidates"] = [
+                                (frame_time, stored_frame, stored_box)
+                                for frame_time, stored_frame, stored_box
+                                in list(tdata["frame_buffer"])[-BEST_FRAME_CANDIDATES:]
+                            ]
+                            tdata["collection_start"] = current_time
                             print(f"[{self.camera_id}] Line touch: {vtype} ID {track_id} -> {touched}")
 
                     # Render movement label
@@ -1090,24 +1392,46 @@ class CameraProcessor:
                         )
                         continue
 
+                    state = self._ensure_ocr_state(track_id)
                     # Post-crossing: Collect candidates and trigger OCR
                     with self.ocr_lock:
-                        ostate = self._ensure_ocr_state(track_id)
-                        attempts = ostate["submitted"]
-                        pending = ostate["pending"]
-                        last_sub = ostate["last_submit"]
+                        attempts = state["attempts"]
+                        pending = state["pending"]
+                        terminal = state["terminal"]
+                        last_sub = state["last_submit"]
 
-                    if attempts < MAX_OCR_FRAMES and not pending:
+                    attempts_limited = MAX_OCR_FRAMES > 0 and attempts >= MAX_OCR_FRAMES
+                    if not terminal and not attempts_limited and not pending:
                         cands = tdata.setdefault("candidates", [])
                         col_start = tdata.get("collection_start")
                         if col_start is None:
                             tdata["collection_start"] = current_time
-                            cands.clear()
+                            eligible = [
+                                (frame_time, stored_frame, stored_box)
+                                for frame_time, stored_frame, stored_box
+                                in tdata["frame_buffer"]
+                                if frame_time > tdata["last_candidate_time"]
+                            ]
+                            cands.extend(eligible[-BEST_FRAME_CANDIDATES:])
 
-                        if len(cands) < BEST_FRAME_CANDIDATES:
-                            score = vehicle_frame_quality(raw_frame, current_box)
-                            if score > 0:
-                                cands.append((score, raw_frame.copy(), current_box))
+                        if (
+                            current_time > tdata["last_candidate_time"]
+                            and bx2 > bx1
+                            and by2 > by1
+                            and frame_copy[by1:by2, bx1:bx2].size
+                            and not any(item[0] == current_time for item in cands)
+                        ):
+                            cands.append((current_time, frame_copy, current_box))
+                            if len(cands) > BEST_FRAME_CANDIDATES:
+                                recent = (
+                                    cands[-(BEST_FRAME_CANDIDATES - 1):]
+                                    if BEST_FRAME_CANDIDATES > 1
+                                    else []
+                                )
+                                cands[:] = [
+                                    cands[0],
+                                    *recent,
+                                ]
 
                         col_start = tdata.get("collection_start", current_time)
                         if (
@@ -1115,16 +1439,34 @@ class CameraProcessor:
                             or (current_time - col_start) >= BEST_FRAME_COLLECTION_SECONDS
                         ):
                             if cands and (current_time - last_sub) >= OCR_INTERVAL:
-                                best_s, best_f, best_b = max(cands, key=lambda it: it[0])
-                                submitted = self.submit_ocr_job(track_id, best_f, best_b, vtype, priority=1)
+                                job_candidates = [
+                                    (stored_frame, stored_box)
+                                    for _, stored_frame, stored_box in cands
+                                ]
+                                submitted = self.submit_ocr_job(
+                                    track_id,
+                                    vehicle_type=vtype,
+                                    priority=1,
+                                    candidates=job_candidates,
+                                )
                                 if submitted:
-                                    print(f"[{self.camera_id}] Post-crossing OCR queued: ID {track_id} (quality={best_s:.1f})")
-                                cands.clear()
-                                tdata["collection_start"] = current_time
+                                    tdata["last_candidate_time"] = max(
+                                        item[0] for item in cands
+                                    )
+                                    print(
+                                        f"[{self.camera_id}] Post-crossing OCR queued: "
+                                        f"ID {track_id} ({len(cands)} candidates)"
+                                    )
+                                    cands.clear()
+                                    tdata["collection_start"] = None
 
                     # Try classification
                     saved = self.classify_and_save(raw_frame, track_id, tdata, current_time)
-                    if saved:
+                    terminal = self.finalize_if_ocr_exhausted(track_id)
+                    with self.ocr_lock:
+                        state = self.ocr_state.get(track_id)
+                        terminal = terminal or bool(state and state["terminal"])
+                    if saved or terminal:
                         tdata["processed"] = True
 
             # 4. Clean up missing tracks & cooldown memory
@@ -1132,11 +1474,14 @@ class CameraProcessor:
                 if tid not in current_track_ids:
                     missing = current_time - tdata.get("last_seen", current_time)
                     if missing > TRACK_MISSING_TIMEOUT:
-                        if tdata.get("identity_enabled") and not tdata.get("processed"):
-                            # Final chance save
-                            self.classify_and_save(tdata.get("last_frame", raw_frame), tid, tdata, current_time)
-                        if missing > 5.0:
-                            self.vehicle_data.pop(tid, None)
+                        with self.ocr_lock:
+                            state = self.ocr_state.get(tid)
+                            if state is not None and not state["terminal"]:
+                                state["terminal"] = True
+                                state["outcome"] = "expired"
+                            pending = bool(state and state["pending"])
+                        self.vehicle_data.pop(tid, None)
+                        if not pending:
                             self._remove_ocr_state(tid)
 
             # 5. Clean duplicate plates cache
