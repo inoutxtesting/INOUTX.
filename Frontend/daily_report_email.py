@@ -98,7 +98,7 @@ def minutes_to_hhmm(minutes):
 def fmt_dt(dt):
     return dt.strftime("%H:%M:%S") if isinstance(dt, datetime) else "-"
 
-def entry_timing_status(dt):
+def entry_datetime_timing_status(dt):
     """ENTRY <= 08:45 AM is On Time; after 08:45 AM is Late."""
     if not isinstance(dt, datetime):
         return "-"
@@ -197,7 +197,7 @@ def timing_analysis(rows):
                 continue
             if direction == "ENTRY":
                 entries.append(dt)
-                if entry_timing_status(dt) == "On Time":
+                if entry_datetime_timing_status(dt) == "On Time":
                     on_time_entries += 1
                 else:
                     late_entries += 1
@@ -564,8 +564,8 @@ def send_email(attachment_bytes, filename, report_date, rows, start_label, end_l
         f"Report window: {start_label} to {end_label}\n"
         f"Unique buses: {buses}\n"
         f"ENTRY detections: {entries}\n"
-        f"On Time ENTRY (<= 08:45 AM): {sum(1 for r in rows if movement_direction(r) == "ENTRY" and entry_timing_status(parse_date_time(r)) == "On Time")}\n"
-        f"Late ENTRY (> 08:45 AM): {sum(1 for r in rows if movement_direction(r) == "ENTRY" and entry_timing_status(parse_date_time(r)) == "Late")}\n"
+        f"On Time ENTRY (<= 08:45 AM): {sum(1 for r in rows if movement_direction(r) == "ENTRY" and entry_timing_status(r) == "On Time")}\n"
+        f"Late ENTRY (> 08:45 AM): {sum(1 for r in rows if movement_direction(r) == "ENTRY" and entry_timing_status(r) == "Late")}\n"
         f"EXIT detections: {exits}\n"
         f"Total movement detections: {len(rows)}\n\n"
         f"The attached Excel workbook contains:\n"

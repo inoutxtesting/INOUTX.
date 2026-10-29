@@ -3,6 +3,11 @@
 # ============================================================
 
 from pathlib import Path
+import torch
+
+# Limit CPU thread oversubscription for dual-camera inference
+torch.set_num_threads(4)
+torch.set_num_interop_threads(2)
 from ultralytics import YOLO
 
 # ============================================================
