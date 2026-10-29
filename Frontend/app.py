@@ -239,9 +239,10 @@ PRIVILEGED_ROLES = {
 # SYSTEM CONFIGURATION ADMIN
 # =========================================================
 
+CONFIG_ADMIN_ALLOWED_EMAIL = "inoutx.testing@gmail.com"
 CONFIG_ADMIN_EMAIL = os.getenv(
     "CONFIG_ADMIN_EMAIL",
-    "inoutx.testing@gmail.com"
+    CONFIG_ADMIN_ALLOWED_EMAIL
 ).strip().lower()
 
 CONFIG_ADMIN_PASSWORD = os.getenv(
@@ -253,6 +254,12 @@ if not CONFIG_ADMIN_EMAIL or not CONFIG_ADMIN_PASSWORD:
     print(
         "WARNING: System Configuration admin credentials "
         "are not configured in .env"
+    )
+
+if CONFIG_ADMIN_EMAIL != CONFIG_ADMIN_ALLOWED_EMAIL:
+    print(
+        "WARNING: CONFIG_ADMIN_EMAIL must be "
+        f"{CONFIG_ADMIN_ALLOWED_EMAIL} for System Configuration access."
     )
 
 
@@ -2002,6 +2009,7 @@ def config_access():
         if (
             not CONFIG_ADMIN_EMAIL
             or logged_in_email != CONFIG_ADMIN_EMAIL
+            or logged_in_email != CONFIG_ADMIN_ALLOWED_EMAIL
             or logged_in_role != "config_admin"
         ):
 
@@ -2279,6 +2287,7 @@ def is_config_admin_session():
     return (
         bool(CONFIG_ADMIN_EMAIL)
         and email == CONFIG_ADMIN_EMAIL
+        and email == CONFIG_ADMIN_ALLOWED_EMAIL
         and role == "config_admin"
     )
 
@@ -7212,6 +7221,12 @@ def serve_html_file(filename):
     ):
         return redirect("/login.html")
 
+    if (
+        filename == "system-config.html"
+        and not is_config_admin_session()
+    ):
+        return redirect("/html/index.html")
+
     return send_from_directory(
         HTML_DIR,
         filename
@@ -7256,6 +7271,12 @@ def html_files(filename):
         and not session.get("user")
     ):
         return redirect("/login.html")
+
+    if (
+        filename == "system-config.html"
+        and not is_config_admin_session()
+    ):
+        return redirect("/html/index.html")
 
     # -----------------------------------------------------
     # Static HTML pages

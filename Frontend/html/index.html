@@ -729,7 +729,7 @@
 
                 <!-- SYSTEM CONFIGURATION -->
 
-                <a class="nav-link" href="/html/system-config.html" id="system-config-nav" style="display: none;">
+                <a class="nav-link" href="/html/system-config.html" id="system-config-nav" data-admin-only="true" style="display: none;">
 
 
                     <span class="nav-icon">
@@ -1897,79 +1897,6 @@
 
 
     <!-- =====================================================
-         SYSTEM CONFIGURATION ACCESS
-    ====================================================== -->
-
-    <script>
-
-        async function checkSystemConfigurationAccess() {
-
-            try {
-
-                const response =
-                    await fetch(
-                        API_BASE +
-                        "/api/config-access",
-                        {
-                            method: "GET",
-                            credentials: "include",
-                            cache: "no-store"
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    return;
-
-                }
-
-
-                const result =
-                    await response.json();
-
-
-                if (
-                    result.success === true &&
-                    result.authorized === true
-                ) {
-
-                    const configNav =
-                        document.getElementById(
-                            "system-config-nav"
-                        );
-
-
-                    if (configNav) {
-
-                        configNav.style.display =
-                            "flex";
-
-                    }
-
-                }
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "System Configuration access check error:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        checkSystemConfigurationAccess();
-
-    </script>
-
-
-
-    <!-- =====================================================
          DUAL CAMERA WEBSOCKETS (KRCT & KRCE)
     ====================================================== -->
 
@@ -2333,6 +2260,7 @@
          MAIN JS
     ====================================================== -->
 
+    <script src="/assets/js/admin-access.js"></script>
     <script src="/assets/js/main.js">
     </script>
 
