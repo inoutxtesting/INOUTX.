@@ -45,3 +45,8 @@ Thumbs.db
 
 # Generated daily email reports
 /Frontend/daily_reports/
+
+# Local backup files
+Frontend/app.py.backup
+Frontend/daily_report_email.py.bak
+tracker.py.bak_20261029_102008
